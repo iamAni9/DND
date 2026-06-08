@@ -1,6 +1,7 @@
 import React from 'react';
 import RoughAnnotation from '@/components/RoughAnnotation';
 import ScrollReveal from '@/components/ScrollReveal';
+import '@/styles/philosophy.css';
 
 const PhilosophySection = () => {
   return (

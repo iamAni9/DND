@@ -1,5 +1,6 @@
 import React from 'react';
 import RoughAnnotation from '@/components/RoughAnnotation';
+import '@/styles/navbar.css';
 
 const Navbar = () => {
   return (

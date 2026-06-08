@@ -1,5 +1,6 @@
 import React from 'react';
 import InteractiveNimbu from '@/components/InteractiveNimbu';
+import '@/styles/footer.css';
 
 const Footer = () => {
   return (

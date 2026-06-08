@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import RoughAnnotation from '@/components/RoughAnnotation';
 import ScrollReveal from '@/components/ScrollReveal';
+import '@/styles/contact.css';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });

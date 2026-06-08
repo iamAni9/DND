@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Cabin+Sketch:wght@400;700&family=Londrina+Outline&family=Londrina+Solid:wght@300;400;900&family=Permanent+Marker&family=Shadows+Into+Light&family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+:root {
+  --text: #4a4552;
+  --text-h: #0f172a;
+  --bg: #fdfbf7;
+  --border: #e2e8f0;
+  --code-bg: #f8fafc;
+  --accent: #aa3bff;
+  --accent-bg: rgba(170, 59, 255, 0.05);
+  --accent-border: rgba(170, 59, 255, 0.3);
+  --social-bg: rgba(244, 243, 236, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.05) 0 10px 15px -3px, rgba(0, 0, 0, 0.02) 0 4px 6px -2px;
+
+  --bg-grid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='1.5' fill='%23cbd5e1'/%3E%3C/svg%3E");
+
+  --sans: 'Shantell Sans', system-ui, -apple-system, sans-serif;
+  --heading: 'Shantell Sans', system-ui, -apple-system, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light;
+  color: var(--text);
+  background: var(--bg-grid) repeat, var(--bg);
+  background-size: 36px 36px;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+h1 {
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
+  @media (max-width: 1024px) {
+    font-size: 36px;
+    margin: 20px 0;
+  }
+}
+h2 {
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+}
+p {
+  margin: 0;
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}
+
+/* Typography Helpers */
+.font-sketch {
+  font-family: 'Cabin Sketch', cursive, sans-serif;
+  font-weight: 700;
+}
+
+.font-outline {
+  font-family: 'Londrina Outline', cursive, sans-serif;
+  -webkit-text-stroke: 1px var(--text-h);
+}
+
+.font-solid {
+  font-family: 'Londrina Solid', cursive, sans-serif;
+  font-weight: 900;
+}
+
+.font-marker {
+  font-family: 'Architects Daughter', cursive, sans-serif;
+  font-weight: 700;
+}
+
+.font-thin-marker {
+  font-family: 'Shadows Into Light', cursive, sans-serif;
+  font-weight: 700;
+}
+
+.font-ink {
+  font-family: 'Permanent Marker', cursive, sans-serif;
+}

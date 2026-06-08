@@ -1,0 +1,223 @@
+/* Hero Section Styles */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  width: 100%;
+  padding: 4rem 2rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.hero__content {
+  text-align: center;
+  max-width: 700px;
+  z-index: 2;
+  margin: auto;
+}
+
+.hero__title {
+  font-size: clamp(3rem, 7vw, 5rem);
+  font-weight: 800;
+  color: var(--text-h);
+  margin: 0 0 1.5rem 0;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.hero__subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0;
+}
+
+/* Floating Cards Layout (Desktop) */
+.hero__cards-desktop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .hero__cards-desktop {
+    display: none;
+  }
+}
+
+.hero-card-wrapper {
+  position: absolute;
+  pointer-events: none;
+  animation: float-up-down 6s ease-in-out infinite;
+}
+
+/* Offset animation timing for a more organic feel */
+.hero-card-wrapper:nth-child(1) { animation-duration: 5s; animation-delay: 0s; }
+.hero-card-wrapper:nth-child(2) { animation-duration: 6.5s; animation-delay: -1.5s; }
+.hero-card-wrapper:nth-child(3) { animation-duration: 5.5s; animation-delay: -3s; }
+.hero-card-wrapper:nth-child(4) { animation-duration: 7s; animation-delay: -0.5s; }
+.hero-card-wrapper:nth-child(5) { animation-duration: 6s; animation-delay: -2s; }
+.hero-card-wrapper:nth-child(6) { animation-duration: 5.8s; animation-delay: -4.5s; }
+
+.hero-card {
+  pointer-events: auto;
+  background: var(--bg);
+  border: 2.5px solid var(--text-h);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  box-shadow: 4px 4px 0px var(--text-h);
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  width: 190px;
+  text-align: center;
+  transition: transform 0.18s cubic-bezier(0.25, 1, 0.5, 1), 
+              width 0.18s cubic-bezier(0.25, 1, 0.5, 1), 
+              box-shadow 0.18s ease;
+}
+
+.hero-card:hover {
+  transform: scale(1.15) rotate(0deg) !important;
+  width: 260px;
+  box-shadow: 8px 8px 0px var(--text-h) !important;
+}
+
+.hero-card__description {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15), opacity 0.3s ease, margin-top 0.3s ease;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-top: 0;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.hero-card:hover .hero-card__description,
+.hero-card-mobile:hover .hero-card__description {
+  max-height: 80px;
+  opacity: 0.9;
+  margin-top: 0.5rem;
+}
+
+@keyframes float-up-down {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Responsive Mobile Cards Grid */
+.hero__cards-mobile {
+  display: none;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 600px;
+  margin-top: 3.5rem;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .hero__cards-mobile {
+    display: grid;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__cards-mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hero-card-mobile {
+  background: var(--bg);
+  border: 2.5px solid var(--text-h);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  box-shadow: 4px 4px 0px var(--text-h);
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease;
+}
+
+.hero-card-mobile:hover {
+  transform: translate(-3px, -3px) scale(1.03);
+  box-shadow: 7px 7px 0px var(--text-h);
+}
+
+/* Speech bubble chat branding */
+.hero-speech-bubble {
+  background: var(--text-h);
+  color: var(--bg);
+  padding: 0.25rem 1rem;
+  border-radius: 8px;
+  display: inline-block;
+  position: relative;
+  font-family: 'Permanent Marker', cursive, sans-serif;
+  font-size: 1.4rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.hero-speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid var(--text-h);
+}
+
+.hero-title-main {
+  font-size: clamp(3.5rem, 10vw, 7rem);
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: 0.05em;
+  color: var(--text-h);
+  line-height: 1;
+}
+
+/* Lemon Mascot Corner (Interactive Nimbu) Bubble */
+.interactive-nimbu-mascot:hover .nimbu-bubble {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nimbu-bubble {
+  position: absolute;
+  top: -45px;
+  right: 0;
+  background: #fef08a;
+  border: 2px solid var(--text-h);
+  border-radius: 12px 12px 0 12px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-h);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  box-shadow: 2px 2px 0px var(--text-h);
+  z-index: 10;
+}

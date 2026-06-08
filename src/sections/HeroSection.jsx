@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import RoughAnnotation from '@/components/RoughAnnotation';
+import '@/styles/hero.css';
 
 const CARDS = [
   { text: 'Websites 🌐', description: 'Modern, responsive, and blazing-fast web experiences.', color: 'rgba(253, 224, 71, 0.45)', type: 'highlight', position: { top: '15%', left: '8%' }, rotate: '-3deg' },

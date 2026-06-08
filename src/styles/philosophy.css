@@ -1,0 +1,218 @@
+/* Philosophy/Cosmic Section Styles */
+.philosophy {
+  padding: 6rem 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Doodle Hand Cloud Header (Screenshot 2) */
+.philosophy__doodle-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 300px;
+}
+
+.cloud-doodle-svg {
+  display: block;
+}
+
+.doodle-header-text {
+  position: absolute;
+  top: 65px;
+  width: 280px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.doodle-header-what {
+  font-size: 1.8rem;
+  transform: rotate(-10deg) translateX(-10px);
+  color: var(--text-h);
+  font-weight: bold;
+}
+
+.doodle-header-wedo {
+  font-size: 2rem;
+  transform: rotate(10deg) translateX(10px);
+  color: var(--text-h);
+}
+
+.philosophy__header {
+  text-align: center;
+  margin-bottom: 3rem;
+  z-index: 2;
+}
+
+.philosophy__title {
+  font-size: clamp(2.3rem, 6vw, 4.2rem);
+  color: var(--text-h);
+  margin: 0;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.philosophy__subtitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-h);
+  margin-top: 1.5rem;
+}
+
+/* Cosmic Doodle Illustration */
+.cosmic-canvas {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  height: 380px;
+  margin: 1.5rem auto 5rem;
+  border: 3px solid var(--text-h);
+  border-radius: 30px 10px 40px 10px/10px 40px 10px 30px;
+  background: var(--bg);
+  overflow: hidden;
+  box-sizing: border-box;
+  box-shadow: 6px 6px 0px var(--text-h);
+}
+
+.cosmic-canvas__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  pointer-events: none;
+  text-align: center;
+  padding: 2rem;
+}
+
+.cosmic-canvas__title {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  color: var(--text-h);
+  margin: 0 0 0.5rem;
+  pointer-events: auto;
+}
+
+.cosmic-canvas__subtitle {
+  font-size: 1.15rem;
+  color: var(--text);
+  font-weight: 600;
+  pointer-events: auto;
+}
+
+/* Cosmic SVG Elements & Animations */
+.svg-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.astronaut-float {
+  animation: bobbing 5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.rover-bounce {
+  animation: bump 4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.star-twinkle {
+  animation: twinkle 2.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.star-twinkle:nth-child(2n) {
+  animation-delay: -0.8s;
+  animation-duration: 3s;
+}
+
+.star-twinkle:nth-child(3n) {
+  animation-delay: -1.6s;
+  animation-duration: 2s;
+}
+
+.animated-trail {
+  stroke-dasharray: 8, 8;
+  animation: trail-flow 1.5s linear infinite;
+}
+
+@keyframes bobbing {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(4deg); }
+}
+
+@keyframes bump {
+  0%, 100% { transform: translateY(0px) rotate(-1deg); }
+  50% { transform: translateY(-4px) rotate(2deg); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes trail-flow {
+  to {
+    stroke-dashoffset: -16;
+  }
+}
+
+/* Feature Grid & Cards */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  width: 100%;
+  max-width: 1100px;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+  }
+}
+
+.phil-card {
+  background: var(--bg);
+  border: 2.5px solid var(--text-h);
+  border-radius: 20px 8px 25px 8px/8px 25px 8px 20px;
+  box-shadow: 4px 4px 0px var(--text-h);
+  padding: 2rem;
+  box-sizing: border-box;
+  text-align: left;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease;
+}
+
+.phil-card:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 8px 8px 0px var(--text-h);
+}
+
+.phil-card__title {
+  font-size: 1.6rem;
+  color: var(--text-h);
+  margin: 0 0 1rem 0;
+}
+
+.phil-card__text {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text);
+  margin: 0;
+}
