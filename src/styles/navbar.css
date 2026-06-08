@@ -1,59 +1,285 @@
+/* ========================================
+   NAVBAR CORE WRAPPER
+   ======================================== */
 .navbar {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 2.5rem;
-  box-sizing: border-box;
+  justify-content: center;
   width: 100%;
+  
+  background: rgba(12, 12, 18, 0.92);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  transition:
+    top 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    max-width 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    border-radius 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  
+  will-change: top, max-width, border-radius;
 }
 
+/* ========================================
+   ATTACHED STATE (Phone-Style Camera Notch)
+   ======================================== */
+.navbar--attached {
+  top: 0;
+  max-width: min(720px, 92vw);
+  border-top: none;
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* Base style for the top wings reaching out to the viewport edges */
+.navbar--attached::before,
+.navbar--attached::after {
+  content: '';
+  position: fixed; /* Locks them tight to the screen ceiling */
+  top: 0;
+  height: 24px; /* Matches the 24px border-radius depth of the navbar */
+  background: rgba(12, 12, 18, 0.92);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* Left Wing: Extends from screen edge (0) to the navbar's left side, scooping up into a curve */
+.navbar--attached::before {
+  left: 0;
+  right: 50%;
+  margin-right: min(360px, 46vw); /* Pushes the element's right edge right up against the navbar */
+  
+  /* Creates the smooth outward curve transitioning into a flat line */
+  border-bottom-right-radius: 24px;
+}
+
+/* Right Wing: Extends from the navbar's right side to the screen edge (0), scooping up into a curve */
+.navbar--attached::after {
+  right: 0;
+  left: 50%;
+  margin-left: min(360px, 46vw); /* Pushes the element's left edge right up against the navbar */
+  
+  /* Creates the smooth outward curve transitioning into a flat line */
+  border-bottom-left-radius: 24px;
+}
+
+/* ========================================
+   DETACHED STATE (Floating Pill)
+   ======================================== */
+.navbar--detached {
+  top: 1.25rem;
+  max-width: min(900px, 92vw);
+  border-radius: 100px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Seamlessly hide the notch wings when floating */
+.navbar--detached::before,
+.navbar--detached::after {
+  opacity: 0;
+}
+
+/* ========================================
+   INNER CONTENT CONTAINER
+   ======================================== */
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.65rem 1.4rem;
+}
+
+.navbar__section {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.navbar__section--left { justify-content: flex-start; }
+.navbar__section--center { justify-content: center; }
+.navbar__section--right { justify-content: flex-end; }
+
+/* ========================================
+   BRAND COMPONENTS
+   ======================================== */
 .navbar__brand {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  text-decoration: none;
-  cursor: pointer;
+  gap: 0.65rem;
+}
+
+.navbar__logo-wrapper {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #4f8ef7 0%, #2563eb 100%);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
 }
 
 .navbar__logo {
-  height: 38px;
-  width: auto;
-  display: block;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
 }
 
 .navbar__title {
-  font-family: var(--heading);
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--text-h);
+  color: #f8fafc;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
+/* ========================================
+   NAVIGATION LINKS
+   ======================================== */
 .navbar__links {
   display: flex;
-  gap: 2.5rem;
+  align-items: center;
+  gap: 0.25rem;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
 .navbar__link {
-  font-family: var(--sans);
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text);
+  display: block;
+  color: rgba(248, 250, 252, 0.65);
   text-decoration: none;
-  padding: 0.25rem 0.5rem;
-  transition: color 0.2s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  transition: color 0.2s ease, background 0.2s ease;
+  white-space: nowrap;
 }
 
 .navbar__link:hover {
-  color: var(--accent);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
 }
 
-@media (max-width: 640px) {
-  .navbar {
+/* ========================================
+   BURGER BUTTON (MOBILE)
+   ======================================== */
+.navbar__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 20px;
+  height: 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10001;
+}
+
+.navbar__burger span {
+  width: 100%;
+  height: 2px;
+  background-color: #f8fafc;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.navbar__burger--active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.navbar__burger--active span:nth-child(2) { opacity: 0; }
+.navbar__burger--active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* ========================================
+   UNIVERSAL RESPONSIVE BREAKPOINT (TABLET/MOBILE)
+   ======================================== */
+@media (max-width: 768px) {
+  .navbar--attached {
+    max-width: 100vw;
+    border-radius: 0;
+  }
+  
+  /* Disable notch background blocks entirely on mobile/tablet screens */
+  .navbar--attached::before,
+  .navbar--attached::after {
+    display: none;
+  }
+
+  .navbar--detached {
+    top: 0.5rem;
+    max-width: 94vw;
+    border-radius: 20px;
+  }
+
+  .navbar__inner {
+    padding: 0.6rem 1.2rem;
+  }
+
+  .navbar__burger {
+    display: flex;
+  }
+
+  /* Transform center section into a responsive mobile dropdown */
+  .navbar__section--center {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: rgba(12, 12, 18, 0.98);
+    backdrop-filter: blur(20px);
+    border-radius: 0 0 20px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: none;
+    transition: max-height 0.35s ease, opacity 0.25s ease;
+  }
+
+  /* When detached, matching the floating aesthetics on dropdown container */
+  .navbar--detached .navbar__section--center {
+    top: calc(100% + 0.5rem);
+    border-radius: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .navbar__section--mobile-visible {
+    max-height: 300px;
+    opacity: 1;
+    pointer-events: all;
+    padding: 1rem 0;
+  }
+
+  .navbar__links {
     flex-direction: column;
-    gap: 1rem;
-    padding: 1.5rem;
+    width: 100%;
+    gap: 0.5rem;
+    padding: 0 1rem;
+  }
+
+  .navbar__links li,
+  .navbar__links li > * {
+    width: 100%;
+  }
+
+  .navbar__link {
+    text-align: center;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border-radius: 12px;
   }
 }
