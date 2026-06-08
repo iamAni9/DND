@@ -1,89 +1,144 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
+import RoughAnnotation from '@/components/RoughAnnotation';
+
+const CARDS = [
+  { text: 'Websites 🌐', description: 'Modern, responsive, and blazing-fast web experiences.', color: 'rgba(253, 224, 71, 0.45)', type: 'highlight', position: { top: '15%', left: '8%' }, rotate: '-3deg' },
+  { text: 'AI Agents 🤖', description: 'Autonomous LLM workflows & intelligent assistants.', color: 'rgba(147, 197, 253, 0.45)', type: 'highlight', position: { top: '42%', left: '5%' }, rotate: '4deg' },
+  { text: 'SaaS Programs 🚀', description: 'Scalable multi-tenant cloud platforms & services.', color: 'rgba(244, 114, 182, 0.45)', type: 'highlight', position: { top: '68%', left: '10%' }, rotate: '-2deg' },
+  { text: 'Mobile Apps 📱', description: 'Native iOS & Android apps designed from scratch.', color: 'rgba(134, 239, 172, 0.45)', type: 'highlight', position: { top: '18%', right: '8%' }, rotate: '3deg' },
+  { text: 'API Platforms 🔌', description: 'Secure REST/GraphQL API designs & integrations.', color: 'rgba(253, 186, 116, 0.45)', type: 'highlight', position: { top: '45%', right: '5%' }, rotate: '-4deg' },
+  { text: 'Automations ⚙️', description: 'Custom workflow scripts saving you hours of work.', color: 'rgba(216, 180, 254, 0.45)', type: 'highlight', position: { top: '66%', right: '9%' }, rotate: '2deg' },
+];
+
+const FloatingCard = ({ text, description, color, type, position, rotate }) => {
+  const [hovered, setHovered] = useState(false);
+  const annotationRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    setHovered(true);
+    if (annotationRef.current) {
+      annotationRef.current.show();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+    if (annotationRef.current) {
+      annotationRef.current.hide();
+    }
+  };
+
+  return (
+    <div
+      className="hero-card-wrapper"
+      style={position}
+    >
+      <div
+        className="hero-card"
+        style={{
+          transform: hovered ? 'scale(1.15) rotate(0deg)' : `rotate(${rotate})`,
+          zIndex: hovered ? 10 : 1,
+        }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <RoughAnnotation
+          ref={annotationRef}
+          type={type}
+          color={color}
+          padding={6}
+          strokeWidth={3}
+          animationDuration={100}
+        >
+          <span style={styles.cardText}>{text}</span>
+        </RoughAnnotation>
+        <div className="hero-card__description">
+          {description}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const MobileCard = ({ text, description, color, type }) => {
+  const [hovered, setHovered] = useState(false);
+  const annotationRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    setHovered(true);
+    if (annotationRef.current) {
+      annotationRef.current.show();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+    if (annotationRef.current) {
+      annotationRef.current.hide();
+    }
+  };
+
+  return (
+    <div
+      className="hero-card-mobile"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <RoughAnnotation
+        ref={annotationRef}
+        type={type}
+        color={color}
+        padding={6}
+        strokeWidth={3}
+        animationDuration={100}
+      >
+        <span style={styles.cardText}>{text}</span>
+      </RoughAnnotation>
+      <div className="hero-card__description">
+        {description}
+      </div>
+    </div>
+  );
+};
 
 const HeroSection = () => {
   return (
-    <section style={styles.section} aria-labelledby="hero-heading">
-      <div style={styles.overlay} />
-      <div style={styles.container}>
-        <h1 id="hero-heading" style={styles.title}>Welcome to DevNextDoor DnD</h1>
-        <p style={styles.subtitle}>
-          Join adventures, create characters, and explore worlds — whether you're a
-          newcomer or a veteran Dungeon Master.
+    <section className="hero" aria-labelledby="hero-title">
+      {/* Desktop Scattered Floating Cards */}
+      <div className="hero__cards-desktop">
+        {CARDS.map((card, idx) => (
+          <FloatingCard key={idx} {...card} />
+        ))}
+      </div>
+
+      {/* Main Content Area */}
+      <div className="hero__content">
+        <h1 id="hero-title" className="hero__title">
+          DevNextDoor
+        </h1>
+        <p className="hero__subtitle">
+          From robust SaaS systems to intelligent AI integrations, websites, and fully-featured platforms. We turn your concepts into elegant, clean code.
         </p>
+      </div>
 
-        <div style={styles.actions}>
-          <a href="/campaigns" style={{ ...styles.button, ...styles.primary }}>Browse Campaigns</a>
-          <a href="/create" style={{ ...styles.button, ...styles.ghost }}>Create a Character</a>
-        </div>
-
-        <p style={styles.note}>Free resources • Homebrew tools • Community events</p>
+      {/* Mobile Grid View for Cards */}
+      <div className="hero__cards-mobile">
+        {CARDS.map((card, idx) => (
+          <MobileCard key={idx} {...card} />
+        ))}
       </div>
     </section>
   );
 };
 
 const styles = {
-  section: {
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: '60vh',
-    color: '#fff',
-    background: 'linear-gradient(135deg,#0f172a 0%,#0b1220 60%)',
-    overflow: 'hidden',
-  },
-  overlay: {
-    position: 'absolute',
-    inset: 0,
-    background: 'radial-gradient(circle at 10% 20%, rgba(99,102,241,0.12), transparent 15%), radial-gradient(circle at 90% 80%, rgba(236,72,153,0.08), transparent 20%)',
-    pointerEvents: 'none',
-  },
-  container: {
-    position: 'relative',
-    maxWidth: 960,
-    padding: '4rem 1.5rem',
-    textAlign: 'center',
-    zIndex: 1,
-  },
-  title: {
-    fontSize: 'clamp(1.8rem, 4vw, 3.2rem)',
-    margin: '0 0 1rem',
-    lineHeight: 1.1,
-  },
-  subtitle: {
-    fontSize: '1.05rem',
-    margin: '0 0 1.5rem',
-    color: 'rgba(255,255,255,0.85)',
-  },
-  actions: {
-    display: 'flex',
-    gap: 12,
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    marginBottom: 12,
-  },
-  button: {
+  cardText: {
+    fontSize: '1.2rem',
+    fontWeight: '700',
+    color: 'var(--text-h)',
+    fontFamily: 'var(--sans)',
     display: 'inline-block',
-    padding: '0.6rem 1.1rem',
-    borderRadius: 8,
-    textDecoration: 'none',
-    fontWeight: 600,
-    transition: 'transform 120ms ease',
-  },
-  primary: {
-    background: 'linear-gradient(90deg,#7c3aed,#06b6d4)',
-    color: '#fff',
-  },
-  ghost: {
-    background: 'transparent',
-    border: '1px solid rgba(255,255,255,0.12)',
-    color: 'rgba(255,255,255,0.95)',
-  },
-  note: {
-    marginTop: 8,
-    fontSize: '0.9rem',
-    color: 'rgba(255,255,255,0.7)',
+    whiteSpace: 'nowrap',
   },
 };
 
