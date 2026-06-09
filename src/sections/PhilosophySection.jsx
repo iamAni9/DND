@@ -1,5 +1,4 @@
 import React from 'react';
-import RoughAnnotation from '@/components/RoughAnnotation';
 import ScrollReveal from '@/components/ScrollReveal';
 import '@/styles/philosophy.css';
 
@@ -12,13 +11,13 @@ const PhilosophySection = () => {
           No Tech Drama. Just Results.
         </h2>
         <div className="philosophy__subtitle">
-          <RoughAnnotation type="highlight" color="#fef08a" strokeWidth={2} padding={4} show={true}>
-            <span style={styles.highlightText}>We Handle the Tech. You Focus on What You Do Best.</span>
-          </RoughAnnotation>
+          <span className="philosophy__subtitle-text">
+            We Handle the Tech. You Focus on What You Do Best.
+          </span>
         </div>
       </div>
 
-      {/* Cosmic Illustration Canvas */}
+      {/* Magic Forest Illustration Canvas */}
       <div className="cosmic-canvas">
         {/* Animated SVGs */}
         <svg className="svg-overlay" viewBox="0 0 900 380">
@@ -27,81 +26,136 @@ const PhilosophySection = () => {
               {`
                 .sketch-line { stroke: var(--text-h); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
                 .sketch-fill { fill: var(--bg); stroke: var(--text-h); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+                .magic-fairy { transform-origin: 120px 116px; animation: fairyBob 4s infinite ease-in-out; }
+                .fairy-wing-l { transform-origin: 114px 116px; animation: wingFlapL 0.15s infinite alternate ease-in-out; }
+                .fairy-wing-r { transform-origin: 126px 116px; animation: wingFlapR 0.15s infinite alternate ease-in-out; }
+                .fox-tail { transform-origin: 174px 306px; animation: tailWag 3s infinite ease-in-out alternate; }
+                
+                @keyframes fairyBob {
+                  0%, 100% { transform: translateY(0px) rotate(0deg); }
+                  50% { transform: translateY(-8px) rotate(3deg); }
+                }
+                @keyframes wingFlapL {
+                  0% { transform: scaleX(0.35); }
+                  100% { transform: scaleX(1); }
+                }
+                @keyframes wingFlapR {
+                  0% { transform: scaleX(0.35); }
+                  100% { transform: scaleX(1); }
+                }
+                @keyframes tailWag {
+                  0% { transform: rotate(-5deg); }
+                  100% { transform: rotate(12deg); }
+                }
               `}
             </style>
           </defs>
 
           {/* Twinkling Stars */}
           <g className="star-twinkle">
-            <path className="sketch-fill" d="M 60,60 L 65,75 L 80,75 L 68,84 L 72,99 L 60,90 L 48,99 L 52,84 L 40,75 L 55,75 Z" />
+            <path className="sketch-fill" d="M 60,60 L 63,70 L 73,70 L 65,76 L 68,86 L 60,80 L 52,86 L 55,76 L 47,70 L 57,70 Z" />
           </g>
           <g className="star-twinkle" style={{ animationDelay: '-1s' }}>
-            <path className="sketch-fill" d="M 830,220 L 833,230 L 843,230 L 835,236 L 838,246 L 830,240 L 822,246 L 825,236 L 817,230 L 827,230 Z" transform="scale(0.8) translate(150, 50)" />
+            <path className="sketch-fill" d="M 830,70 L 833,80 L 843,80 L 835,86 L 838,96 L 830,90 L 822,96 L 825,86 L 817,80 L 827,80 Z" />
           </g>
           <g className="star-twinkle" style={{ animationDelay: '-2s' }}>
-            <path className="sketch-fill" d="M 100,310 L 102,317 L 110,317 L 103,321 L 105,329 L 100,324 L 95,329 L 97,321 L 90,317 L 98,317 Z" transform="scale(0.7) translate(20, 150)" />
+            <path className="sketch-fill" d="M 100,240 L 102,247 L 110,247 L 103,251 L 105,259 L 100,254 L 95,259 L 97,251 L 90,247 L 98,247 Z" />
           </g>
 
-          {/* Saturn Planet (Top Center-Right) */}
+          {/* Crescent Moon */}
           <g className="star-twinkle" style={{ animationDelay: '-0.5s' }}>
-            <circle cx="680" cy="50" r="16" className="sketch-fill" />
-            <ellipse cx="680" cy="50" rx="30" ry="7" className="sketch-line" transform="rotate(-15 680 50)" />
+            <path className="sketch-fill" d="M 680,60 C 680,45, 665,35, 650,37 C 662,43, 664,60, 655,67 C 648,72, 638,71, 632,66 C 638,80, 658,87, 670,79 C 678,74, 680,67, 680,60 Z" />
           </g>
 
-          {/* Ground / Moon Horizon (Left side) */}
-          <path className="sketch-line" d="M -20,320 Q 180,270 380,320" />
-          
-          {/* Moon Details / Craters */}
-          <ellipse cx="80" cy="305" rx="12" ry="6" className="sketch-line" />
-          <ellipse cx="260" cy="300" rx="8" ry="4" className="sketch-line" />
-          <ellipse cx="180" cy="312" rx="16" ry="5" className="sketch-line" />
-
-          {/* Space Rover (Driving on the Moon Horizon) */}
-          <g className="rover-bounce">
-            <rect x="280" y="260" width="40" height="20" rx="5" className="sketch-fill" />
-            <path className="sketch-fill" d="M 290,260 L 295,248 L 315,248 L 320,260 Z" />
-            <circle cx="290" cy="287" r="8" className="sketch-fill" />
-            <circle cx="290" cy="287" r="2" fill="var(--text-h)" />
-            <circle cx="310" cy="287" r="8" className="sketch-fill" />
-            <circle cx="310" cy="287" r="2" fill="var(--text-h)" />
-            <line x1="300" y1="248" x2="295" y2="230" className="sketch-line" />
-            <path className="sketch-line" d="M 292,230 Q 295,227 298,230" />
-          </g>
-
-          {/* Astronaut standing on Moon (Left) */}
+          {/* Wizard Tower Silhouette (Right background) */}
           <g>
-            <line x1="105" y1="285" x2="105" y2="300" className="sketch-line" />
-            <line x1="115" y1="285" x2="115" y2="300" className="sketch-line" />
-            <rect x="95" y="250" width="30" height="36" rx="6" className="sketch-fill" />
-            <path className="sketch-line" d="M 95,260 Q 82,265 88,275" />
-            <path className="sketch-line" d="M 125,260 Q 138,262 135,272" />
-            <circle cx="110" cy="235" r="16" className="sketch-fill" />
-            <ellipse cx="110" cy="233" rx="10" ry="7" fill="var(--text-h)" />
-            <line x1="72" y1="305" x2="72" y2="210" className="sketch-line" />
-            <path className="sketch-fill" style={{ fill: '#00c2a8' }} d="M 72,210 L 110,210 C 115,210 118,213 118,217 L 118,232 C 118,236 115,239 110,239 L 82,239 L 72,245 Z" />
-            <path className="sketch-line" d="M 90,223 Q 95,228 100,223" style={{ strokeWidth: 2 }} />
+            <ellipse cx="765" cy="315" rx="28" ry="6" fill="#180a04" opacity="0.3" />
+            {/* Tower Wall */}
+            <path className="sketch-fill" d="M 745,315 L 745,210 L 785,210 L 785,315 Z" fill="#201c2d" />
+            {/* Tower Roof */}
+            <polygon points="735,210 765,145 795,210" className="sketch-fill" fill="#4c1d95" />
+            {/* Tower Window glowing yellow */}
+            <circle cx="765" cy="240" r="5" fill="#fef08a" stroke="var(--text-h)" strokeWidth="1.5" />
+            {/* Light beam out of window */}
+            <polygon points="765,240 730,280 750,290" fill="#fef08a" opacity="0.2" />
           </g>
 
-          {/* Flight Dashed Trail */}
-          <path className="sketch-line animated-trail" d="M -10,180 Q 200,80 440,190 T 780,120" />
+          {/* Forest Hills / Horizon */}
+          <path className="sketch-line" d="M -20,320 Q 230,270 480,320 T 920,300" />
+          <path className="sketch-line" d="M 350,320 Q 600,265 850,310" opacity="0.5" strokeDasharray="3 3" />
 
-          {/* Floating Astronaut (Right) */}
-          <g className="astronaut-float">
-            <circle cx="780" cy="120" r="3" fill="var(--accent)" />
-            <path className="sketch-line" d="M 798,110 Q 815,95 810,85" />
-            <path className="sketch-line" d="M 766,113 Q 750,118 752,128" />
-            <path className="sketch-line" d="M 776,136 Q 762,160 766,170" />
-            <path className="sketch-line" d="M 788,136 Q 800,165 794,175" />
-            <rect x="766" y="100" width="32" height="38" rx="8" className="sketch-fill" />
-            <rect x="756" y="105" width="10" height="26" rx="3" className="sketch-fill" />
-            <circle cx="782" cy="85" r="16" className="sketch-fill" />
-            <ellipse cx="782" cy="83" rx="11" ry="8" fill="var(--text-h)" />
+          {/* Bioluminescent Glowing Mushrooms (Left Ground) */}
+          <g>
+            {/* Mush 1 */}
+            <path className="sketch-line" d="M 210,315 L 210,298" strokeWidth="3" />
+            <path className="sketch-fill" d="M 198,298 Q 210,288 222,298 Z" fill="#f472b6" style={{ filter: 'drop-shadow(0 0 4px #f472b6)' }} />
+            {/* Mush 2 */}
+            <path className="sketch-line" d="M 224,316 L 224,305" strokeWidth="2.5" />
+            <path className="sketch-fill" d="M 216,305 Q 224,297 232,305 Z" fill="#60a5fa" style={{ filter: 'drop-shadow(0 0 4px #60a5fa)' }} />
+          </g>
+
+          {/* Glowing Magic Crystal (Right Ground) */}
+          <g transform="translate(680, 290)">
+            <polygon points="10,20 18,5 26,20 18,30" className="sketch-fill" fill="#c084fc" style={{ filter: 'drop-shadow(0 0 5px #c084fc)' }} />
+            <polygon points="30,22 35,10 40,22 35,29" className="sketch-fill" fill="#f472b6" style={{ filter: 'drop-shadow(0 0 4px #f472b6)' }} />
+          </g>
+
+          {/* Cute sitting Fox looking up (Left Foreground) */}
+          <g>
+            {/* Fox Shadow */}
+            <ellipse cx="165" cy="316" rx="14" ry="4" fill="#180a04" opacity="0.5" />
+            {/* Body */}
+            <circle cx="165" cy="301" r="10" className="sketch-fill" fill="#f97316" />
+            {/* Head */}
+            <circle cx="165" cy="287" r="7.5" className="sketch-fill" fill="#f97316" />
+            {/* Ears */}
+            <polygon points="159,283 156,273 162,280" className="sketch-fill" fill="#f97316" />
+            <polygon points="171,283 174,273 168,280" className="sketch-fill" fill="#f97316" />
+            {/* Tail (Wagging) */}
+            <path className="sketch-line fox-tail" d="M 174,306 Q 188,302 184,292" strokeWidth="4.5" />
+            <path d="M 182,294 L 184,292 L 180,290 Z" fill="#ffffff" />
+            {/* Closed eyes and nose */}
+            <path d="M 161,287 Q 163,289 165,287 M 165,287 Q 167,289 169,287" fill="none" stroke="var(--text-h)" strokeWidth="1.2" />
+          </g>
+
+          {/* Wooden Signpost (Center holding the subtitle) */}
+          <g>
+            {/* Post */}
+            <rect x="444" y="160" width="12" height="150" className="sketch-fill" fill="#7c2d12" />
+            {/* Sign board backing shadow */}
+            <path d="M 256,154 Q 450,144 644,154 L 644,234 Q 450,244 256,234 Z" fill="none" stroke="var(--text-h)" strokeWidth="5" />
+            {/* Sign board */}
+            <path d="M 256,150 Q 450,140 644,150 L 644,230 Q 450,240 256,230 Z" className="sketch-fill" fill="#f5eed3" />
+            
+            {/* Rope hangers from post hooks */}
+            <path d="M 330,150 L 330,135 M 570,150 L 570,135" className="sketch-line" strokeWidth="2" />
+            <path d="M 320,135 L 580,135" className="sketch-line" strokeWidth="2" strokeDasharray="3 3" />
+            
+            {/* Decorative rivets on board */}
+            <circle cx="270" cy="190" r="3.5" className="sketch-fill" fill="#aa7c11" />
+            <circle cx="630" cy="190" r="3.5" className="sketch-fill" fill="#aa7c11" />
+          </g>
+
+          {/* Glowing Magic Stardust Trail */}
+          <path className="sketch-line animated-trail" d="M 125,120 Q 280,60 480,120 T 750,200" stroke="#ffd700" strokeWidth="3" style={{ filter: 'drop-shadow(0 0 4px #ffd700)' }} />
+
+          {/* Flying Pixie / Fairy (Top Left) */}
+          <g className="magic-fairy">
+            {/* Aura */}
+            <circle cx="120" cy="116" r="14" fill="#fef08a" opacity="0.3" filter="drop-shadow(0 0 6px #fef08a)" />
+            {/* Wings */}
+            <path className="sketch-fill fairy-wing-l" d="M 114,116 C 100,100, 102,112, 114,114 Z" fill="#c084fc" />
+            <path className="sketch-fill fairy-wing-r" d="M 126,116 C 140,100, 138,112, 126,114 Z" fill="#c084fc" />
+            {/* Fairy Head */}
+            <circle cx="120" cy="116" r="6.5" className="sketch-fill" fill="#fef08a" />
+            {/* Wand trail spark */}
+            <polygon points="128,122 134,120 130,125 133,130 127,126" fill="#ffd700" />
           </g>
         </svg>
 
-        {/* Text centered inside the Canvas */}
-        <div className="cosmic-canvas__content">
-          <h3 className="cosmic-canvas__subtitle font-marker">
+        {/* Text centered inside the Canvas - positioned over the SVG Sign board */}
+        <div className="cosmic-canvas__content magic-canvas-content">
+          <h3 className="cosmic-canvas__subtitle font-marker magic-canvas-text">
             Great Design is hard. We make it Easy
           </h3>
         </div>
@@ -147,15 +201,6 @@ const PhilosophySection = () => {
       </div>
     </section>
   );
-};
-
-const styles = {
-  highlightText: {
-    fontFamily: 'var(--sans)',
-    fontSize: '1.25rem',
-    fontWeight: '700',
-    color: '#1e293b',
-  },
 };
 
 export default PhilosophySection;

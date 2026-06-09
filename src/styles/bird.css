@@ -1,0 +1,177 @@
+/* Interactive Bird Stylesheet */
+
+.interactive-bird-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 50px;
+  pointer-events: auto;
+  z-index: 9999;
+  cursor: grab;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Smooth transform transitions for head tilt / scaling, but position is handled by JS requestAnimationFrame */
+  transition: transform 0.2s ease;
+}
+
+.interactive-bird-wrapper.dragging {
+  cursor: grabbing;
+}
+
+/* Sketchy SVG Bird Styling */
+.interactive-bird-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.interactive-bird-svg path,
+.interactive-bird-svg circle,
+.interactive-bird-svg polygon {
+  stroke: var(--text-h, #0f172a);
+  stroke-width: 2.2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: #ffffff; /* White fill to mimic sketch on paper */
+  transition: fill 0.3s ease;
+}
+
+/* Solid accents */
+.interactive-bird-svg .bird-eye {
+  fill: var(--text-h, #0f172a);
+  stroke: none;
+}
+
+.interactive-bird-svg .bird-beak {
+  fill: #f59e0b; /* Yellow beak */
+}
+
+/* Wing Animation */
+.bird-wing-near {
+  transform-origin: 26px 30px; /* Adjust according to SVG path coordinates */
+}
+
+.bird-wing-far {
+  transform-origin: 30px 26px;
+  opacity: 0.9;
+}
+
+/* Wing Flapping State */
+.flapping .bird-wing-near {
+  animation: flap-near 0.15s ease-in-out infinite alternate;
+}
+
+.flapping .bird-wing-far {
+  animation: flap-far 0.15s ease-in-out infinite alternate;
+}
+
+/* Scared Flapping (Faster) */
+.scared.flapping .bird-wing-near {
+  animation: flap-near 0.08s linear infinite alternate;
+}
+
+.scared.flapping .bird-wing-far {
+  animation: flap-far 0.08s linear infinite alternate;
+}
+
+@keyframes flap-near {
+  0% {
+    transform: rotate(15deg) scaleY(1);
+  }
+  100% {
+    transform: rotate(-45deg) scaleY(0.6) scaleX(0.85);
+  }
+}
+
+@keyframes flap-far {
+  0% {
+    transform: rotate(5deg) scaleY(1);
+  }
+  100% {
+    transform: rotate(-55deg) scaleY(0.5) scaleX(0.8);
+  }
+}
+
+/* Tail Wiggling Animation (Idle trigger) */
+.bird-tail {
+  transform-origin: 18px 38px;
+}
+
+.wiggle-tail .bird-tail {
+  animation: wiggle-tail-key 0.4s ease-in-out;
+}
+
+@keyframes wiggle-tail-key {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
+}
+
+/* Head Tilting Animation (Idle trigger) */
+.bird-head-group {
+  transform-origin: 34px 22px;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.tilt-head-left .bird-head-group {
+  transform: rotate(-10deg);
+}
+
+.tilt-head-right .bird-head-group {
+  transform: rotate(10deg);
+}
+
+/* Bird Speech Bubble */
+.bird-bubble {
+  position: absolute;
+  top: -34px;
+  background: #fef08a; /* Yellow sticky note feel */
+  border: 2px solid var(--text-h);
+  border-radius: 8px 8px 8px 0;
+  padding: 0.25rem 0.5rem;
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-h);
+  white-space: nowrap;
+  box-shadow: 2px 2px 0px var(--text-h);
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.8) translateY(5px);
+  transition: opacity 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 10001;
+}
+
+.bird-bubble.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.bird-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 6px solid var(--text-h);
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--text-h);
+}
+
+.bird-bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 2px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid #fef08a;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #fef08a;
+  z-index: 2;
+}

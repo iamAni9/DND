@@ -61,10 +61,20 @@
 }
 
 .philosophy__subtitle {
-  font-size: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.philosophy__subtitle-text {
+  font-family: var(--sans);
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--text-h);
-  margin-top: 1.5rem;
+  background: linear-gradient(120deg, rgba(254, 240, 138, 0.45) 0%, rgba(254, 240, 138, 0.65) 100%);
+  padding: 0.35rem 0.85rem;
+  border-radius: 6px;
+  display: inline-block;
+  border: 1.5px dashed rgba(170, 59, 255, 0.2);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.05);
 }
 
 /* Cosmic Doodle Illustration */
@@ -107,6 +117,22 @@
   color: var(--text);
   font-weight: 600;
   pointer-events: auto;
+}
+
+.magic-canvas-content {
+  justify-content: center;
+  align-items: center;
+}
+
+.magic-canvas-text {
+  color: #3b1e06 !important; /* Rich wood-burnt dark brown */
+  font-size: clamp(1.1rem, 2.5vw, 1.45rem) !important;
+  max-width: 320px;
+  line-height: 1.45;
+  margin: 0;
+  font-weight: 700;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+  transform: translateY(-8px) rotate(-1.5deg); /* Aligns perfectly with the curved banner */
 }
 
 /* Cosmic SVG Elements & Animations */

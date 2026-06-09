@@ -1,25 +1,41 @@
-/* Contact Section Styles */
+/* ═══════════════════════════════════════════
+   Contact Section — Vintage Spellbook Styles
+   ═══════════════════════════════════════════ */
+
 .contact-section {
-  padding: 6rem 2rem;
+  padding: 7rem 2rem 8rem;
   width: 100%;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
+  /* Warm candlelight parchment gradient background */
+  background: radial-gradient(circle at center, #fdfbf7 0%, #ebdcae 100%);
+  position: relative;
+}
+
+/* Page border decorations for contact section */
+.contact-section::before {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 1px dashed rgba(45, 35, 20, 0.15);
+  pointer-events: none;
 }
 
 .contact-container {
   display: grid;
   grid-template-columns: 1.1fr 1.2fr;
-  gap: 4rem;
+  gap: 4.5rem;
   width: 100%;
   max-width: 1100px;
   box-sizing: border-box;
+  z-index: 2;
 }
 
 @media (max-width: 900px) {
   .contact-container {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 3.5rem;
   }
 }
 
@@ -32,15 +48,17 @@
 
 .contact-info__title {
   font-size: clamp(2.3rem, 6vw, 4.2rem);
-  color: var(--text-h);
+  color: #2d2314;
   margin: 0 0 1.5rem 0;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .contact-info__subtitle {
   font-size: 1.2rem;
-  line-height: 1.5;
-  color: var(--text);
+  line-height: 1.55;
+  color: #4d3e2a;
   margin: 0 0 2.5rem 0;
+  font-family: 'Architects Daughter', cursive;
 }
 
 .contact-info__details {
@@ -52,27 +70,69 @@
 .contact-detail-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  font-size: 1.1rem;
+  gap: 1.2rem;
+  font-size: 1.15rem;
+  color: #3d3120;
 }
 
 .contact-detail-icon {
-  font-size: 2rem;
+  font-size: 2.2rem;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
+.contact-detail-email {
+  color: #a03c00; /* Rich warm red-brown accent */
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* ─── Contact Form Box (Torn Parchment Page) ─── */
 .contact-form-box {
-  background: var(--bg);
-  border: 3px solid var(--text-h);
-  border-radius: 30px 15px 40px 15px/15px 40px 15px 30px;
-  box-shadow: 6px 6px 0px var(--text-h);
-  padding: 3rem 2.5rem;
+  position: relative;
+  background: transparent;
+  width: 100%;
   box-sizing: border-box;
+}
+
+.contact-form-bg {
+  position: absolute;
+  inset: 0;
+  background-color: #f7ecd3; /* Warm aged parchment */
+  background-image: 
+    radial-gradient(rgba(0,0,0,0.03) 1px, transparent 0),
+    radial-gradient(rgba(0,0,0,0.015) 2px, transparent 0);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+  border: 2.2px solid #2d2314;
+  border-radius: 4px;
+  z-index: 1;
+  pointer-events: none;
+  filter: url(#contact-torn-filter) drop-shadow(6px 15px 30px rgba(40, 30, 20, 0.22));
+  transition: transform 0.3s ease;
+}
+
+.contact-form-box:hover .contact-form-bg {
+  transform: translateY(-2px) rotate(0.2deg);
+}
+
+.contact-form-content {
+  position: relative;
+  z-index: 2;
+  padding: 3.5rem 2.8rem;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .contact-form-content {
+    padding: 2.8rem 1.8rem;
+  }
 }
 
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.8rem;
 }
 
 .form-group {
@@ -83,33 +143,50 @@
 }
 
 .form-label {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  color: var(--text-h);
+  color: #54412a;
 }
 
+/* Cursive handwritten-style input fields */
 .form-input {
-  font-family: var(--sans);
-  font-size: 1rem;
-  padding: 0.75rem 1rem;
-  border: 2px solid var(--text-h);
-  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  font-family: 'Shadows Into Light', cursive;
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: 0.6rem 0.5rem;
+  border: none;
+  border-bottom: 2px dashed rgba(45, 35, 20, 0.45);
+  border-radius: 0;
   background: transparent;
-  color: var(--text-h);
+  color: #1a1209;
   box-sizing: border-box;
   width: 100%;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: border-bottom-color 0.25s ease, background-color 0.25s ease;
+}
+
+.form-input::placeholder {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: rgba(45, 35, 20, 0.35);
 }
 
 .form-input:focus {
   outline: none;
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0px var(--text-h);
+  border-bottom: 2px solid #a03c00; /* Turns into rich ink line when drafting scroll */
+  background-color: rgba(255, 255, 255, 0.28);
 }
 
+/* Textarea bordered like a parchment sheet box */
 .form-textarea {
   resize: vertical;
-  border-radius: 15px 45px 15px 45px/45px 15px 45px 15px;
+  border: 1.8px dashed rgba(45, 35, 20, 0.45);
+  border-radius: 4px;
+  padding: 0.8rem;
+}
+
+.form-textarea:focus {
+  border: 1.8px solid #a03c00;
 }
 
 .form-submit-wrapper {
@@ -120,16 +197,80 @@
 .form-submit-btn {
   background: transparent;
   border: none;
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 800;
-  color: var(--text-h);
+  color: #2d2314;
   cursor: pointer;
-  padding: 0.25rem 0.5rem;
+  padding: 0.2rem 0.6rem;
+  transition: transform 0.2s ease;
+}
+
+.form-submit-btn:hover {
+  transform: scale(1.05);
 }
 
 .contact-success {
   font-size: 1.5rem;
-  color: #10b981;
+  color: #a03c00;
+  font-weight: 700;
   text-align: center;
-  padding: 3rem 0;
+  padding: 4rem 0;
+}
+
+/* ─── Interactive Quill & Inkwell ─── */
+.quill-ink-container {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  margin-top: 2.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+}
+
+.quill-ink-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.quill-feather-group {
+  transform-origin: 50px 56px;
+  animation: floatQuill 4s infinite ease-in-out;
+  transition: transform 0.3s ease;
+}
+
+@keyframes floatQuill {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(2deg); }
+}
+
+/* Writing motion triggered when typing/focusing on input */
+.is-writing .quill-feather-group {
+  animation: writeQuill 0.38s infinite linear;
+}
+
+@keyframes writeQuill {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-3px, -2px) rotate(-8deg); }
+  50% { transform: translate(1px, -1px) rotate(2deg); }
+  75% { transform: translate(-2px, -3px) rotate(-6deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.quill-ink-label {
+  font-size: 0.95rem;
+  color: #a03c00;
+  font-weight: 700;
+  margin-top: -6px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  white-space: nowrap;
+}
+
+.is-writing .quill-ink-label {
+  opacity: 0.85;
+  transform: translateY(0);
 }

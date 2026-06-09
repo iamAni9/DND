@@ -6,6 +6,7 @@ const InteractiveNimbu = () => {
 
   // Current offset from rest position (0, 0)
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [sparkles, setSparkles] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
 
   // Ref to store physics variables to avoid React state delay in mouse handlers
@@ -19,6 +20,7 @@ const InteractiveNimbu = () => {
     dragStartY: 0,
     dragStartMouseX: 0,
     dragStartMouseY: 0,
+    sparkles: [],
   });
 
   useEffect(() => {
@@ -51,9 +53,37 @@ const InteractiveNimbu = () => {
 
         state.x += state.vx;
         state.y += state.vy;
-
-        setPosition({ x: state.x, y: state.y });
       }
+
+      // Spawn sparkles on velocity bounce
+      const speed = Math.sqrt(state.vx * state.vx + state.vy * state.vy);
+      if (speed > 1.2 && Math.random() < 0.35) {
+        state.sparkles.push({
+          id: Math.random(),
+          x: 100 + state.x + (Math.random() - 0.5) * 16,
+          y: 120 + state.y + (Math.random() - 0.5) * 16,
+          vx: (Math.random() - 0.5) * 3 + state.vx * 0.25,
+          vy: (Math.random() - 0.5) * 3 - 1.5 + state.vy * 0.25,
+          color: ['#ffd700', '#ebdcae', '#aa3bff', '#4deeea', '#ff8c00', '#ff007f'][Math.floor(Math.random() * 6)],
+          size: 4 + Math.random() * 5,
+          life: 0.95,
+        });
+      }
+
+      // Update sparkles physics
+      state.sparkles = state.sparkles
+        .map((s) => ({
+          ...s,
+          x: s.x + s.vx,
+          y: s.y + s.vy,
+          vy: s.vy + 0.14, // gravity
+          vx: s.vx * 0.95, // friction
+          life: s.life - 0.022,
+        }))
+        .filter((s) => s.life > 0);
+
+      setPosition({ x: state.x, y: state.y });
+      setSparkles([...state.sparkles]);
 
       animFrameId = requestAnimationFrame(updatePhysics);
     };
@@ -98,7 +128,22 @@ const InteractiveNimbu = () => {
       state.vx = 0;
       state.vy = 0;
 
+      // Spawn sparkles on drag movement
+      if (Math.random() < 0.45) {
+        state.sparkles.push({
+          id: Math.random(),
+          x: 100 + newX + (Math.random() - 0.5) * 20,
+          y: 120 + newY + (Math.random() - 0.5) * 20,
+          vx: (Math.random() - 0.5) * 4,
+          vy: (Math.random() - 0.5) * 4 - 2, // shoot up slightly
+          color: ['#ffd700', '#ff8c00', '#aa3bff', '#00f6ff', '#ffffff', '#ff007f'][Math.floor(Math.random() * 6)],
+          size: 4 + Math.random() * 6,
+          life: 1.0,
+        });
+      }
+
       setPosition({ x: newX, y: newY });
+      setSparkles([...state.sparkles]);
     };
 
     const handleMouseUp = () => {
@@ -192,6 +237,44 @@ const InteractiveNimbu = () => {
         />
         {/* Hanger pin dot */}
         <circle cx={anchorX} cy={anchorY} r="3" fill="var(--text-h)" />
+
+        {/* Render magical sparkles */}
+        {sparkles.map((s) => (
+          <g key={s.id} opacity={s.life}>
+            {/* Outer blur glow */}
+            <circle
+              cx={s.x}
+              cy={s.y}
+              r={s.size * 1.6}
+              fill={s.color}
+              filter="blur(1.8px)"
+              opacity={0.45}
+            />
+            {/* White core */}
+            <circle
+              cx={s.x}
+              cy={s.y}
+              r={s.size * 0.75}
+              fill="#ffffff"
+            />
+            {/* Core color */}
+            <circle
+              cx={s.x}
+              cy={s.y}
+              r={s.size * 0.5}
+              fill={s.color}
+            />
+            {/* Twinkle cross shapes for larger sparkles */}
+            {s.size > 7.5 && (
+              <path
+                d={`M ${s.x - s.size} ${s.y} L ${s.x + s.size} ${s.y} M ${s.x} ${s.y - s.size} L ${s.x} ${s.y + s.size}`}
+                stroke="#ffffff"
+                strokeWidth="1.2"
+                opacity="0.8"
+              />
+            )}
+          </g>
+        ))}
       </svg>
 
       <div
@@ -209,7 +292,7 @@ const InteractiveNimbu = () => {
         }}
       >
         <div className="nimbu-bubble font-sketch">
-          {isDragging ? 'Wheee! 🍋' : 'Pull me! 🍋'}
+          {isDragging ? 'Magic Sparkles! ✨' : 'Pull me! 🍋'}
         </div>
         <img
           src="/nimbu.png"

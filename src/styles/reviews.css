@@ -1,0 +1,270 @@
+/* ═══════════════════════════════════════════
+   Scrolls of Praise (Reviews) Section Styles
+   ═══════════════════════════════════════════ */
+
+.reviews-section {
+  position: relative;
+  padding: 6rem 2rem 7rem;
+  width: 100%;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #06150a 0%, #0c0816 100%); /* Forest night transitions into deep violet sky */
+  overflow: hidden;
+  color: #f3eedd;
+}
+
+.reviews-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 30%, rgba(138, 43, 226, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.reviews-header {
+  text-align: center;
+  margin-bottom: 5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.reviews-title {
+  font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+  color: #ebdcae;
+  margin: 0 0 0.8rem 0;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 20px rgba(138, 43, 226, 0.2);
+}
+
+.reviews-subtitle {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #c4b5d4; /* Soft violet sky */
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: 'Architects Daughter', cursive;
+}
+
+/* ─── Scrolls Row Grid ─── */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 900px) {
+  .reviews-grid {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    gap: 4.5rem;
+  }
+}
+
+/* ─── Scroll Card Container ─── */
+.scroll-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5rem; /* leaves room for the fairy on top */
+}
+
+/* ─── The Paper Body (rolled by default, expands on hover) ─── */
+.scroll-paper {
+  position: relative;
+  width: 90%;
+  height: 80px; /* Rolled height */
+  background-color: #f5eed3;
+  background-image: 
+    radial-gradient(rgba(0,0,0,0.02) 1px, transparent 0),
+    linear-gradient(to right, rgba(0,0,0,0.05) 0%, transparent 8%, transparent 92%, rgba(0,0,0,0.05) 100%);
+  background-size: 16px 16px, 100% 100%;
+  border-left: 2px solid #2d2012;
+  border-right: 2px solid #2d2012;
+  box-sizing: border-box;
+  z-index: 2;
+  overflow: hidden;
+  filter: url(#scroll-torn-filter) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.45));
+  transition: height 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.scroll-card:hover .scroll-paper {
+  height: 250px; /* Unrolled height */
+  filter: url(#scroll-torn-filter) drop-shadow(0 12px 24px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 12px rgba(212, 175, 55, 0.12));
+}
+
+/* Inner scroll text layout */
+.scroll-content {
+  padding: 1.5rem 1.8rem 1.8rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.4s ease 0.1s, transform 0.4s ease 0.1s;
+  color: #261f14;
+}
+
+.scroll-card:hover .scroll-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-quote {
+  font-family: var(--sans);
+  font-size: 1.1rem;
+  line-height: 1.5;
+  font-weight: 500;
+  margin: 0 0 1rem 0;
+  font-style: italic;
+  color: #3b2a1a;
+}
+
+.scroll-author {
+  font-family: var(--sans);
+  font-size: 1rem;
+  color: #8a4e0a;
+  margin: 0;
+  font-weight: 700;
+  text-align: right;
+}
+
+/* ─── Wooden Rods/Spindles ─── */
+.scroll-rod-top,
+.scroll-rod-bottom {
+  position: absolute;
+  left: 2.5%;
+  width: 95%;
+  height: 14px;
+  background: linear-gradient(to bottom, #3b220c, #5c3c1f, #3b220c);
+  border-radius: 6px;
+  border: 1px solid #1a0e05;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+  z-index: 5;
+}
+
+/* Gold brass knobs on rods */
+.scroll-rod-top::before,
+.scroll-rod-top::after,
+.scroll-rod-bottom::before,
+.scroll-rod-bottom::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  width: 8px;
+  height: 18px;
+  background: linear-gradient(to bottom, #d4af37, #aa8513, #d4af37);
+  border: 1.2px solid #544109;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.scroll-rod-top::before,
+.scroll-rod-bottom::before {
+  left: -7px;
+}
+.scroll-rod-top::after,
+.scroll-rod-bottom::after {
+  right: -7px;
+}
+
+/* Rod positions */
+.scroll-rod-top {
+  top: 0;
+}
+
+.scroll-rod-bottom {
+  top: 66px; /* sits right at the bottom edge of rolled paper */
+  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.scroll-card:hover .scroll-rod-bottom {
+  transform: translateY(170px) rotate(360deg); /* rolls down and spins! */
+}
+
+/* ─── Fluttering SVG Fairy Mascot ─── */
+.scroll-fairy {
+  position: absolute;
+  top: -42px;
+  width: 44px;
+  height: 44px;
+  z-index: 6;
+  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.6));
+  pointer-events: none;
+}
+
+.fairy-wing-left {
+  transform-origin: 22px 22px;
+}
+.fairy-wing-right {
+  transform-origin: 22px 22px;
+}
+
+/* wing flapping animation triggers on hover */
+.scroll-card:hover .fairy-wing-left {
+  animation: flap-left 0.12s infinite alternate ease-in-out;
+}
+.scroll-card:hover .fairy-wing-right {
+  animation: flap-right 0.12s infinite alternate ease-in-out;
+}
+
+@keyframes flap-left {
+  0% { transform: scaleX(0.15); }
+  100% { transform: scaleX(1); }
+}
+@keyframes flap-right {
+  0% { transform: scaleX(0.15); }
+  100% { transform: scaleX(1); }
+}
+
+/* ─── Falling Sparkles Cascade ─── */
+.scroll-sparkle {
+  position: absolute;
+  color: #ffd700;
+  pointer-events: none;
+  font-size: 11px;
+  opacity: 0;
+  z-index: 4;
+  text-shadow: 0 0 3px #ffd700;
+}
+
+.scroll-sparkle::before {
+  content: '✦';
+}
+
+.scroll-card:hover .scroll-sparkle {
+  opacity: 0;
+}
+
+/* Sparkle cascade position and delays */
+.scroll-card:hover .sparkle-c1 { left: 15%; animation: sparkleCascade 1.4s infinite linear 0.1s; }
+.scroll-card:hover .sparkle-c2 { left: 45%; animation: sparkleCascade 1.2s infinite linear 0.4s; }
+.scroll-card:hover .sparkle-c3 { left: 75%; animation: sparkleCascade 1.5s infinite linear 0.2s; }
+.scroll-card:hover .sparkle-c4 { left: 28%; animation: sparkleCascade 1.3s infinite linear 0.5s; }
+.scroll-card:hover .sparkle-c5 { left: 60%; animation: sparkleCascade 1.6s infinite linear 0.3s; }
+
+@keyframes sparkleCascade {
+  0% {
+    transform: translateY(20px) scale(0.4);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(220px) scale(1);
+    opacity: 0;
+  }
+}

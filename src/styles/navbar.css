@@ -1,10 +1,10 @@
 /* ========================================
-   NAVBAR CORE WRAPPER
+   NAVBAR CORE WRAPPER (Handdrawn theme)
    ======================================== */
 .navbar {
   position: fixed;
   left: 50%;
-  transform: translateX(-50%);
+  top: 0; /* Keep top static, transition position using transform for GPU-acceleration */
   z-index: 9999;
 
   display: flex;
@@ -12,29 +12,29 @@
   justify-content: center;
   width: 100%;
   
-  background: rgba(12, 12, 18, 0.92);
-  backdrop-filter: blur(16px) saturate(1.2);
-  -webkit-backdrop-filter: blur(16px) saturate(1.2);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(253, 251, 247, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 2.5px solid var(--text-h);
 
+  /* Smooth transition using GPU-friendly transform */
   transition:
-    top 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
     max-width 0.4s cubic-bezier(0.25, 1, 0.5, 1),
     border-radius 0.4s cubic-bezier(0.25, 1, 0.5, 1),
     box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   
-  will-change: top, max-width, border-radius;
+  will-change: transform, max-width, border-radius;
 }
 
 /* ========================================
    ATTACHED STATE (Phone-Style Camera Notch)
    ======================================== */
 .navbar--attached {
-  top: 0;
+  transform: translate3d(-50%, 0, 0);
   max-width: min(720px, 92vw);
-  border-top: none;
-  border-radius: 0 0 24px 24px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 0px 24px 24px / 0px 0px 24px 24px; /* Matches slash syntax format of detached for smooth interpolation */
+  box-shadow: 4px 4px 0px var(--text-h);
 }
 
 /* Base style for the top wings reaching out to the viewport edges */
@@ -44,9 +44,10 @@
   position: fixed; /* Locks them tight to the screen ceiling */
   top: 0;
   height: 24px; /* Matches the 24px border-radius depth of the navbar */
-  background: rgba(12, 12, 18, 0.92);
+  background: rgba(253, 251, 247, 0.95);
   pointer-events: none;
   opacity: 1;
+  border-bottom: 2.5px solid var(--text-h);
   transition: opacity 0.3s ease;
 }
 
@@ -55,8 +56,6 @@
   left: 0;
   right: 50%;
   margin-right: min(360px, 46vw); /* Pushes the element's right edge right up against the navbar */
-  
-  /* Creates the smooth outward curve transitioning into a flat line */
   border-bottom-right-radius: 24px;
 }
 
@@ -65,22 +64,17 @@
   right: 0;
   left: 50%;
   margin-left: min(360px, 46vw); /* Pushes the element's left edge right up against the navbar */
-  
-  /* Creates the smooth outward curve transitioning into a flat line */
   border-bottom-left-radius: 24px;
 }
 
 /* ========================================
    DETACHED STATE (Floating Pill)
-   ======================================== */
+   ======================================= */
 .navbar--detached {
-  top: 1.25rem;
+  transform: translate3d(-50%, 1.25rem, 0);
   max-width: min(900px, 92vw);
-  border-radius: 100px;
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.35),
-    0 2px 4px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  border-radius: 120px 100px 110px 95px / 95px 115px 100px 120px; /* Sketchy handdrawn curve, matching slash format */
+  box-shadow: 6px 6px 0px var(--text-h);
 }
 
 /* Seamlessly hide the notch wings when floating */
@@ -121,27 +115,22 @@
 }
 
 .navbar__logo-wrapper {
-  width: 32px;
-  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #4f8ef7 0%, #2563eb 100%);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
 }
 
 .navbar__logo {
-  width: 20px;
-  height: 20px;
+  height: 42px;
+  width: auto;
   object-fit: contain;
-  filter: brightness(0) invert(1);
 }
 
 .navbar__title {
-  color: #f8fafc;
-  font-size: 1rem;
-  font-weight: 600;
+  color: var(--text-h);
+  font-family: var(--heading);
+  font-size: 1.25rem;
+  font-weight: 800;
   letter-spacing: -0.01em;
   white-space: nowrap;
 }
@@ -152,7 +141,7 @@
 .navbar__links {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 1.5rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -160,19 +149,18 @@
 
 .navbar__link {
   display: block;
-  color: rgba(248, 250, 252, 0.65);
+  color: var(--text-h);
   text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 0.5rem 0.75rem;
   border-radius: 100px;
-  transition: color 0.2s ease, background 0.2s ease;
+  transition: color 0.2s ease;
   white-space: nowrap;
 }
 
 .navbar__link:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.06);
+  color: var(--accent);
 }
 
 /* ========================================
@@ -182,8 +170,8 @@
   display: none;
   flex-direction: column;
   justify-content: space-between;
-  width: 20px;
-  height: 14px;
+  width: 22px;
+  height: 16px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -193,15 +181,15 @@
 
 .navbar__burger span {
   width: 100%;
-  height: 2px;
-  background-color: #f8fafc;
+  height: 2.5px;
+  background-color: var(--text-h);
   border-radius: 2px;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.navbar__burger--active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.navbar__burger--active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .navbar__burger--active span:nth-child(2) { opacity: 0; }
-.navbar__burger--active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.navbar__burger--active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 /* ========================================
    UNIVERSAL RESPONSIVE BREAKPOINT (TABLET/MOBILE)
@@ -219,9 +207,9 @@
   }
 
   .navbar--detached {
-    top: 0.5rem;
+    transform: translate3d(-50%, 0.5rem, 0);
     max-width: 94vw;
-    border-radius: 20px;
+    border-radius: 15px;
   }
 
   .navbar__inner {
@@ -242,11 +230,10 @@
     overflow: hidden;
     opacity: 0;
     pointer-events: none;
-    background: rgba(12, 12, 18, 0.98);
-    backdrop-filter: blur(20px);
-    border-radius: 0 0 20px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--bg);
+    border: 2.5px solid var(--text-h);
     border-top: none;
+    border-radius: 0 0 20px 20px;
     transition: max-height 0.35s ease, opacity 0.25s ease;
   }
 
@@ -254,7 +241,7 @@
   .navbar--detached .navbar__section--center {
     top: calc(100% + 0.5rem);
     border-radius: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 2.5px solid var(--text-h);
   }
 
   .navbar__section--mobile-visible {
@@ -279,7 +266,7 @@
   .navbar__link {
     text-align: center;
     padding: 0.75rem;
-    font-size: 1rem;
+    font-size: 1.1rem;
     border-radius: 12px;
   }
 }

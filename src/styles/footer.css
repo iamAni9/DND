@@ -1,12 +1,13 @@
 /* Footer Section Styles */
 .footer {
   position: relative;
-  background: var(--bg);
+  background: radial-gradient(circle at 50% 0%, rgba(170, 59, 255, 0.04) 0%, rgba(212, 175, 55, 0.02) 40%, var(--bg) 90%); /* Soft magical fairy glow vignette */
   border-top: 6px solid var(--text-h); /* Thick separator line! */
   padding: 5rem 2.5rem 3rem;
   box-sizing: border-box;
   width: 100%;
   margin-top: 6rem;
+  overflow: hidden;
 }
 
 .footer-container {
@@ -53,11 +54,12 @@
 .social-icon {
   text-decoration: none;
   font-size: 1.5rem;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.25s ease;
 }
 
 .social-icon:hover {
-  transform: scale(1.2) rotate(5deg);
+  transform: scale(1.25) rotate(8deg);
+  filter: drop-shadow(0 0 8px rgba(170, 59, 255, 0.4));
 }
 
 .footer-nav-grid {
@@ -75,6 +77,32 @@
   font-size: 1.3rem;
   color: var(--text-h);
   margin: 0 0 1.25rem 0;
+  position: relative;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+/* Twinkling star next to column titles */
+.footer-col-title::after {
+  content: '✦';
+  position: absolute;
+  right: -22px;
+  top: -2px;
+  font-size: 0.85rem;
+  color: var(--accent);
+  opacity: 0.7;
+  animation: footerStarTwinkle 4s infinite linear;
+}
+
+.footer-col:nth-child(2) .footer-col-title::after {
+  animation-delay: -2s;
+  color: #cc9e43; /* gold star for the second column title */
+}
+
+@keyframes footerStarTwinkle {
+  0% { transform: scale(0.8) rotate(0deg); opacity: 0.4; }
+  50% { transform: scale(1.15) rotate(180deg); opacity: 0.95; }
+  100% { transform: scale(0.8) rotate(360deg); opacity: 0.4; }
 }
 
 .footer-col-links {
@@ -91,12 +119,30 @@
   font-size: 0.95rem;
   color: var(--text);
   font-weight: 500;
-  transition: color 0.2s ease, padding-left 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+/* Magical star reveal on link hover */
+.footer-col-links a::before {
+  content: '✦';
+  font-size: 0.8rem;
+  color: var(--accent);
+  margin-right: 8px;
+  opacity: 0;
+  transform: scale(0.2) rotate(-90deg);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .footer-col-links a:hover {
   color: var(--accent);
-  padding-left: 4px;
+  transform: translateX(4px);
+}
+
+.footer-col-links a:hover::before {
+  opacity: 1;
+  transform: scale(1) rotate(90deg);
 }
 
 .footer-bottom {
@@ -123,4 +169,161 @@
   font-size: 0.9rem;
   color: var(--text);
   margin: 0;
+}
+
+/* Winding Fairy Vines top border overlay */
+.footer-vines {
+  position: absolute;
+  top: -15px; /* sit perfectly on the 6px top border */
+  left: 0;
+  width: 100%;
+  height: 30px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.footer-vines svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* Twinkling fairy forest flower buds */
+.twinkle-bud {
+  animation: budTwinkle 2.5s infinite alternate ease-in-out;
+  transform-origin: center;
+  filter: drop-shadow(0 0 4px #ffd700) drop-shadow(0 0 8px #ffae00);
+}
+
+@keyframes budTwinkle {
+  0% { 
+    opacity: 0.35; 
+    transform: scale(0.8); 
+    fill: #ffd700;
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1.3); 
+    fill: #ffffff;
+  }
+}
+
+/* ─── Interactive Magic Potion Bottle ─── */
+.potion-bottle-container {
+  position: relative;
+  width: 70px;
+  height: 85px;
+  cursor: pointer;
+  user-select: none;
+  margin-right: 1.5rem;
+}
+
+.potion-bottle-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: filter 0.3s ease, transform 0.3s ease;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+}
+
+.potion-bottle-container:hover .potion-bottle-wrapper {
+  filter: drop-shadow(0 8px 16px rgba(139, 92, 246, 0.4)) drop-shadow(0 0 12px rgba(255, 215, 0, 0.25));
+  transform: translateY(-3px);
+}
+
+/* Wobble Animation when clicked/hovered */
+.potion-wobble {
+  animation: potionWobble 0.6s ease-in-out;
+}
+
+@keyframes potionWobble {
+  0% { transform: rotate(0deg) scale(1); }
+  15% { transform: rotate(-12deg) scale(1.06); }
+  30% { transform: rotate(10deg) scale(0.96); }
+  45% { transform: rotate(-8deg) scale(1.03); }
+  60% { transform: rotate(5deg) scale(0.98); }
+  85% { transform: rotate(-3deg) scale(1.01); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+/* Potion Liquid Animations */
+.potion-liquid {
+  fill: #7c3aed; /* Purple magic elixir */
+}
+
+.potion-wave {
+  animation: potionWave 3s infinite linear;
+}
+
+@keyframes potionWave {
+  0% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(-6px) translateY(-1px); }
+  100% { transform: translateX(0) translateY(0); }
+}
+
+/* Bubbles inside potion */
+.potion-bubble {
+  animation: potionBubbleRise 2.2s infinite ease-in;
+  opacity: 0;
+  transform-origin: bottom;
+}
+
+.bubble-1 { animation-delay: 0s; animation-duration: 1.8s; }
+.bubble-2 { animation-delay: 0.5s; animation-duration: 2.4s; }
+.bubble-3 { animation-delay: 1.1s; animation-duration: 1.6s; }
+.bubble-4 { animation-delay: 1.6s; animation-duration: 2.1s; }
+
+@keyframes potionBubbleRise {
+  0% {
+    transform: translateY(12px) translateX(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-30px) translateX(var(--bubble-drift, 0px));
+    opacity: 0;
+  }
+}
+
+/* Sparkles shooting out */
+.potion-sparkle {
+  position: absolute;
+  pointer-events: none;
+  font-family: sans-serif;
+  line-height: 1;
+  z-index: 15;
+  animation: sparkleFloatUp var(--duration, 1.4s) forwards ease-out;
+  animation-delay: var(--delay, 0s);
+  opacity: 0;
+}
+
+@keyframes sparkleFloatUp {
+  0% {
+    transform: translate(0, 0) scale(0.3) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(var(--tx, 0px), var(--ty, -100px)) scale(1.3) rotate(var(--rot, 180deg));
+    opacity: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .potion-bottle-container {
+    margin: 1.5rem auto 0;
+    width: 80px;
+    height: 95px;
+  }
 }
