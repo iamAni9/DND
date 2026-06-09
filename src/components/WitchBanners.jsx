@@ -1,4 +1,5 @@
 import React from 'react';
+import '@/styles/witchBanners.css';
 
 const CARDS = [
   { text: 'Websites 🌐', description: 'Modern, responsive, and blazing-fast web experiences.', color: '#eab308' },
