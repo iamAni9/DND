@@ -1,0 +1,236 @@
+.sketch-cube-node {
+  position: absolute;
+  width: 130px;
+  height: 115px;
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cube-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cube-svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: visible;
+}
+
+.face-top-bg {
+  fill: #ffffff;
+  transition: fill 0.3s ease;
+}
+
+.face-top {
+  fill: url(#cube-hatch) !important;
+}
+
+.cube-face {
+  stroke: #64748b;
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+  fill: #ffffff;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.face-left {
+  fill: #ffffff;
+}
+
+.face-right {
+  fill: #f1f5f9;
+}
+
+.inner-wireframe {
+  stroke: #94a3b8;
+  opacity: 0.7;
+}
+
+.cube-icon {
+  color: #475569;
+  transition: color 0.3s ease;
+}
+
+.cube-label {
+  position: absolute;
+  bottom: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  white-space: nowrap;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid #e2e8f0;
+  padding: 3px 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cube-label span {
+  display: inline-block;
+  font-family: sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #475569;
+  transition: color 0.3s ease;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover */
+
+.sketch-cube-node:hover .cube-wrapper {
+  transform: scale(1.12) rotate(1deg);
+}
+
+.sketch-cube-node:hover .cube-face {
+  stroke: #0f172a;
+  stroke-width: 1.6;
+}
+
+.sketch-cube-node:hover .face-left {
+  fill: #f8fafc;
+}
+
+.sketch-cube-node:hover .face-right {
+  fill: #f1f5f9;
+}
+
+.sketch-cube-node:hover .face-top-bg {
+  fill: #f8fafc;
+}
+
+.sketch-cube-node:hover .cube-label {
+  border-color: #bfdbfe;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+  transform: translateX(-50%) translateY(-1px) scale(1.03);
+}
+
+.sketch-cube-node:hover .cube-label span {
+  color: #2563eb;
+}
+
+.sketch-cube-node:hover .status-dot {
+  background: #2563eb;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.8);
+}
+
+.sketch-cube-node:hover .cube-icon {
+  color: #0f172a;
+}
+
+/* Focal Cube */
+
+.sketch-cube-node.focal-cube {
+  width: 145px;
+  height: 128px;
+  z-index: 10;
+}
+
+.focal-cube .face-top-bg {
+  fill: #f0f7ff !important;
+}
+
+.focal-cube .cube-face {
+  stroke: #2563eb !important;
+  stroke-width: 2.2 !important;
+}
+
+.focal-cube .face-left {
+  fill: #f0f7ff !important;
+}
+
+.focal-cube .face-right {
+  fill: #e0f2fe !important;
+}
+
+.focal-cube .inner-wireframe {
+  stroke: #60a5fa !important;
+  opacity: 0.9 !important;
+}
+
+.focal-cube .cube-label {
+  border-color: #bfdbfe !important;
+  background: #eff6ff !important;
+}
+
+.focal-cube .cube-label span {
+  color: #1e40af !important;
+}
+
+.focal-cube .status-dot {
+  background: #2563eb !important;
+  box-shadow: 0 0 4px rgba(37, 99, 235, 0.4) !important;
+}
+
+.focal-cube .cube-icon {
+  color: #2563eb !important;
+}
+
+.sketch-cube-node.focal-cube .cube-wrapper {
+  transform: scale(1.06) translateY(-4px);
+}
+
+.sketch-cube-node.focal-cube .status-dot {
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 4px rgba(37, 99, 235, 0.4);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.3);
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.8);
+  }
+}
+
+@media (max-width: 1024px) {
+  .sketch-cube-node {
+    position: relative !important;
+    transform: none !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    margin: 0 auto 24px auto !important;
+    animation: none !important;
+    width: 120px;
+    height: 105px;
+  }
+
+  .sketch-cube-node.focal-cube {
+    width: 120px;
+    height: 105px;
+    order: -1;
+  }
+}
