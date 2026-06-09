@@ -85,6 +85,17 @@
   max-width: 480px;
   font-weight: 400;
   font-family: sans-serif;
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.desc-fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.desc-fade-out {
+  opacity: 0;
+  transform: translateY(4px);
 }
 
 /* ─── RIGHT COLUMN: INTERACTIVE VISUAL CORE ─── */
@@ -104,30 +115,31 @@
 }
 
 .hero-logo {
-  max-width: 150px;
+  max-width: 190px;
   width: 100%;
   height: auto;
   display: block;
   user-select: none;
 }
 
-/* Colored Pencil Bleed Underlay Shadow */
+/* Improved, Larger Dynamic Under-Logo Shadow */
 .pencil-smudge-shadow {
   position: absolute;
-  bottom: 155px;
+  bottom: 135px;
   left: 50%;
   transform: translateX(-50%);
-  width: 140px;
+  width: 175px;
   height: 25px;
   background: radial-gradient(
     ellipse at center, 
-    rgba(37, 99, 235, 0.15) 0%, 
-    rgba(14, 165, 233, 0.04) 55%, 
-    transparent 75%
+    rgba(37, 99, 235, 0.28) 0%, 
+    rgba(14, 165, 233, 0.08) 50%, 
+    transparent 70%
   );
-  filter: blur(8px);
+  filter: blur(7px);
   z-index: 2;
   pointer-events: none;
+  animation: centralShadowScale 6s ease-in-out infinite;
 }
 
 /* ─── ISOMETRIC 3D SKETCH WIREFRAME BOXES ─── */
@@ -149,6 +161,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 4;
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -161,13 +174,30 @@
   overflow: visible;
 }
 
+.face-top-bg {
+  fill: #ffffff;
+  transition: fill 0.3s ease;
+}
+
+.focal-cube .face-top-bg {
+  fill: #f0f7ff !important;
+}
+
 /* Wireframe Path Styling Rules */
 .cube-face {
-  stroke: #0f172a;
-  stroke-width: 1.5;
+  stroke: #64748b; /* Soft slate outlines for a clean technical drafting aesthetic */
+  stroke-width: 1.1;
   stroke-linejoin: round;
   fill: #ffffff;
-  transition: fill 0.3s ease, stroke-width 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.face-left {
+  fill: #ffffff;
+}
+
+.face-right {
+  fill: #f1f5f9; /* Volumetric shadow shading */
 }
 
 .inner-wireframe {
@@ -175,19 +205,159 @@
   opacity: 0.7;
 }
 
-/* Text Overlays Centered on Boxes */
-.cube-text-overlay {
+/* Cube SVG Wrapper */
+.cube-wrapper {
   position: relative;
-  z-index: 2;
-  text-align: center;
-  padding: 0 10px;
-  font-family: sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: #334155;
-  user-select: none;
-  line-height: 1.2;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
+.face-top {
+  fill: url(#cube-hatch) !important;
+}
+
+/* Category Label Badges Below Boxes */
+.cube-label {
+  position: absolute;
+  bottom: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  white-space: nowrap;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid #e2e8f0;
+  padding: 3px 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cube-label span {
+  display: inline-block;
+  font-family: sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #475569;
+  transition: color 0.3s ease;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sketch-cube-node:hover .cube-label {
+  border-color: #bfdbfe !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12) !important;
+  transform: translateX(-50%) translateY(-1px) scale(1.03) !important;
+}
+
+.sketch-cube-node:hover .cube-label span {
+  color: #2563eb !important;
+}
+
+.sketch-cube-node:hover .status-dot {
+  background: #2563eb !important;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.8) !important;
+}
+
+/* Isometric Projected Icons */
+.cube-icon {
+  color: #475569;
+  transition: color 0.3s ease;
+}
+
+.sketch-cube-node:hover .cube-icon {
+  color: #0f172a !important;
+}
+
+/* Background Orbit Line */
+.orbit-ring-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  transform: rotate(-90deg); /* Start the spark path at the top node (12 o'clock) */
+}
+
+.orbit-line {
+  stroke: #e2e8f0;
+  stroke-width: 1.5;
+  stroke-dasharray: 6 6;
+  opacity: 0.6;
+}
+
+/* Technical Layout Blueprint Guide Axis Line */
+.blueprint-axis.horizontal {
+  position: absolute;
+  top: 50%;
+  left: -5%;
+  right: -5%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(226, 232, 240, 0.3) 15%,
+    rgba(244, 63, 94, 0.22) 50%, /* Rose coral technical line crossing center */
+    rgba(226, 232, 240, 0.3) 85%,
+    transparent 100%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Logo Glow Aura Underlay */
+.logo-glow-aura {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 210px;
+  height: 210px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, rgba(37, 99, 235, 0) 70%);
+  z-index: 1;
+  pointer-events: none;
+  animation: logoAuraPulse 6s ease-in-out infinite;
+}
+
+/* Glowing Flowing Current Spark (Dual Core) */
+.orbit-spark-glow {
+  stroke: rgba(37, 99, 235, 0.3);
+  stroke-width: 4.5;
+  stroke-linecap: round;
+  stroke-dasharray: 25 264; /* Glow tail length 25 */
+  stroke-dashoffset: 0;
+  animation: sparkFlow 12s linear infinite;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.orbit-spark-core {
+  stroke: #60a5fa;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 10 279; /* Brighter plasma core length 10 */
+  stroke-dashoffset: 0;
+  animation: sparkFlow 12s linear infinite;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.9));
+  pointer-events: none;
+}
+
 
 /* Precise Angular Isometric Blueprint Offsets Around the Center Hub */
 .cube-pos-top {
@@ -229,35 +399,99 @@
 }
 
 .focal-cube .cube-face {
-  stroke: #2563eb;
-  stroke-width: 2.2;
-  fill: #f0f7ff;
+  stroke: #2563eb !important;
+  stroke-width: 2.2 !important;
+  transition: fill 0.3s ease;
+}
+
+.focal-cube .face-left {
+  fill: #f0f7ff !important;
+}
+
+.focal-cube .face-right {
+  fill: #e0f2fe !important; /* Volumetric shaded blue shadow */
 }
 
 .focal-cube .inner-wireframe {
-  stroke: #60a5fa;
-  opacity: 0.9;
+  stroke: #60a5fa !important;
+  opacity: 0.9 !important;
 }
 
-.focal-cube .cube-text-overlay {
-  color: #1e40af;
-  font-size: 0.85rem;
+.focal-cube .cube-label {
+  border-color: #bfdbfe !important;
+  background: #eff6ff !important;
+}
+
+.focal-cube .cube-label span {
+  color: #1e40af !important;
+}
+
+.focal-cube .status-dot {
+  background: #2563eb !important;
+  box-shadow: 0 0 4px rgba(37, 99, 235, 0.4) !important;
+}
+
+.sketch-cube-node.focal-cube:hover .cube-label {
+  border-color: #93c5fd !important;
+  background: #eff6ff !important;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.15) !important;
+}
+
+.sketch-cube-node.focal-cube:hover .cube-label span {
+  color: #1d4ed8 !important;
+}
+
+.sketch-cube-node.focal-cube:hover .status-dot {
+  background: #1d4ed8 !important;
+  box-shadow: 0 0 6px rgba(29, 78, 216, 0.8) !important;
+}
+
+.focal-cube .cube-icon {
+  color: #2563eb !important;
+}
+
+.focal-cube:hover .cube-icon {
+  color: #1d4ed8 !important;
 }
 
 /* ─── HOVER MICRO-INTERACTIONS ─── */
-.sketch-cube-node:hover {
-  animation-play-state: paused !important;
+
+.sketch-cube-node:hover .cube-wrapper {
   transform: scale(1.12) rotate(1deg) !important;
 }
 
 .sketch-cube-node:hover .cube-face {
-  fill: #f8fafc;
-  stroke-width: 2;
+  stroke: #0f172a !important; /* Make outlines sharp and high contrast on hover */
+  stroke-width: 1.6 !important;
+}
+
+.sketch-cube-node:hover .face-left {
+  fill: #f8fafc !important;
+}
+
+.sketch-cube-node:hover .face-right {
+  fill: #f1f5f9 !important; /* Preserves shadow shading on hover */
+}
+
+.sketch-cube-node:hover .face-top-bg {
+  fill: #f8fafc !important;
 }
 
 .sketch-cube-node.focal-cube:hover .cube-face {
-  fill: #e0f2fe;
-  stroke: #1d4ed8;
+  stroke: #1d4ed8 !important;
+  stroke-width: 2.2 !important;
+}
+
+.sketch-cube-node.focal-cube:hover .face-left {
+  fill: #e0f2fe !important;
+}
+
+.sketch-cube-node.focal-cube:hover .face-right {
+  fill: #d0e8fd !important;
+}
+
+.sketch-cube-node.focal-cube:hover .face-top-bg {
+  fill: #e0f2fe !important;
 }
 
 /* Architectural Layout Markers (+ Signs) */
@@ -280,10 +514,285 @@
   50% { transform: translateY(-8px) scale(1.02); }
 }
 
+@keyframes logoAuraPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 1;
+  }
+}
+
+@keyframes centralShadowScale {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+    filter: blur(7px);
+  }
+  50% {
+    transform: translateX(-50%) scale(0.8);
+    opacity: 0.55;
+    filter: blur(10px);
+  }
+}
+
 @keyframes asymmetricFloat {
   0%, 100% { margin-top: 0px; }
   50% { margin-top: -8px; }
 }
+
+@keyframes sparkFlow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -289;
+  }
+}
+
+@keyframes cubeWrapperGlow {
+  0%, 16.67%, 100% {
+    transform: scale(1);
+  }
+  4% {
+    transform: scale(1.08) translateY(-4px);
+  }
+  10% {
+    transform: scale(1.04) translateY(-2px);
+  }
+}
+
+@keyframes faceGlow {
+  0%, 16.67%, 100% {
+    stroke: #64748b;
+    stroke-width: 1.1;
+  }
+  4% {
+    stroke: #2563eb;
+    stroke-width: 1.8;
+  }
+  10% {
+    stroke: #3b82f6;
+    stroke-width: 1.4;
+  }
+}
+
+@keyframes faceLeftGlow {
+  0%, 16.67%, 100% {
+    fill: #ffffff;
+  }
+  4% {
+    fill: #f0f7ff;
+  }
+}
+
+@keyframes faceRightGlow {
+  0%, 16.67%, 100% {
+    fill: #f1f5f9;
+  }
+  4% {
+    fill: #e0f2fe;
+  }
+}
+
+@keyframes faceTopBgGlow {
+  0%, 16.67%, 100% {
+    fill: #ffffff;
+  }
+  4% {
+    fill: #f0f7ff;
+  }
+}
+
+@keyframes labelGlow {
+  0%, 16.67%, 100% {
+    border-color: #e2e8f0;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  4% {
+    border-color: #93c5fd;
+    background: #ffffff;
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.12), 0 0 8px rgba(37, 99, 235, 0.1);
+  }
+  10% {
+    border-color: #bfdbfe;
+  }
+}
+
+@keyframes labelTextGlow {
+  0%, 16.67%, 100% {
+    color: #475569;
+  }
+  4% {
+    color: #1d4ed8;
+  }
+  10% {
+    color: #2563eb;
+  }
+}
+
+@keyframes dotGlow {
+  0%, 16.67%, 100% {
+    background: #cbd5e1;
+    box-shadow: none;
+  }
+  4% {
+    background: #2563eb;
+    box-shadow: 0 0 6px rgba(37, 99, 235, 0.8);
+  }
+  10% {
+    background: #3b82f6;
+  }
+}
+
+@keyframes iconGlow {
+  0%, 16.67%, 100% {
+    color: #475569;
+  }
+  4% {
+    color: #2563eb;
+    filter: drop-shadow(0 0 3px rgba(37, 99, 235, 0.5));
+  }
+}
+
+/* Active Focal Node Style Override */
+.sketch-cube-node.focal-cube .cube-wrapper {
+  transform: scale(1.06) translateY(-4px) !important;
+}
+
+/* Active Status Dot Pulse */
+.sketch-cube-node.focal-cube .status-dot {
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 4px rgba(37, 99, 235, 0.4);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.3);
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.8);
+  }
+}
+
+/* Apply Sequential Glow Animations continuously to all Cubes to maintain sync */
+.sketch-cube-node .cube-wrapper {
+  animation: cubeWrapperGlow 12s ease-in-out infinite;
+}
+
+.sketch-cube-node .cube-face {
+  animation: faceGlow 12s ease-in-out infinite;
+}
+
+.sketch-cube-node .face-left {
+  animation: faceLeftGlow 12s ease-in-out infinite;
+}
+
+.sketch-cube-node .face-right {
+  animation: faceRightGlow 12s ease-in-out infinite;
+}
+
+.sketch-cube-node .face-top-bg {
+  animation: faceTopBgGlow 12s ease-in-out infinite;
+}
+
+.sketch-cube-node .cube-label {
+  animation: labelGlow 12s ease-in-out infinite;
+}
+
+.sketch-cube-node .cube-label span {
+  animation: labelTextGlow 12s ease-in-out infinite;
+}
+
+.sketch-cube-node .status-dot {
+  animation: dotGlow 12s ease-in-out infinite;
+}
+
+.sketch-cube-node .cube-icon {
+  animation: iconGlow 12s ease-in-out infinite;
+}
+
+/* Delay Offsets Clockwise around the circular current flow */
+.cube-pos-top .cube-wrapper,
+.cube-pos-top .cube-face,
+.cube-pos-top .face-left,
+.cube-pos-top .face-right,
+.cube-pos-top .face-top-bg,
+.cube-pos-top .cube-label,
+.cube-pos-top .cube-label span,
+.cube-pos-top .status-dot,
+.cube-pos-top .cube-icon {
+  animation-delay: 0s;
+}
+
+.cube-pos-top-right .cube-wrapper,
+.cube-pos-top-right .cube-face,
+.cube-pos-top-right .face-left,
+.cube-pos-top-right .face-right,
+.cube-pos-top-right .face-top-bg,
+.cube-pos-top-right .cube-label,
+.cube-pos-top-right .cube-label span,
+.cube-pos-top-right .status-dot,
+.cube-pos-top-right .cube-icon {
+  animation-delay: 2s;
+}
+
+.cube-pos-bottom-right .cube-wrapper,
+.cube-pos-bottom-right .cube-face,
+.cube-pos-bottom-right .face-left,
+.cube-pos-bottom-right .face-right,
+.cube-pos-bottom-right .face-top-bg,
+.cube-pos-bottom-right .cube-label,
+.cube-pos-bottom-right .cube-label span,
+.cube-pos-bottom-right .status-dot,
+.cube-pos-bottom-right .cube-icon {
+  animation-delay: 4s;
+}
+
+.cube-pos-bottom .cube-wrapper,
+.cube-pos-bottom .cube-face,
+.cube-pos-bottom .face-left,
+.cube-pos-bottom .face-right,
+.cube-pos-bottom .face-top-bg,
+.cube-pos-bottom .cube-label,
+.cube-pos-bottom .cube-label span,
+.cube-pos-bottom .status-dot,
+.cube-pos-bottom .cube-icon {
+  animation-delay: 6s;
+}
+
+.cube-pos-bottom-left .cube-wrapper,
+.cube-pos-bottom-left .cube-face,
+.cube-pos-bottom-left .face-left,
+.cube-pos-bottom-left .face-right,
+.cube-pos-bottom-left .face-top-bg,
+.cube-pos-bottom-left .cube-label,
+.cube-pos-bottom-left .cube-label span,
+.cube-pos-bottom-left .status-dot,
+.cube-pos-bottom-left .cube-icon {
+  animation-delay: 8s;
+}
+
+.cube-pos-top-left .cube-wrapper,
+.cube-pos-top-left .cube-face,
+.cube-pos-top-left .face-left,
+.cube-pos-top-left .face-right,
+.cube-pos-top-left .face-top-bg,
+.cube-pos-top-left .cube-label,
+.cube-pos-top-left .cube-label span,
+.cube-pos-top-left .status-dot,
+.cube-pos-top-left .cube-icon {
+  animation-delay: 10s;
+}
+
+
+
 
 /* ─── RESPONSIVE COMPONENT LAYOUT ─── */
 @media (max-width: 1024px) {
@@ -315,6 +824,18 @@
     display: none;
   }
 
+  .orbit-ring-svg {
+    display: none;
+  }
+
+  .blueprint-axis {
+    display: none;
+  }
+
+  .logo-glow-aura {
+    display: none;
+  }
+
   /* Automatically flattens absolute 3D layers into a clean grid system on tablets & mobile viewports */
   .cube-matrix-container {
     position: relative;
@@ -334,7 +855,7 @@
     bottom: auto !important;
     left: auto !important;
     right: auto !important;
-    margin: 0 auto;
+    margin: 0 auto 24px auto !important;
     animation: none !important;
     width: 120px;
     height: 105px;
