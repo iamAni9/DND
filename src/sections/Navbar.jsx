@@ -35,7 +35,7 @@ const Navbar = () => {
           <div className="navbar__section navbar__section--left">
             <div className="navbar__brand">
               <div className="navbar__logo-wrapper">
-                <img src="/dnd logo plain.png" alt="DevNextDoor Logo" className="navbar__logo" />
+                <img src="/dnd_logo.png" alt="DevNextDoor Logo" className="navbar__logo" />
               </div>
               <span className="navbar__title">DevNextDoor</span>
             </div>

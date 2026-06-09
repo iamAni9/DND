@@ -172,8 +172,7 @@
 
 .navbar__link:hover {
   color: #e1e1e3;
-  background: #2e2e33;
-  border-color: #52525a; /* Completely flat hover outline */
+  cursor: pointer;
 }
 
 /* ========================================

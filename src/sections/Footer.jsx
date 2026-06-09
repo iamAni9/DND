@@ -76,7 +76,7 @@ const Footer = () => {
       <div className="footer-container">
         {/* Left Column: Brand & Logo */}
         <div className="footer-brand-box">
-          <img src="/dnd logo with text.png" alt="DevNextDoor Logo" className="footer-logo-brand" />
+          <img src="/dnd_logo_with_text.png" alt="DevNextDoor Logo" className="footer-logo-brand" />
           <p className="footer-desc">
             Squeezing fresh concepts into clean code. We build custom websites, automated workflows, and LLM-powered AI systems for fast-growing startups.
           </p>
