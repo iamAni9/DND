@@ -3,6 +3,8 @@
    ═══════════════════════════════════════════ */
 
 .contact-section {
+  --quill-cursor: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj4KICA8cGF0aCBkPSJNMiwzMCBMOSwyMyIgc3Ryb2tlPSIjMmQyMzE0IiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPHBhdGggZD0iTTIsMzAgTDksMjMiIHN0cm9rZT0iI2NjOWU0MyIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8cGF0aCBkPSJNOSwyMyBDMTIsMTggMjAsMTEgMjYsNSBDMjgsMyAyOSw0IDI3LDcgQzIxLDEzIDE0LDIxIDExLDI0IEMxMCwyNSA5LDI0IDksMjMgWiIgZmlsbD0iI2ViZDY5ZSIgc3Ryb2tlPSIjMmQyMzE0IiBzdHJva2Utd2lkdGg9IjEuMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik0xNCwxOSBRMTgsMTcgMjAsMTYiIHN0cm9rZT0iIzJkMjMxNCIgc3Ryb2tlLXdpZHRoPSIwLjgiIGZpbGw9Im5vbmUiLz4KICA8cGF0aCBkPSJNMTcsMTUgUTIxLDEzIDIzLDEyIiBzdHJva2U9IiMyZDIzMTQiIHN0cm9rZS13aWR0aD0iMC44IiBmaWxsPSJub25lIi8+CiAgPHBhdGggZD0iTTIwLDExIFEyNCw5IDI2LDgiIHN0cm9rZT0iIzJkMjMxNCIgc3Ryb2tlLXdpZHRoPSIwLjgiIGZpbGw9Im5vbmUiLz4KICA8Y2lyY2xlIGN4PSIyIiBjeT0iMzAiIHI9IjIiIGZpbGw9IiNhMDNjMDAiLz4KICA8Y2lyY2xlIGN4PSIyIiBjeT0iMzAiIHI9IjEiIGZpbGw9IiNmZmQ3MDAiLz4KPC9zdmc+) 2 30, auto;
+
   padding: 7rem 2rem 8rem;
   width: 100%;
   box-sizing: border-box;
@@ -11,6 +13,7 @@
   /* Warm candlelight parchment gradient background */
   background: radial-gradient(circle at center, #fdfbf7 0%, #ebdcae 100%);
   position: relative;
+  cursor: var(--quill-cursor);
 }
 
 /* Page border decorations for contact section */
@@ -162,6 +165,7 @@
   box-sizing: border-box;
   width: 100%;
   transition: border-bottom-color 0.25s ease, background-color 0.25s ease;
+  cursor: var(--quill-cursor);
 }
 
 .form-input::placeholder {
@@ -200,7 +204,7 @@
   font-size: 1.35rem;
   font-weight: 800;
   color: #2d2314;
-  cursor: pointer;
+  cursor: var(--quill-cursor);
   padding: 0.2rem 0.6rem;
   transition: transform 0.2s ease;
 }

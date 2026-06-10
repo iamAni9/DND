@@ -30,6 +30,7 @@ const Navbar = () => {
 
       {/* Your Navbar */}
       <nav className={`navbar ${detached ? 'navbar--detached' : 'navbar--attached'} ${isMobileMenuOpen ? 'navbar--open' : ''}`}>
+        <div className="navbar__bg"></div>
         <div className="navbar__inner">
           {/* Brand/Logo */}
           <div className="navbar__section navbar__section--left">
@@ -64,7 +65,7 @@ const Navbar = () => {
 
           {/* Right CTA / Mobile Toggle */}
           <div className="navbar__section navbar__section--right">
-            <button 
+            <button
               className={`navbar__burger ${isMobileMenuOpen ? 'navbar__burger--active' : ''}`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle navigation menu"

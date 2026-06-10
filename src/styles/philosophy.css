@@ -1,5 +1,6 @@
 /* Philosophy/Cosmic Section Styles */
 .philosophy {
+  position: relative;
   padding: 6rem 2rem;
   width: 100%;
   box-sizing: border-box;
@@ -242,3 +243,65 @@
   color: var(--text);
   margin: 0;
 }
+
+/* ─── Handdrawn Clouds at the Top of Philosophy Section ─── */
+.philosophy-clouds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 130px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cloud-doodle {
+  position: absolute;
+  filter: drop-shadow(4px 4px 0px var(--text-h));
+  animation: cloudBob 6s infinite ease-in-out alternate;
+  width: 90px;
+  height: 55px;
+  transform-origin: center;
+}
+
+.cloud-doodle:nth-child(1) {
+  top: 10px;
+  left: 6%;
+  animation-delay: 0s;
+  animation-duration: 5.5s;
+}
+
+.cloud-doodle:nth-child(2) {
+  top: 25px;
+  left: 32%;
+  width: 110px;
+  height: 65px;
+  animation-delay: -1.5s;
+  animation-duration: 7s;
+}
+
+.cloud-doodle:nth-child(3) {
+  top: 15px;
+  right: 28%;
+  width: 95px;
+  height: 58px;
+  animation-delay: -3s;
+  animation-duration: 6.2s;
+}
+
+.cloud-doodle:nth-child(4) {
+  top: 28px;
+  right: 8%;
+  width: 105px;
+  height: 62px;
+  animation-delay: -4.5s;
+  animation-duration: 6.8s;
+}
+
+@keyframes cloudBob {
+  0% { transform: translateY(0px) rotate(0deg) scale(1); }
+  50% { transform: translateY(-6px) rotate(1.2deg) scale(1.03); }
+  100% { transform: translateY(0px) rotate(0deg) scale(1); }
+}
+

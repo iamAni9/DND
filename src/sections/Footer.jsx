@@ -110,6 +110,61 @@ const Footer = () => {
         </div>
       </div>
 
+      {/* Rainbros Animation Scene container */}
+      <div className="rainbros-container">
+        <div className="rainbros-scene">
+          <div className="boom"></div>
+          
+          <div className="trace trace-1">
+            {Array.from({ length: 14 }).map((_, idx) => (
+              <div key={idx} className="arc"></div>
+            ))}
+          </div>
+          <div className="bro bro-1">
+            <span></span>
+            <div className="face">
+              <span></span>
+            </div>
+          </div>
+
+          <div className="trace trace-2">
+            {Array.from({ length: 8 }).map((_, idx) => (
+              <div key={idx} className="arc"></div>
+            ))}
+          </div>
+          <div className="bro bro-2">
+            <span></span>
+            <div className="face">
+              <span></span>
+            </div>
+          </div>
+
+          <div className="trace trace-3">
+            {Array.from({ length: 5 }).map((_, idx) => (
+              <div key={idx} className="arc"></div>
+            ))}
+          </div>
+          <div className="bro bro-3">
+            <span></span>
+            <div className="face">
+              <span></span>
+            </div>
+          </div>
+
+          <div className="trace trace-4">
+            {Array.from({ length: 4 }).map((_, idx) => (
+              <div key={idx} className="arc"></div>
+            ))}
+          </div>
+          <div className="bro bro-4">
+            <span></span>
+            <div className="face">
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Bottom Row */}
       <div className="footer-bottom">
         <p className="footer-copyright font-marker">

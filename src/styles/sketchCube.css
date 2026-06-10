@@ -11,57 +11,446 @@
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.cube-wrapper {
+/* --- 3D BOX SCENE & ENGINE --- */
+.box-scene {
+  --box-size: 68px;
+  --box-height: 50px;
+  width: var(--box-size);
+  height: var(--box-size);
+  perspective: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.cube-svg {
+.box-core {
+  position: relative;
+  width: var(--box-size);
+  height: var(--box-size);
+  transform-style: preserve-3d;
+  /* Normal closed isometric angle */
+  transform: translateZ(-20px) rotateX(-22deg) rotateY(45deg);
+  transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+}
+
+/* Tilt box forward slightly on hover/active to peer inside */
+.sketch-cube-node:hover .box-core,
+.sketch-cube-node.open-cube .box-core {
+  transform: translateZ(-10px) rotateX(-36deg) rotateY(22deg);
+}
+
+.box-core > * {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  overflow: visible;
+  box-sizing: border-box;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1.5px solid #64748b; /* Soft hand-drawn wireframe border */
 }
 
-.face-top-bg {
-  fill: #ffffff;
-  transition: fill 0.3s ease;
+/* Main Outer Sides */
+.side.front {
+  width: var(--box-size);
+  height: var(--box-height);
+  background: #ffffff;
+  transform: translateY(calc(var(--box-size) * 0.25)) translateZ(calc(var(--box-size) * 0.499));
 }
 
-.face-top {
-  fill: url(#cube-hatch) !important;
+.side.right {
+  width: var(--box-size);
+  height: var(--box-height);
+  background: #f1f5f9; /* Volumetric shadow shading */
+  transform: translateY(calc(var(--box-size) * 0.25)) rotateY(90deg) translateZ(calc(var(--box-size) * 0.499));
 }
 
-.cube-face {
-  stroke: #64748b;
-  stroke-width: 1.1;
-  stroke-linejoin: round;
-  fill: #ffffff;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.side.back {
+  width: var(--box-size);
+  height: var(--box-height);
+  background: #e2e8f0;
+  transform: translateY(calc(var(--box-size) * 0.25)) rotateY(180deg) translateZ(calc(var(--box-size) * 0.499));
 }
 
-.face-left {
-  fill: #ffffff;
+.side.left {
+  width: var(--box-size);
+  height: var(--box-height);
+  background: #f8fafc;
+  transform: translateY(calc(var(--box-size) * 0.25)) rotateY(-90deg) translateZ(calc(var(--box-size) * 0.499));
 }
 
-.face-right {
-  fill: #f1f5f9;
+.side.bottom {
+  width: var(--box-size);
+  height: var(--box-size);
+  background: #cbd5e1;
+  transform: translateY(calc(var(--box-size) * 0.25)) rotateX(90deg) translateZ(calc(var(--box-size) * -0.249));
 }
 
-.inner-wireframe {
-  stroke: #94a3b8;
-  opacity: 0.7;
-}
-
-.cube-icon {
+/* Projected SVG icon flat inside left side (Larger dimensions to fit references) */
+.side-icon-svg {
+  width: 38px;
+  height: 38px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   color: #475569;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
+/* Cardboard Box Top Flaps */
+.flap {
+  background: #ffffff;
+  /* Pure CSS pencil hatching pattern */
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(148, 163, 184, 0.22) 5px, rgba(148, 163, 184, 0.22) 6px);
+}
+
+.flap.front,
+.flap.back {
+  width: var(--box-size);
+  height: calc(var(--box-size) * 0.5);
+}
+
+.flap.left,
+.flap.right {
+  width: calc(var(--box-size) * 0.5);
+  height: var(--box-size);
+}
+
+/* Closed positions and origins for flaps */
+.flap.front {
+  transform-origin: 50% 100% calc(var(--box-size) * 0.5);
+  transform: translateY(calc(var(--box-size) * -0.25)) rotateX(90deg) translateZ(calc(var(--box-size) * 0.499));
+}
+
+.flap.back {
+  transform-origin: 50% 100% calc(var(--box-size) * -0.5);
+  transform: translateY(calc(var(--box-size) * -0.25)) rotateX(-90deg) translateZ(calc(var(--box-size) * -0.499));
+}
+
+.flap.left {
+  transform-origin: 0 50% 0;
+  transform: translateY(calc(var(--box-size) * -0.25)) rotateX(90deg) rotateY(0deg);
+}
+
+.flap.right {
+  transform-origin: 0 50% 0;
+  transform: translateX(var(--box-size)) translateY(calc(var(--box-size) * -0.25)) rotateX(90deg) rotateY(180deg);
+}
+
+/* Cardboard Box Flap Opening Transformations (Hover or Active Selected) */
+.sketch-cube-node:hover .flap.front,
+.sketch-cube-node.open-cube .flap.front {
+  transform: translateY(calc(var(--box-size) * -0.25)) rotateX(-120deg) translateZ(calc(var(--box-size) * 0.499));
+}
+
+.sketch-cube-node:hover .flap.back,
+.sketch-cube-node.open-cube .flap.back {
+  transform: translateY(calc(var(--box-size) * -0.25)) rotateX(120deg) translateZ(calc(var(--box-size) * -0.499));
+}
+
+.sketch-cube-node:hover .flap.left,
+.sketch-cube-node.open-cube .flap.left {
+  transform: translateY(calc(var(--box-size) * -0.25)) rotateX(90deg) rotateY(-210deg);
+}
+
+.sketch-cube-node:hover .flap.right,
+.sketch-cube-node.open-cube .flap.right {
+  transform: translateX(var(--box-size)) translateY(calc(var(--box-size) * -0.25)) rotateX(90deg) rotateY(380deg);
+}
+
+/* Inside shadow shading transition when flaps fold open */
+.sketch-cube-node:hover .flap,
+.sketch-cube-node.open-cube .flap {
+  background-color: #cbd5e1;
+}
+
+/* Staggered transitions for natural cardboard box flaps physics */
+.sketch-cube-node:not(:hover):not(.open-cube) .flap.left,
+.sketch-cube-node:not(:hover):not(.open-cube) .flap.right {
+  transition-delay: 0.15s;
+}
+
+.sketch-cube-node:hover .flap.front,
+.sketch-cube-node:hover .flap.back,
+.sketch-cube-node.open-cube .flap.front,
+.sketch-cube-node.open-cube .flap.back {
+  transition-delay: 0.15s;
+}
+
+/* General outline weight/color transitions */
+.sketch-cube-node:hover .box-core > *,
+.sketch-cube-node.open-cube .box-core > * {
+  border-color: #0f172a;
+  border-width: 1.8px;
+}
+
+.sketch-cube-node:hover .side-icon-svg,
+.sketch-cube-node.open-cube .side-icon-svg {
+  color: #0f172a;
+}
+
+/* --- ACTIVE FOCAL BOX (AI AGENTS) STYLES --- */
+.sketch-cube-node.focal-cube {
+  width: 145px;
+  height: 128px;
+  z-index: 10;
+}
+
+.focal-cube .box-core > * {
+  border-color: #2563eb; /* Active blue border */
+  border-width: 1.8px;
+}
+
+.focal-cube .side.front {
+  background: #f0f7ff;
+}
+
+.focal-cube .side.right {
+  background: #e0f2fe;
+}
+
+.focal-cube .side.back {
+  background: #bae6fd;
+}
+
+.focal-cube .side.left {
+  background: #eff6ff;
+}
+
+.focal-cube .side.bottom {
+  background: #7dd3fc;
+}
+
+.focal-cube .flap {
+  background: #f0f7ff;
+  /* Blue sketch hatching */
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(96, 165, 250, 0.35) 5px, rgba(96, 165, 250, 0.35) 6px);
+}
+
+.sketch-cube-node.focal-cube.open-cube .flap,
+.sketch-cube-node.focal-cube:hover .flap {
+  background-color: #bae6fd;
+}
+
+.focal-cube .side-icon-svg {
+  color: #2563eb;
+}
+
+.focal-cube:hover .box-core > * {
+  border-color: #1d4ed8;
+  border-width: 2.2px;
+}
+
+.focal-cube:hover .side-icon-svg {
+  color: #1d4ed8;
+}
+
+.sketch-cube-node.focal-cube .status-dot {
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 4px rgba(37, 99, 235, 0.4);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.3);
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.8);
+  }
+}
+
+@media (max-width: 1024px) {
+  .sketch-cube-node {
+    width: 105px;
+    height: 95px;
+  }
+
+  .sketch-cube-node.focal-cube {
+    width: 115px;
+    height: 105px;
+  }
+
+  .sketch-cube-node .box-scene {
+    --box-size: 54px;
+    --box-height: 40px;
+  }
+
+  .sketch-cube-node .side-icon-svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .sketch-cube-node .cube-label {
+    bottom: -24px;
+    padding: 2px 8px;
+  }
+
+  .sketch-cube-node .cube-label span {
+    font-size: 0.65rem;
+  }
+
+  .sketch-cube-node .surprise-badges {
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+
+  .sketch-cube-node .surprise-badge {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+@media (max-width: 600px) {
+  .sketch-cube-node {
+    width: 80px;
+    height: 70px;
+  }
+
+  .sketch-cube-node.focal-cube {
+    width: 90px;
+    height: 80px;
+  }
+
+  .sketch-cube-node .box-scene {
+    --box-size: 42px;
+    --box-height: 30px;
+  }
+
+  .sketch-cube-node .side-icon-svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .sketch-cube-node .cube-label {
+    bottom: -20px;
+    padding: 1px 6px;
+    border-radius: 8px;
+  }
+
+  .sketch-cube-node .cube-label span {
+    font-size: 0.55rem;
+  }
+
+  .sketch-cube-node .surprise-badges {
+    transform: translate(-50%, -50%) scale(0.65);
+  }
+
+  .sketch-cube-node .surprise-badge {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* --- SURPRISE TECH BADGES --- */
+.surprise-badges {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.surprise-badge {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid #e2e8f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.3s ease-out; /* Smooth collapse when unhovered/deactivated */
+  pointer-events: auto;
+}
+
+.surprise-badge svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+/* Symmetrical Diagonal offsets on hover or active open state with keyframe pop & fall */
+.sketch-cube-node:hover .badge-0,
+.sketch-cube-node.open-cube .badge-0 {
+  animation: popAndFall0 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.sketch-cube-node:hover .badge-1,
+.sketch-cube-node.open-cube .badge-1 {
+  animation: popAndFall1 0.6s cubic-bezier(0.25, 1, 0.5, 1) 0.05s forwards;
+}
+
+.sketch-cube-node:hover .badge-2,
+.sketch-cube-node.open-cube .badge-2 {
+  animation: popAndFall2 0.65s cubic-bezier(0.25, 1, 0.5, 1) 0.1s forwards;
+}
+
+.sketch-cube-node:hover .badge-3,
+.sketch-cube-node.open-cube .badge-3 {
+  animation: popAndFall3 0.65s cubic-bezier(0.25, 1, 0.5, 1) 0.15s forwards;
+}
+
+/* POP AND FALL KEYFRAME ANIMATIONS (Settling higher to avoid overlapping the title label) */
+@keyframes popAndFall0 {
+  0% { transform: translate(-16px, -40px) scale(0); opacity: 0; }
+  40% { transform: translate(-60px, -85px) scale(1.15); opacity: 1; }
+  100% { transform: translate(-72px, -50px) scale(1); opacity: 1; }
+}
+
+@keyframes popAndFall1 {
+  0% { transform: translate(-16px, -40px) scale(0); opacity: 0; }
+  40% { transform: translate(30px, -85px) scale(1.15); opacity: 1; }
+  100% { transform: translate(40px, -50px) scale(1); opacity: 1; }
+}
+
+@keyframes popAndFall2 {
+  0% { transform: translate(-16px, -40px) scale(0); opacity: 0; }
+  45% { transform: translate(-45px, -95px) scale(1.15); opacity: 1; }
+  100% { transform: translate(-75px, -5px) scale(1); opacity: 1; }
+}
+
+@keyframes popAndFall3 {
+  0% { transform: translate(-16px, -40px) scale(0); opacity: 0; }
+  45% { transform: translate(15px, -95px) scale(1.15); opacity: 1; }
+  100% { transform: translate(43px, -5px) scale(1); opacity: 1; }
+}
+
+/* Tooltip on Badge Hover */
+.badge-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px) scale(0.85);
+  background: #0f172a;
+  color: #ffffff;
+  font-family: sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 7px;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  z-index: 30;
+}
+
+.surprise-badge:hover .badge-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-6px) scale(1);
+}
+
+/* Category Label Badges Below Boxes */
 .cube-label {
   position: absolute;
   bottom: -32px;
@@ -101,79 +490,26 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Hover */
-
-.sketch-cube-node:hover .cube-wrapper {
-  transform: scale(1.12) rotate(1deg);
+.sketch-cube-node:hover .cube-label,
+.sketch-cube-node.focal-cube .cube-label {
+  border-color: #bfdbfe !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12) !important;
+  transform: translateX(-50%) translateY(-1px) scale(1.03) !important;
 }
 
-.sketch-cube-node:hover .cube-face {
-  stroke: #0f172a;
-  stroke-width: 1.6;
+.sketch-cube-node:hover .cube-label span,
+.sketch-cube-node.focal-cube .cube-label span {
+  color: #2563eb !important;
 }
 
-.sketch-cube-node:hover .face-left {
-  fill: #f8fafc;
+.sketch-cube-node:hover .status-dot,
+.sketch-cube-node.focal-cube .status-dot {
+  background: #2563eb !important;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.8) !important;
 }
 
-.sketch-cube-node:hover .face-right {
-  fill: #f1f5f9;
-}
-
-.sketch-cube-node:hover .face-top-bg {
-  fill: #f8fafc;
-}
-
-.sketch-cube-node:hover .cube-label {
-  border-color: #bfdbfe;
-  background: #ffffff;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
-  transform: translateX(-50%) translateY(-1px) scale(1.03);
-}
-
-.sketch-cube-node:hover .cube-label span {
-  color: #2563eb;
-}
-
-.sketch-cube-node:hover .status-dot {
-  background: #2563eb;
-  box-shadow: 0 0 6px rgba(37, 99, 235, 0.8);
-}
-
-.sketch-cube-node:hover .cube-icon {
-  color: #0f172a;
-}
-
-/* Focal Cube */
-
-.sketch-cube-node.focal-cube {
-  width: 145px;
-  height: 128px;
-  z-index: 10;
-}
-
-.focal-cube .face-top-bg {
-  fill: #f0f7ff !important;
-}
-
-.focal-cube .cube-face {
-  stroke: #2563eb !important;
-  stroke-width: 2.2 !important;
-}
-
-.focal-cube .face-left {
-  fill: #f0f7ff !important;
-}
-
-.focal-cube .face-right {
-  fill: #e0f2fe !important;
-}
-
-.focal-cube .inner-wireframe {
-  stroke: #60a5fa !important;
-  opacity: 0.9 !important;
-}
-
+/* Active Focal Node Title Overrides */
 .focal-cube .cube-label {
   border-color: #bfdbfe !important;
   background: #eff6ff !important;
@@ -188,49 +524,17 @@
   box-shadow: 0 0 4px rgba(37, 99, 235, 0.4) !important;
 }
 
-.focal-cube .cube-icon {
-  color: #2563eb !important;
+.sketch-cube-node.focal-cube:hover .cube-label {
+  border-color: #93c5fd !important;
+  background: #eff6ff !important;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.15) !important;
 }
 
-.sketch-cube-node.focal-cube .cube-wrapper {
-  transform: scale(1.06) translateY(-4px);
+.sketch-cube-node.focal-cube:hover .cube-label span {
+  color: #1d4ed8 !important;
 }
 
-.sketch-cube-node.focal-cube .status-dot {
-  animation: statusPulse 2s ease-in-out infinite;
-}
-
-@keyframes statusPulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-    box-shadow: 0 0 4px rgba(37, 99, 235, 0.4);
-  }
-
-  50% {
-    opacity: 0.5;
-    transform: scale(1.3);
-    box-shadow: 0 0 8px rgba(37, 99, 235, 0.8);
-  }
-}
-
-@media (max-width: 1024px) {
-  .sketch-cube-node {
-    position: relative !important;
-    transform: none !important;
-    top: auto !important;
-    bottom: auto !important;
-    left: auto !important;
-    right: auto !important;
-    margin: 0 auto 24px auto !important;
-    animation: none !important;
-    width: 120px;
-    height: 105px;
-  }
-
-  .sketch-cube-node.focal-cube {
-    width: 120px;
-    height: 105px;
-    order: -1;
-  }
+.sketch-cube-node.focal-cube:hover .status-dot {
+  background: #1d4ed8 !important;
+  box-shadow: 0 0 6px rgba(29, 78, 216, 0.8) !important;
 }

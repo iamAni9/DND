@@ -1,0 +1,318 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
+canvas{display:block;width:100%;border-radius:12px;}
+</style>
+<canvas id="c"></canvas>
+<script>
+const cv=document.getElementById('c');
+const cx=cv.getContext('2d');
+cv.width=680;cv.height=320;
+const W=680,H=320;
+
+let t=0,manX=80,dir=1;
+const SPEED=1.2,MINX=80,MAXX=600;
+
+function ry(x){return 215+Math.sin(x*0.013)*7+Math.sin(x*0.028)*3;}
+
+// Rain drops
+const drops=[];
+for(let i=0;i<90;i++){
+  drops.push({x:Math.random()*W,y:Math.random()*H,spd:6+Math.random()*5,len:10+Math.random()*14,op:0.3+Math.random()*0.5});
+}
+
+function updateRain(){
+  drops.forEach(d=>{
+    d.y+=d.spd;d.x-=1.5;
+    if(d.y>H){d.y=-20;d.x=Math.random()*W;}
+    if(d.x<0){d.x=W;d.y=Math.random()*H;}
+  });
+}
+
+function drawBg(){
+  // Sky - rainy grey
+  cx.fillStyle='#d6dde8';cx.fillRect(0,0,W,H);
+  // Ground
+  cx.beginPath();cx.moveTo(0,H-28);
+  for(let x=0;x<=W;x+=3)cx.lineTo(x,H-28+Math.sin(x*0.04)*2);
+  cx.lineTo(W,H);cx.lineTo(0,H);cx.closePath();
+  cx.fillStyle='#b8c49a';cx.fill();
+  // Puddle reflections
+  [120,280,430,560].forEach(px=>{
+    cx.beginPath();cx.ellipse(px,H-18,22+Math.sin(t*0.1)*2,5,0,0,Math.PI*2);
+    cx.fillStyle='rgba(180,200,220,0.5)';cx.fill();
+    cx.strokeStyle='rgba(140,170,200,0.4)';cx.lineWidth=1;cx.stroke();
+  });
+  // Dark clouds
+  [[90,38],[260,22],[430,42],[580,28]].forEach(([ccx,ccy])=>{
+    cx.save();cx.globalAlpha=0.75;cx.fillStyle='#8a96a8';cx.strokeStyle='#6a7888';cx.lineWidth=1.2;
+    [[-28,4,30,18],[0,-4,34,20],[28,4,26,16],[-52,8,22,14],[52,8,20,13]].forEach(([ox,oy,erx,ery])=>{
+      cx.beginPath();cx.ellipse(ccx+ox,ccy+oy,erx,ery,0,0,Math.PI*2);cx.fill();cx.stroke();
+    });
+    cx.restore();
+  });
+}
+
+function drawRain(){
+  cx.save();cx.strokeStyle='#8ab0d0';cx.lineCap='round';
+  drops.forEach(d=>{
+    cx.globalAlpha=d.op;cx.lineWidth=1.2;
+    cx.beginPath();cx.moveTo(d.x,d.y);cx.lineTo(d.x-d.len*0.18,d.y+d.len);cx.stroke();
+  });
+  cx.globalAlpha=1;cx.restore();
+}
+
+function drawRope(){
+  cx.save();cx.lineCap='round';
+  // Posts
+  [160,310,455,560].forEach(px=>{
+    const py=ry(px);
+    cx.beginPath();cx.moveTo(px,py+2);cx.lineTo(px,py+55);
+    cx.strokeStyle='#7a6040';cx.lineWidth=3;cx.stroke();
+    cx.beginPath();cx.arc(px,py+57,4.5,0,Math.PI*2);
+    cx.fillStyle='#7a6040';cx.fill();
+  });
+  // Dotted rope - orange layer
+  for(let x=30;x<660;x+=19){
+    const y=ry(x);
+    cx.beginPath();cx.ellipse(x,y,5.5,3.5,0,0,Math.PI*2);
+    cx.fillStyle='#d4952a';cx.fill();
+  }
+  // Pink overlay
+  for(let x=39;x<660;x+=19){
+    const y=ry(x);
+    cx.beginPath();cx.ellipse(x,y+1,4.5,2.8,0,0,Math.PI*2);
+    cx.fillStyle='#d47070';cx.globalAlpha=0.55;cx.fill();cx.globalAlpha=1;
+  }
+  cx.restore();
+}
+
+function sk(x1,y1,x2,y2,col,lw,al){
+  cx.save();cx.strokeStyle=col;cx.lineWidth=lw;cx.globalAlpha=al||1;cx.lineCap='round';
+  cx.beginPath();
+  cx.moveTo(x1+(Math.random()-.5)*.6,y1+(Math.random()-.5)*.6);
+  cx.quadraticCurveTo((x1+x2)/2+(Math.random()-.5)*1.2,(y1+y2)/2+(Math.random()-.5)*1.2,x2+(Math.random()-.5)*.6,y2+(Math.random()-.5)*.6);
+  cx.stroke();cx.restore();
+}
+
+function drawMan(mx,baseY,walk,right){
+  cx.save();
+  cx.translate(mx,baseY);
+  const bob=Math.sin(walk*2)*2.5;
+  cx.translate(0,bob);
+  const f=right?1:-1;
+  const leg=Math.sin(walk*2)*24;
+  const arm=Math.sin(walk*2)*16;
+  const sk2='#2e2418',skin='#f4c28a',hair='#3e2c1c',shirt='#4a6fb8',pants='#2e3d5c',shoe='#1e1610';
+
+  // --- LEGS (feet planted ON rope = y=0 here since we translated to baseY) ---
+  [-1,1].forEach(side=>{
+    const ang=(side*f>0?leg:-leg)*Math.PI/180;
+    cx.save();
+    cx.translate(f*3,10);
+    cx.rotate(ang);
+    // Upper leg
+    cx.beginPath();cx.moveTo(0,0);cx.lineTo(f*2,24);
+    cx.strokeStyle=pants;cx.lineWidth=7;cx.lineCap='round';cx.stroke();
+    // Lower leg
+    cx.save();cx.translate(f*2,24);
+    cx.rotate(ang*0.6);
+    cx.beginPath();cx.moveTo(0,0);cx.lineTo(f*1,20);
+    cx.strokeStyle=pants;cx.lineWidth=6;cx.stroke();
+    // Shoe - elongated oval
+    cx.save();cx.translate(f*1,20);
+    cx.rotate(-ang*0.3);
+    cx.beginPath();cx.ellipse(f*7,3,11,5,0,0,Math.PI*2);
+    cx.fillStyle=shoe;cx.fill();
+    cx.strokeStyle='#0e0c08';cx.lineWidth=1.2;cx.stroke();
+    cx.restore();
+    cx.restore();
+    cx.restore();
+  });
+
+  // --- BODY ---
+  cx.save();
+  cx.beginPath();
+  cx.moveTo(-13,-28);cx.bezierCurveTo(-16,-14,-15,2,-11,10);
+  cx.lineTo(11,10);cx.bezierCurveTo(15,2,16,-14,13,-28);cx.closePath();
+  cx.fillStyle=shirt;cx.fill();
+  cx.strokeStyle='#2a4a88';cx.lineWidth=2;cx.stroke();
+  // Collar
+  cx.beginPath();cx.moveTo(-6,-28);cx.lineTo(0,-22);cx.lineTo(6,-28);
+  cx.strokeStyle='#eef0f8';cx.lineWidth=1.8;cx.stroke();
+  cx.restore();
+
+  // --- ARM BACK ---
+  cx.save();cx.translate(-f*10,-20);cx.rotate(arm*f*Math.PI/180);
+  cx.beginPath();cx.moveTo(0,0);cx.lineTo(-f*3,22);
+  cx.strokeStyle=skin;cx.lineWidth=5;cx.lineCap='round';cx.stroke();
+  cx.restore();
+
+  // --- ARM FRONT (holding umbrella UP) ---
+  cx.save();cx.translate(f*9,-22);
+  // Arm raised holding handle
+  cx.beginPath();cx.moveTo(0,0);cx.lineTo(f*4,-24);
+  cx.strokeStyle=skin;cx.lineWidth=5;cx.lineCap='round';cx.stroke();
+  // Hand
+  cx.beginPath();cx.arc(f*4,-24,4.5,0,Math.PI*2);cx.fillStyle=skin;cx.fill();
+  cx.strokeStyle='#c07040';cx.lineWidth=1.5;cx.stroke();
+  cx.restore();
+
+  // --- UMBRELLA (centered above head, tilted toward direction) ---
+  cx.save();
+  // Handle bottom connects to raised hand at (f*13, -46)
+  const handleBaseX=f*13, handleBaseY=-46;
+  const handleTopX=f*5, handleTopY=-118;
+  cx.translate(handleBaseX, handleBaseY);
+  cx.rotate(f*0.12+Math.sin(t*0.04)*0.03);
+
+  // Handle stick
+  cx.beginPath();cx.moveTo(0,0);cx.lineTo(-f*8,-72);
+  cx.strokeStyle='#6a4828';cx.lineWidth=3.5;cx.lineCap='round';cx.stroke();
+  // Handle hook at bottom
+  cx.beginPath();cx.arc(-f*4,4,5,0,Math.PI*(f>0?1:-1));
+  cx.strokeStyle='#6a4828';cx.lineWidth=3;cx.stroke();
+
+  // Canopy - wide, covers man well
+  const tipX=-f*8,tipY=-72;
+  cx.save();cx.translate(tipX,tipY);
+
+  // Main dome - large enough to shelter
+  cx.beginPath();
+  cx.moveTo(-52,0);
+  cx.bezierCurveTo(-54,-18,-42,-38,-28,-44);
+  cx.bezierCurveTo(-14,-50,0,-52,0,-52);
+  cx.bezierCurveTo(0,-52,14,-50,28,-44);
+  cx.bezierCurveTo(42,-38,54,-18,52,0);
+  cx.closePath();
+  cx.fillStyle='#5a8fd0';cx.globalAlpha=0.88;cx.fill();cx.globalAlpha=1;
+  cx.strokeStyle='#2a5a98';cx.lineWidth=2.2;cx.stroke();
+
+  // Canopy panels / ribs
+  [[-42,-40],[-22,-50],[0,-52],[22,-50],[42,-40]].forEach(([rx,ry2])=>{
+    cx.beginPath();cx.moveTo(0,0);cx.lineTo(rx,ry2);
+    cx.strokeStyle='#2a5a98';cx.lineWidth=1.3;cx.globalAlpha=0.65;cx.stroke();cx.globalAlpha=1;
+  });
+
+  // Scalloped edge
+  for(let i=-5;i<5;i++){
+    const ex=i*10.5+5;
+    cx.beginPath();cx.arc(ex,2,5.8,Math.PI,0);
+    cx.strokeStyle='#2a5a98';cx.lineWidth=1.8;cx.stroke();
+    cx.beginPath();cx.arc(ex,2,5.5,Math.PI,0);
+    cx.fillStyle='#4a7fc0';cx.globalAlpha=0.5;cx.fill();cx.globalAlpha=1;
+  }
+  // Tip
+  cx.beginPath();cx.arc(0,-52,4,0,Math.PI*2);cx.fillStyle='#2a5a98';cx.fill();
+
+  // Rain drops hitting umbrella and sliding off
+  [[-48,-2],[-38,1],[-28,2],[30,1],[42,-1],[50,-3]].forEach(([dx,dy])=>{
+    const slideT=(t*0.05+dx*0.08)%1;
+    const slideX=dx+slideT*12*Math.sign(dx);
+    const slideY=dy+slideT*15;
+    if(slideT<0.7){
+      cx.beginPath();cx.arc(slideX,slideY,2,0,Math.PI*2);
+      cx.fillStyle='rgba(140,190,230,0.7)';cx.fill();
+    }
+  });
+
+  cx.restore();
+  cx.restore();
+
+  // --- HEAD ---
+  cx.save();cx.translate(f*2,-44);
+
+  // Neck
+  cx.beginPath();cx.moveTo(0,0);cx.lineTo(0,-10);
+  cx.strokeStyle=skin;cx.lineWidth=6;cx.lineCap='round';cx.stroke();
+
+  // Head oval
+  cx.beginPath();cx.ellipse(0,-26,16,19,0,0,Math.PI*2);
+  cx.fillStyle=skin;cx.fill();cx.strokeStyle='#c07040';cx.lineWidth=2;cx.stroke();
+
+  // Hair - messy
+  cx.beginPath();
+  cx.moveTo(-15,-28);
+  cx.bezierCurveTo(-18,-44,-10,-50,0,-50);
+  cx.bezierCurveTo(10,-50,18,-44,15,-28);
+  cx.fillStyle=hair;cx.fill();
+
+  // Hair tufts
+  for(let i=0;i<7;i++){
+    const hx=-9+i*3;
+    sk(hx,-48,hx+(Math.random()-.5)*4,-52+Math.sin(i)*3,hair,2.5,0.85);
+  }
+  // Sideburn
+  cx.beginPath();cx.ellipse(-f*14,-28,3,5,0,0,Math.PI*2);cx.fillStyle=hair;cx.fill();
+
+  // Glasses
+  cx.save();cx.strokeStyle='#1a120a';cx.lineWidth=2.2;
+  // Left lens
+  cx.beginPath();if(cx.roundRect)cx.roundRect(-15,-30,11,9,3);else cx.rect(-15,-30,11,9);
+  cx.fillStyle='rgba(200,225,255,0.18)';cx.fill();cx.stroke();
+  // Right lens
+  cx.beginPath();if(cx.roundRect)cx.roundRect(4,-30,11,9,3);else cx.rect(4,-30,11,9);
+  cx.fill();cx.stroke();
+  // Bridge
+  cx.beginPath();cx.moveTo(-4,-26);cx.lineTo(4,-26);cx.stroke();
+  // Temples
+  cx.beginPath();cx.moveTo(-15,-26);cx.lineTo(-19,-25);cx.stroke();
+  cx.beginPath();cx.moveTo(15,-26);cx.lineTo(19,-25);cx.stroke();
+  cx.restore();
+
+  // Eyes
+  cx.fillStyle='#0e0a06';
+  cx.beginPath();cx.arc(-8,-26,2.4,0,Math.PI*2);cx.fill();
+  cx.beginPath();cx.arc(9,-26,2.4,0,Math.PI*2);cx.fill();
+  cx.fillStyle='white';
+  cx.beginPath();cx.arc(-7,-27,0.9,0,Math.PI*2);cx.fill();
+  cx.beginPath();cx.arc(10,-27,0.9,0,Math.PI*2);cx.fill();
+
+  // Nose
+  cx.beginPath();cx.moveTo(-1,-20);cx.quadraticCurveTo(4,-18,3,-16);
+  cx.strokeStyle='#c07040';cx.lineWidth=1.6;cx.stroke();
+
+  // Smile
+  cx.beginPath();cx.arc(0,-14,6,0.15,Math.PI-0.15);
+  cx.strokeStyle='#b06030';cx.lineWidth=1.8;cx.stroke();
+
+  cx.restore();
+
+  // Splash at feet when foot hits ground
+  const splashAmt=Math.abs(Math.sin(walk*2));
+  if(splashAmt>0.85){
+    cx.save();cx.globalAlpha=(splashAmt-0.85)*4;
+    [-14,14].forEach(sx=>{
+      for(let sp=0;sp<5;sp++){
+        const ang=-Math.PI/2+(Math.random()-.5)*Math.PI*0.7;
+        const len=4+Math.random()*7;
+        cx.beginPath();cx.moveTo(sx,8);cx.lineTo(sx+Math.cos(ang)*len,8+Math.sin(ang)*len);
+        cx.strokeStyle='#88b8d8';cx.lineWidth=1.2;cx.stroke();
+      }
+    });
+    cx.restore();
+  }
+
+  cx.restore();
+}
+
+function loop(){
+  t++;
+  manX+=SPEED*dir;
+  if(manX>MAXX){manX=MAXX;dir=-1;}
+  if(manX<MINX){manX=MINX;dir=1;}
+  const walk=t*0.09;
+  const ropeYval=ry(manX);
+
+  cx.clearRect(0,0,W,H);
+  drawBg();
+  drawRain();
+  drawRope();
+  // Man's feet touch the rope: translate to ropeY, feet hang from body at +44px
+  // So body base = ropeY - offset so shoes sit ON rope
+  drawMan(manX, ropeYval-44, walk, dir>0);
+  updateRain();
+  requestAnimationFrame(loop);
+}
+loop();
+</script>

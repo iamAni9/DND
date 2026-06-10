@@ -13,23 +13,37 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  
-  /* Authentic Excalidraw Dark Palette */
-  background: #232329; 
-  font-family: 'Patrick Hand', cursive, sans-serif;
-  
-  /* Clean, crisp hand-drawn borders */
-  border: 2px solid #36363a;
 
-  /* The Sketchy Engine Engine */
-  filter: url(#excalidraw-sketch);
+  /* Clear backgrounds and filters on container */
+  background: transparent;
+  border: none;
+  filter: none;
+  font-family: 'Patrick Hand', cursive, sans-serif;
 
   transition:
     top 0.4s cubic-bezier(0.25, 1, 0.5, 1),
     max-width 0.4s cubic-bezier(0.25, 1, 0.5, 1),
     border-radius 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  
+
   will-change: top, max-width, border-radius;
+}
+
+/* ========================================
+   NAVBAR BACKGROUND ELEMENT (Filters applied here)
+   ======================================== */
+.navbar__bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #232329;
+  border: 2px solid #36363a;
+  filter: url(#excalidraw-sketch);
+  border-radius: inherit;
+  z-index: 1;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 /* ========================================
@@ -38,8 +52,11 @@
 .navbar--attached {
   top: 0;
   max-width: min(720px, 92vw);
-  border-top: none;
   border-radius: 0 0 14px 14px;
+}
+
+.navbar--attached .navbar__bg {
+  border-top: none;
 }
 
 /* Wings for the attached state */
@@ -78,8 +95,10 @@
 .navbar--detached {
   top: 1.25rem;
   max-width: min(900px, 92vw);
-  border-radius: 16px; 
-  
+  border-radius: 16px;
+}
+
+.navbar--detached .navbar__bg {
   /* NO 3D EFFECT: Just a very soft UI shadow to lift it off background elements */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
@@ -99,6 +118,8 @@
   gap: 1rem;
   width: 100%;
   padding: 0.65rem 1.4rem;
+  position: relative;
+  z-index: 2;
 }
 
 .navbar__section {
@@ -107,9 +128,17 @@
   flex: 1;
 }
 
-.navbar__section--left { justify-content: flex-start; }
-.navbar__section--center { justify-content: center; }
-.navbar__section--right { justify-content: flex-end; }
+.navbar__section--left {
+  justify-content: flex-start;
+}
+
+.navbar__section--center {
+  justify-content: center;
+}
+
+.navbar__section--right {
+  justify-content: flex-end;
+}
 
 /* ========================================
    BRAND COMPONENTS
@@ -121,18 +150,18 @@
 }
 
 .navbar__logo-wrapper {
-  width: 40px;        
+  width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  background: #fbf9f4; 
+  background: #fbf9f4;
   border: 2px solid #36363a;
 }
 
 .navbar__logo {
-  width: 32px;      
+  width: 32px;
   height: 32px;
   object-fit: contain;
 }
@@ -198,9 +227,17 @@
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.navbar__burger--active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.navbar__burger--active span:nth-child(2) { opacity: 0; }
-.navbar__burger--active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.navbar__burger--active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.navbar__burger--active span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar__burger--active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
 
 /* ========================================
    UNIVERSAL RESPONSIVE BREAKPOINT
@@ -210,7 +247,7 @@
     max-width: 100vw;
     border-radius: 0;
   }
-  
+
   .navbar--attached::before,
   .navbar--attached::after {
     display: none;
@@ -268,7 +305,7 @@
   }
 
   .navbar__links li,
-  .navbar__links li > * {
+  .navbar__links li>* {
     width: 100%;
   }
 

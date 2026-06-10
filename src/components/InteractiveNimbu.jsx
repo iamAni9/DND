@@ -8,6 +8,23 @@ const InteractiveNimbu = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [sparkles, setSparkles] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    setIsMobile(mediaQuery.matches);
+    const handler = (e) => setIsMobile(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  const containerWidth = isMobile ? 120 : 200;
+  const containerHeight = isMobile ? 280 : 400;
+  const imgHeight = isMobile ? 100 : 170;
+  const imgLeft = isMobile ? '20px' : '38px';
+  const anchorX = containerWidth / 2;
+  const anchorY = 0;
+  const sparkleCenterY = isMobile ? 65 : 120;
 
   // Ref to store physics variables to avoid React state delay in mouse handlers
   const stateRef = useRef({
@@ -60,8 +77,8 @@ const InteractiveNimbu = () => {
       if (speed > 1.2 && Math.random() < 0.35) {
         state.sparkles.push({
           id: Math.random(),
-          x: 100 + state.x + (Math.random() - 0.5) * 16,
-          y: 120 + state.y + (Math.random() - 0.5) * 16,
+          x: anchorX + state.x + (Math.random() - 0.5) * 16,
+          y: sparkleCenterY + state.y + (Math.random() - 0.5) * 16,
           vx: (Math.random() - 0.5) * 3 + state.vx * 0.25,
           vy: (Math.random() - 0.5) * 3 - 1.5 + state.vy * 0.25,
           color: ['#ffd700', '#ebdcae', '#aa3bff', '#4deeea', '#ff8c00', '#ff007f'][Math.floor(Math.random() * 6)],
@@ -90,7 +107,7 @@ const InteractiveNimbu = () => {
 
     animFrameId = requestAnimationFrame(updatePhysics);
     return () => cancelAnimationFrame(animFrameId);
-  }, []);
+  }, [anchorX, sparkleCenterY]);
 
   const handleMouseDown = (e) => {
     // Only drag on left click
@@ -132,8 +149,8 @@ const InteractiveNimbu = () => {
       if (Math.random() < 0.45) {
         state.sparkles.push({
           id: Math.random(),
-          x: 100 + newX + (Math.random() - 0.5) * 20,
-          y: 120 + newY + (Math.random() - 0.5) * 20,
+          x: anchorX + newX + (Math.random() - 0.5) * 20,
+          y: sparkleCenterY + newY + (Math.random() - 0.5) * 20,
           vx: (Math.random() - 0.5) * 4,
           vy: (Math.random() - 0.5) * 4 - 2, // shoot up slightly
           color: ['#ffd700', '#ff8c00', '#aa3bff', '#00f6ff', '#ffffff', '#ff007f'][Math.floor(Math.random() * 6)],
@@ -157,12 +174,75 @@ const InteractiveNimbu = () => {
     window.addEventListener('mouseup', handleMouseUp);
   };
 
+  const handleTouchStart = (e) => {
+    if (e.touches.length !== 1) return;
+    const touch = e.touches[0];
+    const state = stateRef.current;
+    
+    state.isDragging = true;
+    setIsDragging(true);
+
+    state.dragStartMouseX = touch.clientX;
+    state.dragStartMouseY = touch.clientY;
+    state.dragStartX = state.x;
+    state.dragStartY = state.y;
+
+    const handleTouchMove = (moveEvent) => {
+      if (moveEvent.touches.length !== 1) return;
+      const t = moveEvent.touches[0];
+      const dx = t.clientX - state.dragStartMouseX;
+      const dy = t.clientY - state.dragStartMouseY;
+
+      let newX = state.dragStartX + dx;
+      let newY = state.dragStartY + dy;
+
+      // Elastic limit constraint so user can't pull it completely off-screen
+      const distance = Math.sqrt(newX * newX + newY * newY);
+      const maxDistance = 260;
+      if (distance > maxDistance) {
+        const ratio = maxDistance / distance;
+        newX *= ratio;
+        newY *= ratio;
+      }
+
+      state.x = newX;
+      state.y = newY;
+      state.vx = 0;
+      state.vy = 0;
+
+      // Spawn sparkles on drag movement
+      if (Math.random() < 0.45) {
+        state.sparkles.push({
+          id: Math.random(),
+          x: anchorX + newX + (Math.random() - 0.5) * 20,
+          y: sparkleCenterY + newY + (Math.random() - 0.5) * 20,
+          vx: (Math.random() - 0.5) * 4,
+          vy: (Math.random() - 0.5) * 4 - 2, // shoot up slightly
+          color: ['#ffd700', '#ff8c00', '#aa3bff', '#00f6ff', '#ffffff', '#ff007f'][Math.floor(Math.random() * 6)],
+          size: 4 + Math.random() * 6,
+          life: 1.0,
+        });
+      }
+
+      setPosition({ x: newX, y: newY });
+      setSparkles([...state.sparkles]);
+    };
+
+    const handleTouchEnd = () => {
+      state.isDragging = false;
+      setIsDragging(false);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd);
+  };
+
   // Draw the elastic string
-  const anchorX = 100;
-  const anchorY = 0;
-  const targetX = 100 + position.x;
+  const targetX = anchorX + position.x;
   // Offset connection point slightly down to start behind the chilies
-  const targetY = position.y + 12;
+  const targetY = position.y + (isMobile ? 7 : 12);
 
   const distance = Math.sqrt(position.x * position.x + position.y * position.y);
   // Stretchy line thickness: gets thinner as pulled
@@ -185,9 +265,9 @@ const InteractiveNimbu = () => {
       style={{
         position: 'absolute',
         top: '-6px',
-        right: '3rem',
-        width: '200px',
-        height: '400px',
+        right: isMobile ? '1.25rem' : '3rem',
+        width: `${containerWidth}px`,
+        height: `${containerHeight}px`,
         zIndex: 100,
         pointerEvents: 'none', // Click through container, interact with mascot only
       }}
@@ -229,7 +309,7 @@ const InteractiveNimbu = () => {
         />
         {/* Hand-drawn hook bracket loop */}
         <path
-          d="M 95 -6 Q 100 4 105 -6"
+          d={`M ${anchorX - 5} -6 Q ${anchorX} 4 ${anchorX + 5} -6`}
           stroke="var(--text-h)"
           strokeWidth="3.2"
           fill="none"
@@ -281,9 +361,10 @@ const InteractiveNimbu = () => {
         ref={mascotRef}
         className="interactive-nimbu-mascot"
         onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
         style={{
           position: 'absolute',
-          left: '38px', // Shifted left to center the printed png string under the hook
+          left: imgLeft, // Shifted left to center the printed png string under the hook
           top: 0,
           transform: `translate(${position.x}px, ${position.y}px) rotate(${position.x * 0.08}deg)`,
           cursor: isDragging ? 'grabbing' : 'grab',
@@ -300,7 +381,7 @@ const InteractiveNimbu = () => {
           className="interactive-nimbu-img"
           draggable="false"
           style={{
-            height: '170px',
+            height: `${imgHeight}px`,
             width: 'auto',
             display: 'block',
           }}

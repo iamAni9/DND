@@ -4,33 +4,33 @@ import SketchCube from '@/components/SketchCube';
 
 
 const SERVICES = [
-  { 
-    text: 'AI Agents 🤖', 
+  {
+    text: 'AI Agents 🤖',
     className: 'cube-pos-top',
     description: 'Autonomous workflows, custom LLM integrations, and intelligent agents built to automate complex business operations.'
   },
-  { 
-    text: 'SaaS Programs 🚀', 
+  {
+    text: 'SaaS Programs 🚀',
     className: 'cube-pos-top-right',
     description: 'Robust, multi-tenant cloud applications, customized dashboards, and secure backend portals built to scale with ease.'
   },
-  { 
-    text: 'Websites 🌐', 
+  {
+    text: 'Websites 🌐',
     className: 'cube-pos-bottom-right',
     description: 'Bespoke, high-performance web experiences featuring premium designs, interactive animations, and responsive layouts.'
   },
-  { 
-    text: 'Mobile Apps 📱', 
+  {
+    text: 'Mobile Apps 📱',
     className: 'cube-pos-bottom',
     description: 'Sleek native and cross-platform mobile applications for iOS and Android, optimized for performance and fluid UX.'
   },
-  { 
-    text: 'API Platforms 🔌', 
+  {
+    text: 'API Platforms 🔌',
     className: 'cube-pos-bottom-left',
     description: 'Fast, secure, and structured API integrations, backend architectures, and database orchestration pipelines.'
   },
-  { 
-    text: 'Automations ⚙️', 
+  {
+    text: 'Automations ⚙️',
     className: 'cube-pos-top-left',
     description: 'Custom background scripts, tool connectors, and automated schedules designed to eliminate repetitive operational work.'
   }
@@ -41,23 +41,39 @@ const HeroSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  
+  const [isOpenActive, setIsOpenActive] = useState(false);
+  const [timerResetTrigger, setTimerResetTrigger] = useState(0);
+
+  // Timer to close the box 10 seconds after it becomes active (resets on index change or manual click)
+  useEffect(() => {
+    setIsOpenActive(true);
+
+    const closeTimer = setTimeout(() => {
+      setIsOpenActive(false);
+    }, 10000); // 10 seconds open state duration
+
+    return () => clearTimeout(closeTimer);
+  }, [activeIndex, timerResetTrigger]);
+
+  // Timer to auto-rotate categories every 30 seconds (resets on index change, hover, or manual click)
   useEffect(() => {
     if (isHovered) return;
 
-    const autoRotationTimer = setInterval(() => {
+    const autoRotationTimer = setTimeout(() => {
       setIsTransitioning(true);
       setTimeout(() => {
         setActiveIndex((prev) => (prev + 1) % SERVICES.length);
         setIsTransitioning(false);
       }, 350);
-    }, 4800);
+    }, 30000); // 30 seconds switching auto-rotation
 
-    return () => clearInterval(autoRotationTimer);
-  }, [isHovered]);
+    return () => clearTimeout(autoRotationTimer);
+  }, [activeIndex, isHovered, timerResetTrigger]);
 
   const handleCubeClick = (index) => {
+    setTimerResetTrigger((prev) => prev + 1); // Reset timers on click
     if (activeIndex === index) return;
+
     setIsTransitioning(true);
     setTimeout(() => {
       setActiveIndex(index);
@@ -68,7 +84,7 @@ const HeroSection = () => {
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero-grid">
-        
+
         {/* Left Column: Premium Minimalist Content & Text Rotator */}
         <div className="hero__content">
           <h1 id="hero-title" className="hero__title">
@@ -86,34 +102,34 @@ const HeroSection = () => {
         </div>
 
         {/* Right Column: Sketchy 3D Box Orbit Orbit Ring */}
-        <div 
+        <div
           className="hero__visual"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          
+
           {/* Blueprint Layout Calibration Marks */}
           <span className="draft-crosshair top-left">+</span>
           <span className="draft-crosshair top-right">+</span>
           <span className="draft-crosshair bottom-left">+</span>
           <span className="draft-crosshair bottom-right">+</span>
-          
+
           {/* Blueprint Guide Axis Lines */}
           <div className="blueprint-axis horizontal" />
-          
+
           {/* Orbit Ring SVG */}
           <svg className="orbit-ring-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="50" cy="50" r="46" className="orbit-line" />
             <circle cx="50" cy="50" r="46" className="orbit-spark-glow" />
             <circle cx="50" cy="50" r="46" className="orbit-spark-core" />
           </svg>
-          
+
           {/* Centralized Brand Focal Target */}
           <div className="logo-wrapper">
             <div className="logo-glow-aura" />
-            <img 
-              src="/dnd_logo.png" 
-              alt="DevNextDoor Logo" 
+            <img
+              src="/dnd_logo.png"
+              alt="DevNextDoor Logo"
               className="hero-logo"
             />
           </div>
@@ -124,11 +140,12 @@ const HeroSection = () => {
           {/* Isometric 3D Node Rings */}
           <div className="cube-matrix-container">
             {SERVICES.map((service, index) => (
-              <SketchCube 
+              <SketchCube
                 key={index}
-                text={service.text} 
-                className={service.className} 
+                text={service.text}
+                className={service.className}
                 isFocal={activeIndex === index}
+                isOpen={activeIndex === index && isOpenActive}
                 onClick={() => handleCubeClick(index)}
               />
             ))}

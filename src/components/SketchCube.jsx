@@ -74,92 +74,293 @@ const renderIcon = (text) => {
   }
 };
 
+const getTechIcons = (text) => {
+  const normalizedText = text.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim().toLowerCase();
+  switch (normalizedText) {
+    case 'ai agents':
+      return [
+        {
+          name: 'OpenAI',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="currentColor" style={{color: '#10a37f'}}>
+              <path d="M21.3 10.3a3.3 3.3 0 0 0-.6-2.1c-.5-.7-1.3-1.2-2.2-1.4a3.3 3.3 0 0 0-.5-1.8c-.5-.8-1.2-1.3-2.1-1.5a3.3 3.3 0 0 0-1.7-.5 3.3 3.3 0 0 0-2 .6 3.3 3.3 0 0 0-1.9-.6c-.9 0-1.7.3-2.3.9A3.3 3.3 0 0 0 6 5.3c-.8.5-1.3 1.2-1.5 2.1a3.3 3.3 0 0 0-1.8.5c-.8.5-1.3 1.2-1.5 2.1A3.3 3.3 0 0 0 .6 12a3.3 3.3 0 0 0 .6 2.1c.5.7 1.3 1.2 2.2 1.4a3.3 3.3 0 0 0 .5 1.8c.5.8 1.2 1.3 2.1 1.5a3.3 3.3 0 0 0 1.7.5c.8 0 1.5-.2 2.1-.6a3.3 3.3 0 0 0 1.9.6c.9 0 1.7-.3 2.3-.9a3.3 3.3 0 0 0 2-1.4c.8-.5 1.3-1.2 1.5-2.1a3.3 3.3 0 0 0 1.8-.5c.8-.5 1.3-1.2 1.5-2.1a3.3 3.3 0 0 0 .5-1.7c0-.8-.2-1.5-.6-2.1zM12 13.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+            </svg>
+          )
+        },
+        {
+          name: 'Claude AI',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#d97753" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 20L12 4L20 20" />
+              <path d="M8 14H16" />
+            </svg>
+          )
+        },
+        {
+          name: 'Python',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="currentColor" style={{color: '#3776ab'}}>
+              <path d="M11.9 2c-2.8 0-4.8.2-5.7 1-.9.7-1 1.8-1 4h2.2v.6H4.2c-2.2 0-3.2.3-3.9 1.2S-.1 11.2-.1 14s.3 4.2 1 5c.8.9 1.8 1 4 1h1.5v-2.2c0-1.8.8-3.4 2.2-3.4h4.3c1.5 0 2.2-.6 2.2-2.2V9.8c0-1.8-.8-3.4-2.2-3.4H9.7v2.2c0 1.2-.7 2.2-2.2 2.2H5.3c-.9 0-1.5-.6-1.5-1.5V4.7c0-.9.6-1.7 1.5-1.7h6.6c2.8 0 4.8.2 5.7 1 .9.7 1 1.8 1 4h-2.2v-.6h3.2c2.2 0 3.2-.3 3.9-1.2s.4-2.4.4-5.2-.3-4.2-1-5c-.8-.9-1.8-1-4-1H11.9z"/>
+            </svg>
+          )
+        },
+        {
+          name: 'PyTorch',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ee4c2c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+            </svg>
+          )
+        }
+      ];
+    case 'saas programs':
+      return [
+        {
+          name: 'React',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#61dafb" strokeWidth="2">
+              <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(0 12 12)" />
+              <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
+              <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
+              <circle cx="12" cy="12" r="1.5" fill="#61dafb" />
+            </svg>
+          )
+        },
+        {
+          name: 'Node.js',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#339933" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2L2 7v10l10 5 10-5V7L12 2z" />
+              <path d="M12 22V12" />
+              <path d="M2 7l10 5 10-5" />
+            </svg>
+          )
+        },
+        {
+          name: 'Database',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4479a1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <ellipse cx="12" cy="5" rx="9" ry="3" />
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+              <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" />
+            </svg>
+          )
+        },
+        {
+          name: 'TypeScript',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3178c6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M8 8H16M12 8V18M17 10c1-1 2-1 2 1s-1 2-2 2-2 1-2 2 1 1 2 1" />
+            </svg>
+          )
+        }
+      ];
+    case 'websites':
+      return [
+        {
+          name: 'HTML5',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#e34f26" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 2l1.5 17L12 22l6.5-3L20 2H4z" />
+              <path d="M12 6H8.5l.5 4h3m0 0H15.5l-.5 4.5-3 1-3-1" />
+            </svg>
+          )
+        },
+        {
+          name: 'CSS3',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#1572b6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 2l1.5 17L12 22l6.5-3L20 2H4z" />
+              <path d="M12 6H8.5l1 8 2.5 1 2.5-1 .5-4.5H9" />
+            </svg>
+          )
+        },
+        {
+          name: 'Tailwind CSS',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 3c-1.2 0-2.4.6-3.2 1.5C7 6.2 7 8.5 8.5 10c1.5 1.5 3.8 1.5 5 0 1.2-1.2 1.2-3.5 0-5C12.7 4.2 12.3 3 12 3z" />
+              <path d="M12 21c1.2 0 2.4-.6 3.2-1.5 1.8-1.7 1.8-4 0-5.5-1.5-1.5-3.8-1.5-5 0-1.2 1.2-1.2 3.5 0 5 .8.8 1.2 2 1.8 2z" />
+            </svg>
+          )
+        },
+        {
+          name: 'Vite',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#646cff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2L3 9h9l-1 13 10-11h-9l1-10z" />
+            </svg>
+          )
+        }
+      ];
+    case 'mobile apps':
+      return [
+        {
+          name: 'iOS App',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22c-3.5 0-6.5-2.5-6.5-6.5S8.5 9 12 9s6.5 2.5 6.5 6.5S15.5 22 12 22z" />
+              <path d="M12 9c.5-2 2-3.5 4-3.5" />
+            </svg>
+          )
+        },
+        {
+          name: 'Android',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3ddc84" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 10h16M7 10V5a2 2 0 0 1 4 0v5M13 10V5a2 2 0 0 1 4 0v5" />
+              <rect x="4" y="10" width="16" height="10" rx="2" />
+            </svg>
+          )
+        },
+        {
+          name: 'Flutter',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#02569b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14 2L6 10l8 8" />
+              <path d="M19 7l-5 5 5 5" />
+            </svg>
+          )
+        },
+        {
+          name: 'Swift',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#f05138" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 17l6-6-6-6M20 19h-8" />
+            </svg>
+          )
+        }
+      ];
+    case 'api platforms':
+      return [
+        {
+          name: 'GraphQL',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#e10098" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="12,2 22,8 22,16 12,22 2,16 2,8" />
+              <line x1="12" y1="2" x2="12" y2="22" />
+              <line x1="2" y1="8" x2="22" y2="16" />
+              <line x1="2" y1="16" x2="22" y2="8" />
+            </svg>
+          )
+        },
+        {
+          name: 'Postman',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ff6c37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4.5 16.5L12 22l7.5-5.5V7.5L12 2 4.5 7.5z" />
+              <path d="M12 2v20" />
+            </svg>
+          )
+        },
+        {
+          name: 'FastAPI',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#009688" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+            </svg>
+          )
+        },
+        {
+          name: 'REST API',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fcb900" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="9" y="8" width="6" height="8" rx="1" />
+              <path d="M9 10h6M11 4v4M13 4v4M12 16v4" />
+            </svg>
+          )
+        }
+      ];
+    case 'automations':
+    default:
+      return [
+        {
+          name: 'Zapier',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ff4f00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10" />
+            </svg>
+          )
+        },
+        {
+          name: 'Make.com',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#730df8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="6" r="3" />
+              <circle cx="18" cy="18" r="3" />
+              <path d="M9 12h3M12 12l3-3M12 12l3 3" />
+            </svg>
+          )
+        },
+        {
+          name: 'GitHub Actions',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#24292e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="18" cy="18" r="3" />
+              <circle cx="6" cy="6" r="3" />
+              <path d="M6 9v9a3 3 0 0 0 3 3h6" />
+            </svg>
+          )
+        },
+        {
+          name: 'CRON Job',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00b0ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+          )
+        }
+      ];
+  }
+};
+
 const SketchCube = ({
   text,
   className = '',
   isFocal = false,
+  isOpen = false,
   onClick,
 }) => {
+  const badges = getTechIcons(text);
+
   return (
     <div
       className={`sketch-cube-node ${className} ${
         isFocal ? 'focal-cube' : ''
-      }`}
+      } ${isOpen ? 'open-cube' : ''}`}
       onClick={onClick}
     >
-      <div className="cube-wrapper">
-        <svg
-          viewBox="0 0 160 140"
-          className="cube-svg"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <pattern
-              id="cube-hatch"
-              width="6"
-              height="6"
-              patternUnits="userSpaceOnUse"
-              patternTransform="rotate(45)"
-            >
-              <line
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="6"
-                stroke="#94a3b8"
-                strokeWidth="1.2"
-                strokeDasharray="2 1.5"
-              />
-            </pattern>
-          </defs>
+      <div className="box-scene">
+        <div className="box-core">
+          {/* Main Sides */}
+          <div className="side front"></div>
+          <div className="side left">
+            <svg className="side-icon-svg" viewBox="0 0 100 100" fill="none">
+              {renderIcon(text)}
+            </svg>
+          </div>
+          <div className="side back"></div>
+          <div className="side right"></div>
+          <div className="side bottom"></div>
+          
+          {/* Cardboard Top Flaps (4 Flaps Opening Outwards) */}
+          <div className="flap front"></div>
+          <div className="flap back"></div>
+          <div className="flap left"></div>
+          <div className="flap right"></div>
+        </div>
+      </div>
 
-          {/* Top Face Background */}
-          <polygon
-            points="80,10 145,40 80,70 15,40"
-            className="face-top-bg"
-          />
-
-          {/* Cube Faces */}
-          <polygon
-            points="80,10 145,40 80,70 15,40"
-            className="cube-face face-top"
-            fill="url(#cube-hatch)"
-          />
-
-          <polygon
-            points="15,40 80,70 80,130 15,100"
-            className="cube-face face-left"
-          />
-
-          <polygon
-            points="145,40 80,70 80,130 145,100"
-            className="cube-face face-right"
-          />
-
-          {/* Internal Wireframe */}
-          <path
-            d="M 15 40 L 80 100 L 145 40"
-            strokeWidth="1"
-            strokeDasharray="3 3"
-            className="inner-wireframe"
-          />
-
-          <path
-            d="M 80 100 L 80 130"
-            strokeWidth="1"
-            strokeDasharray="3 3"
-            className="inner-wireframe"
-          />
-
-          {/* Icon */}
-          <g
-            transform="matrix(0.65 0.30 0 0.60 15 40)"
-            className="cube-icon"
-          >
-            {renderIcon(text)}
-          </g>
-        </svg>
+      {/* Surprise Floating Tech Badges */}
+      <div className="surprise-badges">
+        {badges.map((badge, idx) => (
+          <div key={idx} className={`surprise-badge badge-${idx}`}>
+            {badge.icon}
+            <span className="badge-tooltip">{badge.name}</span>
+          </div>
+        ))}
       </div>
 
       <div className="cube-label">

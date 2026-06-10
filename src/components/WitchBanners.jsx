@@ -13,6 +13,7 @@ const CARDS = [
 const WitchBanners = () => {
   return (
     <div className="witch-banner-system">
+
       {/* Background Stardust Rope (Desktop only) */}
       <div className="witch-string-bg">
         <svg viewBox="0 0 1000 120" width="100%" height="100%" preserveAspectRatio="none">
@@ -110,9 +111,9 @@ const WitchBanners = () => {
 
           {/* Witch Hat */}
           {/* Brim */}
-          <path d="M 44 27 C 44 27, 58 29, 72 26" fill="none" stroke="#1e1b4b" strokeWidth="3" strokeLinecap="round" />
+          <path d="M 44 27 C 44 27, 58 29, 72 26" fill="none" stroke="#1e293b" strokeWidth="3" strokeLinecap="round" />
           {/* Cone */}
-          <path d="M 47 25 L 59 8 L 65 24 Z" fill="#1e1b4b" stroke="#0f172a" strokeWidth="1" />
+          <path d="M 47 25 L 59 8 L 65 24 Z" fill="#1e293b" stroke="#0f172a" strokeWidth="1" />
           {/* Gold Buckle Ribbon */}
           <path d="M 49 23 L 63 22" stroke="#d97706" strokeWidth="2" />
         </svg>
@@ -120,29 +121,43 @@ const WitchBanners = () => {
 
       {/* Hanging Cards Grid */}
       <div className="hanging-cards-container">
-        {CARDS.map((card, idx) => (
-          <div key={idx} className={`hanging-card-item card-${idx + 1}`}>
-            {/* The Rope hanger connecting to string */}
-            <div className="hanging-rope">
-              <svg viewBox="0 0 10 40" width="100%" height="100%" preserveAspectRatio="none">
-                <line x1="5" y1="0" x2="5" y2="40" stroke="#7c2d12" strokeWidth="1.8" strokeDasharray="2 2" />
-                <circle cx="5" cy="36" r="2.5" fill="#aa7c11" />
-              </svg>
-            </div>
-            
-            {/* Card Content (Parchment scroll look) */}
+        {CARDS.map((card, idx) => {
+          // Compute exact position coordinate mapping onto the stardust rope
+          const x = 130 + idx * 136; // Spacing cards evenly from 130 to 810
+          const t = (x - 50) / 840;
+          const y = 25 + 160 * t * (1 - t);
+
+          return (
             <div 
-              className="hanging-card-body"
-              style={{ '--accent-color': card.color }}
+              key={idx} 
+              className={`hanging-card-item card-${idx + 1}`}
+              style={{
+                '--card-left': `${x / 10}%`,
+                '--card-top': `${y}px`,
+              }}
             >
-              {/* Gold hanging rivet */}
-              <div className="card-rivet"></div>
+              {/* The Rope hanger connecting to string */}
+              <div className="hanging-rope">
+                <svg viewBox="0 0 10 40" width="100%" height="100%" preserveAspectRatio="none">
+                  <line x1="5" y1="0" x2="5" y2="40" stroke="#7c2d12" strokeWidth="1.8" strokeDasharray="2 2" />
+                  <circle cx="5" cy="36" r="2.5" fill="#aa7c11" />
+                </svg>
+              </div>
               
-              <h4 className="card-title">{card.text}</h4>
-              <p className="card-desc">{card.description}</p>
+              {/* Card Content (Parchment scroll look) */}
+              <div 
+                className="hanging-card-body"
+                style={{ '--accent-color': card.color }}
+              >
+                {/* Gold hanging rivet */}
+                <div className="card-rivet"></div>
+                
+                <h4 className="card-title">{card.text}</h4>
+                <p className="card-desc">{card.description}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -76,7 +76,12 @@
   width: 100%;
   box-sizing: border-box;
   background: transparent;
-  cursor: none; /* Hide default cursor to use magnifying glass */
+}
+
+@media (hover: hover) {
+  .faq-card {
+    cursor: none; /* Hide default cursor to use magnifying glass */
+  }
 }
 
 /* Card background with torn edge displacement filter */

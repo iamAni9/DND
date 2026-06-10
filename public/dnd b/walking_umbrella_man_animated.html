@@ -1,0 +1,377 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap');
+  #scene { width:100%; background:#faf8f4; border-radius:12px; overflow:hidden; display:block; }
+  canvas { display:block; width:100%; }
+</style>
+<canvas id="scene"></canvas>
+<script>
+const canvas = document.getElementById('scene');
+const ctx = canvas.getContext('2d');
+canvas.width = 680;
+canvas.height = 300;
+
+const W = 680, H = 300;
+const ROPE_Y = 210;
+
+function ropeY(x) {
+  return ROPE_Y + Math.sin(x * 0.012) * 6 + Math.sin(x * 0.025) * 3;
+}
+
+let t = 0;
+let manX = 60;
+let dir = 1;
+const SPEED = 1.4;
+const MIN_X = 60, MAX_X = 620;
+
+function drawRope() {
+  ctx.save();
+  ctx.lineCap = 'round';
+  for (let x = 30; x < 650; x += 19) {
+    const y = ropeY(x);
+    ctx.beginPath();
+    ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#d4a050';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(x + 1, y + 1, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#e08a7a';
+    ctx.globalAlpha = 0.55;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+  const posts = [160, 310, 460, 580];
+  posts.forEach(px => {
+    const py = ropeY(px);
+    ctx.beginPath();
+    ctx.moveTo(px, py);
+    ctx.lineTo(px, py + 52);
+    ctx.strokeStyle = '#8a6a48';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(px, py + 54, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#8a6a48';
+    ctx.fill();
+  });
+  ctx.restore();
+}
+
+function jitter(v, amt) { return v + (Math.random() - 0.5) * amt; }
+
+function sketchLine(x1,y1,x2,y2,col,lw,alpha) {
+  ctx.save();
+  ctx.strokeStyle = col;
+  ctx.lineWidth = lw;
+  ctx.globalAlpha = alpha || 1;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(jitter(x1,0.7), jitter(y1,0.7));
+  ctx.quadraticCurveTo(
+    (x1+x2)/2 + jitter(0,1.5),
+    (y1+y2)/2 + jitter(0,1.5),
+    jitter(x2,0.7), jitter(y2,0.7)
+  );
+  ctx.stroke();
+  ctx.restore();
+}
+
+function sketchEllipse(cx,cy,rx,ry,fill,stroke,lw) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.ellipse(cx+jitter(0,0.5), cy+jitter(0,0.5), rx+jitter(0,0.5), ry+jitter(0,0.5), 0, 0, Math.PI*2);
+  if(fill) { ctx.fillStyle = fill; ctx.fill(); }
+  if(stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lw||1.8; ctx.stroke(); }
+  ctx.restore();
+}
+
+function drawMan(x, baseY, walkCycle, facingRight) {
+  const flip = facingRight ? 1 : -1;
+  ctx.save();
+  ctx.translate(x, baseY);
+
+  const bob = Math.sin(walkCycle * 2) * 2.5;
+  const lean = Math.sin(walkCycle * 2) * 1.2 * flip;
+
+  ctx.translate(0, bob);
+  ctx.rotate(lean * Math.PI / 180);
+
+  const legSwing = Math.sin(walkCycle * 2) * 22;
+  const armSwing = Math.sin(walkCycle * 2) * 18;
+
+  const sk = '#3a2e26';
+  const skin = '#f5c898';
+  const hairCol = '#4a3528';
+  const shirtCol = '#5b82c4';
+  const pantsCol = '#3a4a6a';
+  const shoeCol = '#2a2018';
+
+  const back = -flip;
+
+  // LEGS
+  [-1,1].forEach(side => {
+    const ang = (side * flip > 0 ? legSwing : -legSwing) * Math.PI/180;
+    ctx.save();
+    ctx.translate(flip*2, 28);
+    ctx.rotate(ang);
+    sketchLine(0,0, 0,26, pantsCol, 5.5);
+    const footX = Math.sin(ang)*20 * flip;
+    const footY = 26 + Math.cos(ang)*6;
+    ctx.save();
+    ctx.translate(0,26);
+    ctx.rotate(ang * 0.4);
+    ctx.beginPath();
+    ctx.moveTo(-3, 0);
+    ctx.lineTo(flip*14, 0);
+    ctx.lineTo(flip*15, 4);
+    ctx.lineTo(-3, 5);
+    ctx.closePath();
+    ctx.fillStyle = shoeCol;
+    ctx.fill();
+    ctx.restore();
+    ctx.restore();
+  });
+
+  // BODY / TORSO
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(-12, -22);
+  ctx.bezierCurveTo(-14,-10, -13,10, -10,28);
+  ctx.lineTo(10,28);
+  ctx.bezierCurveTo(13,10, 14,-10, 12,-22);
+  ctx.closePath();
+  ctx.fillStyle = shirtCol;
+  ctx.fill();
+  ctx.strokeStyle = '#3a5898';
+  ctx.lineWidth = 1.8;
+  ctx.stroke();
+  ctx.restore();
+
+  // SHIRT DETAILS
+  sketchLine(0,-22, 0,28, '#4a72b4', 1, 0.5);
+  sketchLine(-12,-5, 12,-5, '#4a72b4', 1, 0.4);
+
+  // ARM BACK (behind body)
+  ctx.save();
+  ctx.translate(back*10, -14);
+  ctx.rotate(-armSwing * flip * Math.PI/180);
+  sketchLine(0,0, 0,22, skin, 4.5);
+  sketchEllipse(0,24, 4,4, skin, '#c88050', 1.2);
+  ctx.restore();
+
+  // ARM FRONT (holding umbrella - slightly raised)
+  ctx.save();
+  ctx.translate(flip*10, -18);
+  ctx.rotate(-25 * flip * Math.PI/180);
+  sketchLine(0,0, 0,-30, skin, 4.5);
+  sketchEllipse(0,-32, 4,4, skin, '#c88050', 1.2);
+  ctx.restore();
+
+  // UMBRELLA
+  ctx.save();
+  ctx.translate(flip*18, -60);
+  ctx.rotate(5 * flip * Math.PI/180 + Math.sin(t*0.05)*0.04);
+
+  // Handle
+  ctx.beginPath();
+  ctx.moveTo(0, 30);
+  ctx.lineTo(0, -2);
+  ctx.strokeStyle = '#7a5a38';
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+
+  // Canopy
+  ctx.beginPath();
+  ctx.moveTo(-32, 0);
+  ctx.quadraticCurveTo(-16,-22, 0,-26);
+  ctx.quadraticCurveTo(16,-22, 32,0);
+  ctx.closePath();
+  ctx.fillStyle = '#7aaae0';
+  ctx.globalAlpha = 0.85;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = '#4a7abf';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Ribs
+  [[-16,-20],[0,-26],[16,-20]].forEach(([rx,ry]) => {
+    sketchLine(0,0, rx,ry, '#4a7abf', 1.2, 0.7);
+  });
+
+  // Scalloped edge
+  for(let i=-3;i<=3;i++) {
+    const bx = i*10.5;
+    ctx.beginPath();
+    ctx.arc(bx+5, 2, 5.5, Math.PI, 0);
+    ctx.strokeStyle = '#4a7abf';
+    ctx.lineWidth = 1.8;
+    ctx.stroke();
+  }
+
+  // Tip
+  sketchEllipse(0,-27, 3,3, '#4a7abf', '#2a5a9f', 1.5);
+  ctx.restore();
+
+  // HEAD
+  ctx.save();
+  ctx.translate(flip*1, -40);
+
+  // Neck
+  sketchLine(0,10, 0,0, skin, 5);
+
+  // Head
+  sketchEllipse(0,-16, 16,18, skin, '#c88050', 2);
+
+  // Hair - messy curly
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(-14,-16);
+  ctx.bezierCurveTo(-18,-30, -10,-38, 0,-38);
+  ctx.bezierCurveTo(10,-38, 18,-30, 14,-16);
+  ctx.fillStyle = hairCol;
+  ctx.fill();
+  ctx.restore();
+
+  // Hair tufts / texture
+  for(let i=0;i<6;i++) {
+    const hx = -8 + i*3.2;
+    const hy = -36 + Math.sin(i*1.3)*3;
+    sketchLine(hx, hy, hx+jitter(2,2), hy-jitter(4,3), hairCol, 2.5, 0.8);
+  }
+
+  // Glasses frame
+  ctx.save();
+  ctx.strokeStyle = '#2a1e14';
+  ctx.lineWidth = 2;
+  ctx.fillStyle = 'rgba(200,230,255,0.15)';
+
+  // Left lens
+  ctx.beginPath();
+  ctx.roundRect(-14,-19, 11,9, 3);
+  ctx.fill(); ctx.stroke();
+
+  // Right lens
+  ctx.beginPath();
+  ctx.roundRect(3,-19, 11,9, 3);
+  ctx.fill(); ctx.stroke();
+
+  // Bridge
+  sketchLine(-3,-15, 3,-15, '#2a1e14', 1.8);
+
+  // Temples
+  sketchLine(-14,-15, -18,-14, '#2a1e14', 1.8);
+  sketchLine(14,-15, 18,-14, '#2a1e14', 1.8);
+  ctx.restore();
+
+  // Eyes
+  ctx.fillStyle = '#1a1008';
+  ctx.beginPath(); ctx.arc(-8,-15, 2.2, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(8,-15, 2.2, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = 'white';
+  ctx.beginPath(); ctx.arc(-7,-16, 0.8, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(9,-16, 0.8, 0, Math.PI*2); ctx.fill();
+
+  // Nose
+  ctx.beginPath();
+  ctx.moveTo(-2,-10); ctx.quadraticCurveTo(3,-8, 2,-6);
+  ctx.strokeStyle = '#c07848'; ctx.lineWidth=1.5; ctx.stroke();
+
+  // Smile
+  ctx.beginPath();
+  ctx.arc(0,-4, 6, 0.2, Math.PI-0.2);
+  ctx.strokeStyle = '#c07848'; ctx.lineWidth=1.8; ctx.stroke();
+
+  // Ear
+  const earX = flip > 0 ? -16 : 16;
+  sketchEllipse(earX, -14, 3.5, 5, skin, '#c88050', 1.3);
+
+  ctx.restore();
+
+  // Rain drops near umbrella
+  ctx.save();
+  ctx.strokeStyle = '#88b8d8';
+  ctx.lineWidth = 1.5;
+  ctx.lineCap = 'round';
+  ctx.globalAlpha = 0.6;
+  const drops = [[-30,-70],[-20,-78],[20,-75],[32,-65],[-38,-55]];
+  drops.forEach(([dx,dy]) => {
+    const off = ((t*0.03 + dx*0.1) % 1);
+    const dropY = dy + off * 18;
+    sketchLine(flip*18+dx, dropY, flip*18+dx-1, dropY+7, '#88b8d8', 1.5, 0.55);
+  });
+  ctx.restore();
+
+  ctx.restore();
+}
+
+function drawBackground() {
+  ctx.fillStyle = '#faf8f4';
+  ctx.fillRect(0,0,W,H);
+
+  // Soft ground
+  ctx.beginPath();
+  ctx.moveTo(0, H-30);
+  for(let x=0;x<=W;x+=4) {
+    ctx.lineTo(x, H-30 + Math.sin(x*0.05)*2);
+  }
+  ctx.lineTo(W,H); ctx.lineTo(0,H); ctx.closePath();
+  ctx.fillStyle = '#e8edd8';
+  ctx.fill();
+
+  // Little grass tufts
+  for(let gx=30;gx<W;gx+=45) {
+    ctx.strokeStyle = '#9aac78';
+    ctx.lineWidth=1.5;
+    ctx.lineCap='round';
+    ctx.globalAlpha=0.7;
+    sketchLine(gx, H-30, gx-3, H-38, '#9aac78', 1.5);
+    sketchLine(gx+5, H-30, gx+5, H-40, '#9aac78', 1.5);
+    sketchLine(gx+10, H-30, gx+13, H-37, '#9aac78', 1.5);
+    ctx.globalAlpha=1;
+  }
+
+  // Clouds
+  [[100,45,0.9],[430,30,0.75],[580,55,0.65]].forEach(([cx,cy,al]) => {
+    ctx.save();
+    ctx.globalAlpha=al;
+    ctx.fillStyle='#e8e2d8';
+    ctx.strokeStyle='#ccc6ba';
+    ctx.lineWidth=1.5;
+    [[0,0,28,18],[20,-8,22,16],[-22,-5,20,14],[36,-2,18,13]].forEach(([ox,oy,rx,ry])=>{
+      ctx.beginPath();
+      ctx.ellipse(cx+ox, cy+oy, rx, ry, 0, 0, Math.PI*2);
+      ctx.fill(); ctx.stroke();
+    });
+    ctx.restore();
+  });
+
+  // Birds
+  [[200,60],[350,45],[500,68]].forEach(([bx,by])=>{
+    ctx.strokeStyle='#8a7a6a'; ctx.lineWidth=1.5; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(bx,by); ctx.quadraticCurveTo(bx+5,by-4,bx+10,by); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(bx+10,by); ctx.quadraticCurveTo(bx+15,by-4,bx+20,by); ctx.stroke();
+  });
+}
+
+function loop() {
+  t++;
+  manX += SPEED * dir;
+  if(manX > MAX_X) { manX = MAX_X; dir = -1; }
+  if(manX < MIN_X) { manX = MIN_X; dir = 1; }
+
+  const walkCycle = t * 0.08;
+  const facingRight = dir > 0;
+  const ry = ropeY(manX);
+
+  ctx.clearRect(0,0,W,H);
+  drawBackground();
+  drawRope();
+  drawMan(manX, ry, walkCycle, facingRight);
+
+  requestAnimationFrame(loop);
+}
+
+loop();
+</script>

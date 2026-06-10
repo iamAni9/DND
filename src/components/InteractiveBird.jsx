@@ -307,6 +307,53 @@ const InteractiveBird = () => {
     window.addEventListener('mouseup', onMouseUp);
   };
 
+  const handleTouchStart = (e) => {
+    if (e.touches.length !== 1) return;
+    const touch = e.touches[0];
+    const state = stateRef.current;
+    state.state = 'DRAGGING';
+    setBirdState('DRAGGING');
+    setIsDragging(true);
+
+    state.dragStartMouseX = touch.pageX;
+    state.dragStartMouseY = touch.pageY;
+    state.dragStartX = state.x;
+    state.dragStartY = state.y;
+    state.targetX = state.x;
+    state.targetY = state.y;
+
+    const onTouchMove = (moveEvent) => {
+      if (moveEvent.touches.length !== 1) return;
+      const t = moveEvent.touches[0];
+      const dx = t.pageX - state.dragStartMouseX;
+      const dy = t.pageY - state.dragStartMouseY;
+      state.targetX = state.dragStartX + dx;
+      state.targetY = state.dragStartY + dy;
+    };
+
+    const onTouchEnd = () => {
+      setIsDragging(false);
+      state.state = 'FLYING';
+      setBirdState('FLYING');
+      
+      const isLeft = state.x < window.scrollX + window.innerWidth / 2;
+      state.side = isLeft ? 'LEFT' : 'RIGHT';
+      
+      if (state.side === 'LEFT') {
+        state.targetX = window.scrollX + EDGE_PADDING;
+      } else {
+        state.targetX = window.scrollX + window.innerWidth - (EDGE_PADDING + 50);
+      }
+      state.targetY = state.y;
+
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
+    };
+
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener('touchend', onTouchEnd);
+  };
+
   const isFlapping = birdState !== 'SITTING';
 
   return (
@@ -314,6 +361,7 @@ const InteractiveBird = () => {
       ref={birdRef}
       className={`interactive-bird-wrapper ${birdState} ${isFlapping ? 'flapping' : ''} ${microClass} ${isDragging ? 'dragging' : ''}`}
       onMouseDown={handleMouseDown}
+      onTouchStart={handleTouchStart}
       style={{
         position: 'absolute',
         left: 0,

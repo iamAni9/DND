@@ -25,11 +25,20 @@ const MysticalFairyFlourish = () => (
   </svg>
 );
 
-/* ───────── Individual FAQ Card Component ───────── */
 const FAQCard = ({ q, a, index }) => {
   const cardRef = useRef(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
+  const [hasHover, setHasHover] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(hover: hover)');
+    setHasHover(mediaQuery.matches);
+    
+    const handler = (e) => setHasHover(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
@@ -61,7 +70,7 @@ const FAQCard = ({ q, a, index }) => {
       </div>
 
       {/* Magnified Text Layer + Floating Lens */}
-      {isHovered && (
+      {isHovered && hasHover && (
         <>
           {/* Zoomed content: scaled 1.4x and centered at mouse coordinate */}
           <div
