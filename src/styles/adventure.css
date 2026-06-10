@@ -477,11 +477,20 @@
 
 /* Portrait orientation - Vertical flipping book layout */
 @media only screen and (max-width: 767px) and (orientation: portrait) {
+  .adventure-header {
+    margin-bottom: 1.2rem;
+  }
+
   .flipbook-scene {
     width: 95vw;
     height: 52vh;
     aspect-ratio: auto;
-    margin-top: 3.5rem; /* Give space for the header */
+    margin-top: 2.2rem; /* Clean margin below the header */
+  }
+
+  .flipbook {
+    transform: translateY(var(--book-translate-y, 0%));
+    transition: transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .book-left-bg {
@@ -491,9 +500,10 @@
 
   .leaf {
     width: 100%;
-    height: 100%;
+    height: 50%;
+    top: 50%;
     transform-origin: top center;
-    transform: translateY(-50%) rotateX(var(--leaf-rotate, 0deg));
+    transform: rotateX(var(--leaf-rotate, 0deg));
   }
 
   .leaf-face.leaf-back,
@@ -528,7 +538,7 @@
   }
 
   .book-under-shadow {
-    transform: scaleY(var(--shadow-scale, 1));
+    display: none; /* Hide shadow on mobile portrait for clean display & performance */
   }
 
   /* Force readable text sizes and spacing on portrait viewports */

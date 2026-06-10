@@ -1150,3 +1150,12 @@
     bottom: calc(var(--p) * 4 / 8 - var(--stroke) / 2);
   }
 }
+
+@media (max-width: 600px) {
+  .footer {
+    padding: 4rem 1rem 2rem;
+  }
+  .footer-logo-brand {
+    height: 120px;
+  }
+}

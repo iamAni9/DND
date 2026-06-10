@@ -186,3 +186,17 @@
   border-bottom-color: var(--accent);
   transform: translateX(4px);
 }
+
+@media (max-width: 600px) {
+  .work-section {
+    padding: 4rem 1rem 5rem;
+  }
+  .work-card {
+    padding: 1.8rem 1.2rem 1.5rem;
+    min-height: auto;
+  }
+  .work-card__title {
+    font-size: 1.5rem;
+  }
+}
+

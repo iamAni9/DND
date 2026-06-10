@@ -237,19 +237,20 @@
 
   .witch-string-bg {
     display: block;
-    width: 1000px;
+    width: 1250px;
     left: 0;
   }
 
   .flying-witch-container {
     position: absolute;
-    right: 20px;
+    left: 1080px;
+    right: auto;
     top: -15px;
   }
 
   .hanging-cards-container {
     display: block;
-    width: 1000px;
+    width: 1250px;
     height: 250px;
   }
 
@@ -265,6 +266,7 @@
     animation: cardSwing 4.5s infinite ease-in-out alternate;
   }
 
+
   .hanging-rope {
     display: block;
   }
@@ -279,6 +281,71 @@
     width: 175px !important;
   }
 }
+
+@media (max-width: 600px) {
+  .witch-banner-system {
+    overflow-x: visible;
+    overflow: visible;
+    padding: 0 0.5rem 1rem;
+  }
+
+  .witch-string-bg {
+    display: none;
+  }
+
+  .flying-witch-container {
+    display: none;
+  }
+
+  .hanging-cards-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .hanging-card-item {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .hanging-rope {
+    display: none;
+  }
+
+  .hanging-card-body {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 52px;
+    padding: 0.6rem 0.5rem !important;
+  }
+
+  .card-title {
+    font-size: 0.78rem;
+    white-space: normal;
+  }
+
+  .card-desc {
+    display: none;
+  }
+
+  .hanging-card-item:hover .hanging-card-body {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .hanging-card-item:hover {
+    transform: none !important;
+    z-index: auto;
+  }
+}
+
+
 
 /* ─── Balancing Rope Walker (HTML/CSS Jointed Character) ─── */
 .rope-walker {

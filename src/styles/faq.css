@@ -355,3 +355,23 @@
   50% { transform: translate(30px, -15px) scale(1.2); opacity: 0.9; }
   100% { transform: translate(80px, 120px) scale(0.4); opacity: 0.15; }
 }
+
+@media (max-width: 600px) {
+  .faq-section {
+    padding: 4rem 1rem 5rem;
+  }
+  .faq-card {
+    min-height: auto;
+  }
+  .faq-card-content {
+    padding: 1.8rem 1.2rem;
+  }
+  .faq-question {
+    font-size: 1.25rem;
+    margin-bottom: 0.8rem;
+  }
+  .faq-answer {
+    font-size: 1.1rem;
+  }
+}
+

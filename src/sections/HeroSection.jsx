@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '@/styles/hero.css';
 import SketchCube from '@/components/SketchCube';
-
 
 const SERVICES = [
   {
@@ -38,47 +37,81 @@ const SERVICES = [
 
 
 const HeroSection = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [activeNode, setActiveNode] = useState(0); // Node 0 (AI Agents) active initially
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [isOpenActive, setIsOpenActive] = useState(false);
   const [timerResetTrigger, setTimerResetTrigger] = useState(0);
 
-  // Timer to close the box 10 seconds after it becomes active (resets on index change or manual click)
-  useEffect(() => {
-    setIsOpenActive(true);
+  const arrivalTimeoutRef = useRef(null);
 
-    const closeTimer = setTimeout(() => {
-      setIsOpenActive(false);
-    }, 10000); // 10 seconds open state duration
-
-    return () => clearTimeout(closeTimer);
-  }, [activeIndex, timerResetTrigger]);
-
-  // Timer to auto-rotate categories every 30 seconds (resets on index change, hover, or manual click)
+  // Synchronized auto-rotation timer
   useEffect(() => {
     if (isHovered) return;
 
-    const autoRotationTimer = setTimeout(() => {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setActiveIndex((prev) => (prev + 1) % SERVICES.length);
-        setIsTransitioning(false);
-      }, 350);
-    }, 30000); // 30 seconds switching auto-rotation
+    const interval = setInterval(() => {
+      if (arrivalTimeoutRef.current) {
+        clearTimeout(arrivalTimeoutRef.current);
+      }
 
-    return () => clearTimeout(autoRotationTimer);
-  }, [activeIndex, isHovered, timerResetTrigger]);
+      // 1. Close current active node (stops glowing & closes flaps)
+      setActiveNode(null);
+
+      // 2. Start transitioning the spark to the next node
+      setIsTransitioning(true);
+      setCurrentIndex((prev) => {
+        const nextVal = prev + 1;
+        setActiveIndex(nextVal % 6);
+        return nextVal;
+      });
+
+      // 3. Wait for the spark transition along the orbit to finish (1000ms / 1s)
+      arrivalTimeoutRef.current = setTimeout(() => {
+        setCurrentIndex((prev) => {
+          setActiveNode(prev % 6);
+          return prev;
+        });
+        setIsTransitioning(false);
+      }, 1000);
+
+    }, 7200); // 7.2 seconds total cycle (6.2s resting + 1.0s transit)
+
+    return () => {
+      clearInterval(interval);
+      if (arrivalTimeoutRef.current) {
+        clearTimeout(arrivalTimeoutRef.current);
+      }
+    };
+  }, [isHovered, timerResetTrigger]);
 
   const handleCubeClick = (index) => {
-    setTimerResetTrigger((prev) => prev + 1); // Reset timers on click
     if (activeIndex === index) return;
+    setTimerResetTrigger((prev) => prev + 1); // Reset interval timer
 
+    if (arrivalTimeoutRef.current) {
+      clearTimeout(arrivalTimeoutRef.current);
+    }
+
+    // Close current active node
+    setActiveNode(null);
     setIsTransitioning(true);
-    setTimeout(() => {
-      setActiveIndex(index);
+
+    // Calculate next clockwise index value
+    const currentSubIndex = currentIndex % 6;
+    let diff = index - currentSubIndex;
+    if (diff <= 0) {
+      diff += 6;
+    }
+    const targetVal = currentIndex + diff;
+
+    setCurrentIndex(targetVal);
+    setActiveIndex(index);
+
+    arrivalTimeoutRef.current = setTimeout(() => {
+      setActiveNode(index);
       setIsTransitioning(false);
-    }, 300);
+    }, 1000);
   };
 
   return (
@@ -118,10 +151,40 @@ const HeroSection = () => {
           <div className="blueprint-axis horizontal" />
 
           {/* Orbit Ring SVG */}
-          <svg className="orbit-ring-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="orbit-ring-svg" viewBox="0 0 100 100" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
             <circle cx="50" cy="50" r="46" className="orbit-line" />
-            <circle cx="50" cy="50" r="46" className="orbit-spark-glow" />
-            <circle cx="50" cy="50" r="46" className="orbit-spark-core" />
+            
+            {/* Orbit Spark Group */}
+            <g
+              className={`orbit-spark-group ${isTransitioning ? 'is-transit' : 'is-resting'}`}
+              style={{
+                transform: `rotate(${90 + currentIndex * 60}deg)`,
+              }}
+            >
+              <g
+                className="orbit-spark-bolt-wrapper"
+                style={{
+                  transform: `rotate(${-(90 + currentIndex * 60)}deg)`,
+                }}
+              >
+                <g className="orbit-spark-bolt-jitter">
+                  {/* Thin golden circle container */}
+                  <circle cx="50" cy="4" r="10" className="spark-symbol-circle" />
+                  
+                  {/* The main solid lightning bolt */}
+                  <path
+                    d="M 52 -4 L 46.25 3 L 49.25 3 L 45 8.5 L 51.25 13 L 50.5 6 L 54.25 6 Z"
+                    className="spark-symbol-bolt"
+                  />
+
+                  {/* Jagged electric crackle lines radiating outwards */}
+                  <path d="M 43 4 L 39 2 L 36.5 4" className="resting-spark-line spark-line-1" />
+                  <path d="M 57 4 L 61 6 L 63.5 4" className="resting-spark-line spark-line-2" />
+                  <path d="M 50 -4 L 48.5 -8 L 49.5 -11.5" className="resting-spark-line spark-line-3" />
+                  <path d="M 50 12 L 52 16 L 50.5 19.5" className="resting-spark-line spark-line-4" />
+                </g>
+              </g>
+            </g>
           </svg>
 
           {/* Centralized Brand Focal Target */}
@@ -144,8 +207,8 @@ const HeroSection = () => {
                 key={index}
                 text={service.text}
                 className={service.className}
-                isFocal={activeIndex === index}
-                isOpen={activeIndex === index && isOpenActive}
+                isFocal={activeNode === index}
+                isOpen={activeNode === index}
                 onClick={() => handleCubeClick(index)}
               />
             ))}

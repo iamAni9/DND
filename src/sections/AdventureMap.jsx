@@ -204,13 +204,17 @@ const AdventureMap = () => {
 
   const getBookStyle = () => {
     let translateVal = '0%';
+    let translateYVal = '0%';
     if (currentPage === 0) {
       translateVal = '-50%';
+      translateYVal = '-25%';
     } else if (currentPage === TOTAL_LEAVES) {
       translateVal = '50%';
+      translateYVal = '25%';
     }
     return {
       '--book-translate': translateVal,
+      '--book-translate-y': translateYVal,
     };
   };
 

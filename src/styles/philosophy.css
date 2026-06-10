@@ -305,3 +305,50 @@
   100% { transform: translateY(0px) rotate(0deg) scale(1); }
 }
 
+@media (max-width: 600px) {
+  .philosophy {
+    padding: 4rem 1rem;
+  }
+  .feature-grid {
+    gap: 1.25rem;
+  }
+  .phil-card {
+    padding: 1.5rem;
+  }
+  .phil-card__title {
+    font-size: 1.35rem;
+  }
+
+  /* Scale down clouds and hide extras to prevent overlap on narrow screens */
+  .philosophy-clouds {
+    height: 80px;
+  }
+  .cloud-doodle {
+    width: 55px;
+    height: 34px;
+  }
+  .cloud-doodle:nth-child(1) {
+    top: 8px;
+    left: 3%;
+    width: 55px;
+    height: 34px;
+  }
+  .cloud-doodle:nth-child(2) {
+    top: 12px;
+    left: 35%;
+    width: 60px;
+    height: 38px;
+  }
+  .cloud-doodle:nth-child(3) {
+    top: 8px;
+    right: 3%;
+    left: auto;
+    width: 55px;
+    height: 34px;
+  }
+  .cloud-doodle:nth-child(4) {
+    display: none;
+  }
+}
+
+

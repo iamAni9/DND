@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Playpen+Sans+Thai:wght@100..800&display=swap');
-
 /* ─── HERO BASE & DOT-GRID MATRIX BACKGROUND ─── */
 .hero {
   position: relative;
@@ -41,8 +39,7 @@
   margin: 0 0 10px 0;
   line-height: 1.05;
   letter-spacing: -0.04em;
-  font-family: "Playpen Sans Thai", cursive;
-  font-optical-sizing: auto;
+  font-family: sans-serif;
 }
 
 .hero__subtitle-container {
@@ -59,14 +56,14 @@
   color: #334155;
   font-weight: 500;
   margin: 0;
-  font-family: "Playpen Sans Thai", cursive;
+  font-family: sans-serif;
 }
 
 .hero__subtitle-dynamic {
   font-size: clamp(1.25rem, 2.5vw, 1.6rem);
   color: #2563eb;
   font-weight: 700;
-  font-family: "Playpen Sans Thai", cursive;
+  font-family: sans-serif;
   display: inline-block;
   transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -89,7 +86,7 @@
   margin: 0;
   max-width: 480px;
   font-weight: 400;
-  font-family: 'Architects Daughter', cursive;
+  font-family: sans-serif;
   transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -109,8 +106,9 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  min-height: 520px;
-  width: 100%;
+  width: 520px;
+  height: 520px;
+  margin: 0 auto;
 }
 
 .logo-wrapper {
@@ -165,7 +163,7 @@
   pointer-events: none;
   z-index: 1;
   transform: rotate(-90deg);
-  /* Start the spark path at the top node (12 o'clock) */
+  overflow: visible !important; /* Prevents clipping of neon electric glow/shadows on boundaries */
 }
 
 .orbit-line {
@@ -207,29 +205,138 @@
   animation: logoAuraPulse 6s ease-in-out infinite;
 }
 
-/* Glowing Flowing Current Spark (Dual Core) */
-.orbit-spark-glow {
-  stroke: rgba(37, 99, 235, 0.3);
-  stroke-width: 4.5;
-  stroke-linecap: round;
-  stroke-dasharray: 8 281;
-  /* Glow tail length 25 */
-  stroke-dashoffset: 0;
-  animation: sparkFlow 3s linear infinite;
-  opacity: 0.8;
+/* ─── CUSTOM ORBIT LIGHTNING SPARK SYMBOL ─── */
+.orbit-spark-group {
   pointer-events: none;
+  z-index: 6;
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.orbit-spark-core {
-  stroke: #60a5fa;
-  stroke-width: 1.5;
+.orbit-spark-bolt-wrapper {
+  transform-box: view-box;
+  transform-origin: 50% 4%;
+  transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Resting State: crackle/jitter the lightning bolt jitter group */
+.orbit-spark-group.is-resting .orbit-spark-bolt-jitter {
+  animation: boltJitter 0.08s infinite alternate ease-in-out;
+  transform-box: view-box;
+  transform-origin: 50% 4%;
+}
+
+/* Golden outer circle */
+.spark-symbol-circle {
+  stroke: #ffb703;
+  stroke-width: 1.2px;
+  fill: rgba(251, 191, 36, 0.06);
+  filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.4));
+  transition: stroke 0.3s ease, stroke-width 0.3s ease, filter 0.3s ease;
+}
+
+.orbit-spark-group.is-resting .spark-symbol-circle {
+  stroke: #ffd700;
+  stroke-width: 1.6px;
+  filter: drop-shadow(0 0 4px #ffd700) drop-shadow(0 0 8px #ff9e00);
+}
+
+/* The solid lightning bolt symbol */
+.spark-symbol-bolt {
+  fill: #ffb703;
+  stroke: #ff9e00;
+  stroke-width: 0.5px;
+  filter: drop-shadow(0 0 2px rgba(255, 183, 3, 0.5));
+  transition: fill 0.3s ease, stroke 0.3s ease, filter 0.3s ease;
+}
+
+.orbit-spark-group.is-resting .spark-symbol-bolt {
+  fill: #ffffff; /* core turns white hot when shocking! */
+  stroke: #ffd700;
+  filter: drop-shadow(0 0 4px #ffd700) drop-shadow(0 0 10px #ff9e00);
+}
+
+/* Jagged crackle lines branching out (only visible/animating when resting) */
+.resting-spark-line {
+  stroke: #ffffff;
+  stroke-width: 1.0px;
   stroke-linecap: round;
-  stroke-dasharray: 4 285;
-  /* Brighter plasma core length 10 */
-  stroke-dashoffset: 0;
-  animation: sparkFlow 3s linear infinite;
-  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.9));
-  pointer-events: none;
+  stroke-linejoin: round;
+  fill: none;
+  opacity: 0;
+  transform-box: view-box;
+  transform-origin: 50% 4%;
+}
+
+.orbit-spark-group.is-resting .resting-spark-line {
+  filter: drop-shadow(0 0 2px #ffd700) drop-shadow(0 0 5px #ff9e00);
+}
+
+.orbit-spark-group.is-resting .spark-line-1 {
+  animation: electricSparks1 0.25s infinite linear;
+}
+
+.orbit-spark-group.is-resting .spark-line-2 {
+  animation: electricSparks2 0.3s infinite linear;
+}
+
+.orbit-spark-group.is-resting .spark-line-3 {
+  animation: electricSparks3 0.28s infinite linear;
+}
+
+.orbit-spark-group.is-resting .spark-line-4 {
+  animation: electricSparks4 0.32s infinite linear;
+}
+
+/* ─── ORBIT SPARK ANIMATIONS ─── */
+@keyframes boltJitter {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-0.6px, 0.4px);
+  }
+}
+
+/* High frequency electrical crackling keyframes for each branch */
+@keyframes electricSparks1 {
+  0%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); }
+  12.5% { opacity: 1; transform: scale(1.1) rotate(-10deg); }
+  25% { opacity: 0; transform: scale(0.6) rotate(10deg); }
+  50% { opacity: 1; transform: scale(1.2) rotate(-20deg); }
+  62.5% { opacity: 0; transform: scale(0.3) rotate(0deg); }
+  75% { opacity: 1; transform: scale(0.9) rotate(15deg); }
+  87.5% { opacity: 0; }
+}
+
+@keyframes electricSparks2 {
+  0%, 100% { opacity: 0; transform: scale(0.2) rotate(10deg); }
+  15% { opacity: 1; transform: scale(1.2) rotate(20deg); }
+  30% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+  45% { opacity: 0; }
+  60% { opacity: 1; transform: scale(1.0) rotate(5deg); }
+  75% { opacity: 0; transform: scale(0.3) rotate(-15deg); }
+  90% { opacity: 1; transform: scale(1.3) rotate(25deg); }
+}
+
+@keyframes electricSparks3 {
+  0%, 100% { opacity: 0; transform: scale(0.5) rotate(-20deg); }
+  10% { opacity: 1; transform: scale(1.0) rotate(-5deg); }
+  25% { opacity: 0; }
+  40% { opacity: 1; transform: scale(1.3) rotate(15deg); }
+  55% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+  70% { opacity: 1; transform: scale(0.8) rotate(-10deg); }
+  85% { opacity: 0; }
+}
+
+@keyframes electricSparks4 {
+  0%, 100% { opacity: 0; transform: scale(0.3) rotate(5deg); }
+  20% { opacity: 1; transform: scale(1.1) rotate(-15deg); }
+  40% { opacity: 0; transform: scale(0.5) rotate(10deg); }
+  60% { opacity: 1; transform: scale(1.2) rotate(20deg); }
+  80% { opacity: 0; }
+  90% { opacity: 1; transform: scale(0.9) rotate(-5deg); }
 }
 
 
@@ -242,37 +349,37 @@
 }
 
 .cube-pos-top-right {
-  top: 28%;
-  right: 4%;
-  transform: translateY(-50%);
+  top: 27%;
+  left: 89.8%;
+  transform: translate(-50%, -50%);
   animation: asymmetricFloat 5.5s ease-in-out infinite 0.8s;
 }
 
 .cube-pos-bottom-right {
-  bottom: 28%;
-  right: 4%;
-  transform: translateY(50%);
+  top: 73%;
+  left: 89.8%;
+  transform: translate(-50%, -50%);
   animation: asymmetricFloat 4.8s ease-in-out infinite 1.4s;
 }
 
 .cube-pos-bottom {
-  bottom: 4%;
+  top: 96%;
   left: 50%;
-  transform: translate(-50%, 50%);
+  transform: translate(-50%, -50%);
   animation: asymmetricFloat 5.2s ease-in-out infinite 2s;
 }
 
 .cube-pos-bottom-left {
-  bottom: 28%;
-  left: 4%;
-  transform: translateY(50%);
+  top: 73%;
+  left: 10.2%;
+  transform: translate(-50%, -50%);
   animation: asymmetricFloat 4.6s ease-in-out infinite 2.6s;
 }
 
 .cube-pos-top-left {
-  top: 28%;
-  left: 4%;
-  transform: translateY(-50%);
+  top: 27%;
+  left: 10.2%;
+  transform: translate(-50%, -50%);
   animation: asymmetricFloat 5.4s ease-in-out infinite 3.2s;
 }
 
@@ -553,6 +660,10 @@
 
 /* ─── RESPONSIVE COMPONENT LAYOUT ─── */
 @media (max-width: 1024px) {
+  .hero {
+    padding: 110px 20px 60px;
+  }
+
   .hero-grid {
     grid-template-columns: 1fr;
     gap: 60px;
@@ -574,63 +685,67 @@
 
   .hero__visual {
     min-height: auto;
-    width: 100%;
-    max-width: 480px;
-    height: 480px;
+    width: 80vw;
+    max-width: 420px;
+    height: 80vw;
+    max-height: 420px;
     margin: 20px auto 0;
     padding: 0;
   }
 
   .pencil-smudge-shadow {
-    bottom: 110px;
-    width: 130px;
-    height: 20px;
+    bottom: 90px;
+    width: 110px;
+    height: 18px;
   }
 
   .logo-wrapper {
-    max-width: 140px;
+    max-width: 100px;
   }
 
   .hero-logo {
-    max-width: 140px;
-  }
-
-  .logo-glow-aura {
-    width: 160px;
-    height: 160px;
-  }
-}
-
-@media (max-width: 600px) {
-  .hero {
-    padding: 40px 15px;
-  }
-
-  .hero__visual {
-    max-width: 320px;
-    height: 320px;
-  }
-
-  .pencil-smudge-shadow {
-    bottom: 75px;
-    width: 90px;
-    height: 15px;
-  }
-
-  .logo-wrapper {
-    max-width: 95px;
-  }
-
-  .hero-logo {
-    max-width: 95px;
+    max-width: 100px;
   }
 
   .logo-glow-aura {
     width: 110px;
     height: 110px;
   }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding: 100px 5px 40px;
+  }
+
+  .hero__visual {
+    width: 290px;
+    max-width: 290px;
+    height: 290px;
+    max-height: 290px;
+    margin: 15px auto 0;
+  }
+
+  .pencil-smudge-shadow {
+    bottom: 72px;
+    width: 65px;
+    height: 10px;
+  }
+
+  .logo-wrapper {
+    max-width: 55px;
+  }
+
+  .hero-logo {
+    max-width: 55px;
+  }
+
+  .logo-glow-aura {
+    width: 65px;
+    height: 65px;
+  }
   
   .draft-crosshair {
-    font-size: 12px;
+    font-size: 10px;
   }
 }

@@ -268,3 +268,29 @@
     opacity: 0;
   }
 }
+
+@media (max-width: 600px) {
+  .reviews-section {
+    padding: 4rem 1rem 5rem;
+  }
+  .scroll-paper {
+    width: 94%;
+  }
+  .scroll-card:hover .scroll-paper {
+    height: 280px;
+  }
+  .scroll-card:hover .scroll-rod-bottom {
+    transform: translateY(200px) rotate(360deg);
+  }
+  .scroll-content {
+    padding: 1.25rem 1.25rem 1.5rem;
+  }
+  .scroll-quote {
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+  .scroll-author {
+    font-size: 0.85rem;
+  }
+}
+

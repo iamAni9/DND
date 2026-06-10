@@ -278,3 +278,13 @@
   opacity: 0.85;
   transform: translateY(0);
 }
+
+@media (max-width: 600px) {
+  .contact-section {
+    padding: 4rem 1rem 5rem;
+  }
+  .contact-container {
+    gap: 2.5rem;
+  }
+}
+
