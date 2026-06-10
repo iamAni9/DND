@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Boogaloo&display=swap');
+
 /* ─── HERO BASE & DOT-GRID MATRIX BACKGROUND ─── */
 .hero {
   position: relative;
@@ -6,7 +8,7 @@
   justify-content: center;
   min-height: 90vh;
   width: 100%;
-  padding: 80px 20px;
+  padding: 80px 20px 250px 20px;
   box-sizing: border-box;
   background-size: 24px 24px;
   overflow: hidden;
@@ -33,13 +35,13 @@
 }
 
 .hero__title {
-  font-size: clamp(3rem, 6vw, 4.2rem);
+  font-size: clamp(4rem, 7vw, 5.2rem);
   font-weight: 800;
   color: #0f172a;
   margin: 0 0 10px 0;
   line-height: 1.05;
   letter-spacing: -0.04em;
-  font-family: sans-serif;
+  font-family: 'Boogaloo', cursive;
 }
 
 .hero__subtitle-container {
@@ -661,7 +663,7 @@
 /* ─── RESPONSIVE COMPONENT LAYOUT ─── */
 @media (max-width: 1024px) {
   .hero {
-    padding: 110px 20px 60px;
+    padding: 110px 20px 150px 60px;
   }
 
   .hero-grid {
@@ -715,7 +717,7 @@
 
 @media (max-width: 600px) {
   .hero {
-    padding: 100px 5px 40px;
+    padding: 100px 5px 120px 40px;
   }
 
   .hero__visual {

@@ -12,11 +12,23 @@ const RainEffect = () => {
     let animationFrameId;
     let width = (canvas.width = canvas.offsetWidth);
     let height = (canvas.height = canvas.offsetHeight);
+    let rainStartY = 40; // start rain below the cloud layer
+
+    const getRainStartY = () => {
+      const cloudEl = document.querySelector('.philosophy-clouds');
+      const canvasRect = canvas.getBoundingClientRect();
+      if (cloudEl) {
+        const cloudRect = cloudEl.getBoundingClientRect();
+        return Math.max(0, cloudRect.bottom - canvasRect.top);
+      }
+      return 120;
+    };
 
     const handleResize = () => {
       if (!canvas) return;
       width = canvas.width = canvas.offsetWidth;
       height = canvas.height = canvas.offsetHeight;
+      rainStartY = getRainStartY();
     };
 
     window.addEventListener('resize', handleResize);
@@ -26,10 +38,11 @@ const RainEffect = () => {
     const drops = [];
     const colors = ['rgba(15, 23, 42, ', 'rgba(30, 41, 59, ']; // Slate-900 & Slate-800
 
+    rainStartY = getRainStartY();
     for (let i = 0; i < maxDrops; i++) {
       drops.push({
         x: Math.random() * width,
-        y: Math.random() * height - height,
+        y: rainStartY + Math.random() * Math.max(0, height - rainStartY),
         vy: 240 + Math.random() * 160,
         length: 12 + Math.random() * 8,
         opacity: 0.25 + Math.random() * 0.25,
@@ -496,8 +509,8 @@ const RainEffect = () => {
           if (isRopeCollision || d.y >= height) {
             spawnSplash(d.x, Math.min(d.y, collisionY));
           }
-          // Reset drop
-          d.y = -20;
+          // Reset drop to just below the clouds
+          d.y = rainStartY + Math.random() * 40;
           d.x = Math.random() * width;
           d.vy = 240 + Math.random() * 160;
           d.opacity = 0.25 + Math.random() * 0.25;
