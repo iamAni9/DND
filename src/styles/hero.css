@@ -33,38 +33,33 @@
 }
 
 .hero__title {
-  font-size: clamp(2.0rem, 6.5vw, 4.8rem);
+  font-size: clamp(2.2rem, 6.5vw, 4.8rem);
   font-weight: 900;
-  color: var(--text-h);
-  margin: 0 0 16px 0;
-  line-height: 1.08;
-  letter-spacing: 0.03em;
+  margin: 0 0 20px 0;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   font-family: var(--heading);
   text-transform: uppercase;
+  
+  /* Premium visual text gradient */
+  background: linear-gradient(135deg, var(--text-h) 30%, var(--accent) 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.hero__subtitle-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 50px;
-  /* Prevents text block layout shifts during cycling */
-  margin-bottom: 12px;
-}
-
-.hero__subtitle-base {
+.hero__subtitle {
   font-size: clamp(1.25rem, 2.5vw, 1.6rem);
   color: var(--text);
   font-weight: 500;
-  margin: 0;
+  margin: 0 0 16px 0;
   font-family: var(--sans);
+  min-height: 48px;
 }
 
 .hero__subtitle-dynamic {
-  font-size: clamp(1.25rem, 2.5vw, 1.6rem);
   color: var(--accent);
   font-weight: 700;
-  font-family: var(--sans);
   display: inline-block;
   transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -687,10 +682,7 @@
   .hero__content {
     align-items: center;
     margin: 0 auto;
-  }
-
-  .hero__subtitle-container {
-    justify-content: center;
+    text-align: center !important;
   }
 
   .hero__description {
@@ -733,16 +725,17 @@
   }
 
   .hero__title {
-    font-size: clamp(2.0rem, 8.5vw, 3.2rem);
-    letter-spacing: 0.02em;
-    margin-bottom: 12px;
+    font-size: clamp(1.9rem, 8.5vw, 3.0rem);
+    letter-spacing: -0.015em;
+    margin-bottom: 14px;
+    line-height: 1.1;
   }
 
-  .hero__subtitle-container {
-    flex-wrap: wrap;
+  .hero__subtitle {
+    margin-bottom: 12px;
     min-height: auto;
-    gap: 6px;
-    margin-bottom: 10px;
+    line-height: 1.4;
+    text-align: center;
   }
 
   .hero__ctas {
@@ -764,11 +757,14 @@
   .hero__visual {
     width: 100% !important;
     max-width: 100% !important;
-    height: 380px !important;
-    max-height: 380px !important;
+    aspect-ratio: 1 / 1 !important;
+    height: auto !important;
+    max-height: none !important;
     transform: scale(0.82);
     transform-origin: center center;
     margin: -20px auto -30px auto;
+    left: 0 !important;
+    position: relative !important;
   }
 
   .pencil-smudge-shadow {

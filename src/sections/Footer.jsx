@@ -1,4 +1,5 @@
 import React from 'react';
+import InteractiveNimbu from '@/components/InteractiveNimbu';
 import '@/styles/footer.css';
 
 const Footer = () => {
@@ -10,6 +11,9 @@ const Footer = () => {
   return (
     <footer className="footer" aria-labelledby="footer-brand">
       <div className="footer-laser-line" />
+
+      {/* Nimbu Mascot - interactive stretchy string */}
+      <InteractiveNimbu />
       
       <div className="footer-container">
         {/* Left Column: Brand & Logo */}

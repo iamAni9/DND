@@ -120,25 +120,20 @@ const HeroSection = () => {
 
         {/* Left Column: Premium Minimalist Content & Text Rotator */}
         <div className="hero__content">
-          <ScrollReveal delay={50}>
-            <div className="hero__badge">
-              <span className="hero__badge-text">✨ Crafting Premium Applications</span>
-            </div>
-          </ScrollReveal>
           
           <ScrollReveal delay={150}>
-            <h1 id="hero-title" className="hero__title font-solid">
+            <h1 id="hero-title" className="hero__title">
               DevNextDoor
             </h1>
           </ScrollReveal>
 
           <ScrollReveal delay={250}>
-            <div className="hero__subtitle-container">
-              <p className="hero__subtitle-base">We can design & build</p>
+            <p className="hero__subtitle">
+              We can design & build{' '}
               <span className={`hero__subtitle-dynamic ${isTransitioning ? 'fade-out' : 'fade-in'}`}>
                 {SERVICES[activeIndex].text}
               </span>
-            </div>
+            </p>
           </ScrollReveal>
 
           <ScrollReveal delay={350}>
