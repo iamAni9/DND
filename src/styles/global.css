@@ -1,25 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Cabin+Sketch:wght@400;700&family=Londrina+Outline&family=Londrina+Solid:wght@300;400;900&family=Permanent+Marker&family=Shadows+Into+Light&family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:wght@400;700&display=swap');
 
 :root {
-  --text: #4a4552;
-  --text-h: #0f172a;
-  --bg: #fdfbf7;
-  --border: #e2e8f0;
+  --text: #334155; /* slate-700 for better readability */
+  --text-h: #0f172a; /* slate-900 for premium headings */
+  --bg: #faf9f6; /* premium bone white/off-white background */
+  --border: #f1f5f9; /* slate-100 */
   --code-bg: #f8fafc;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.05);
-  --accent-border: rgba(170, 59, 255, 0.3);
+  --accent: #6366f1; /* Trustworthy Indigo */
+  --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  --accent-bg: rgba(99, 102, 241, 0.04);
+  --accent-border: rgba(99, 102, 241, 0.2);
   --social-bg: rgba(244, 243, 236, 0.5);
   --shadow:
-    rgba(0, 0, 0, 0.05) 0 10px 15px -3px, rgba(0, 0, 0, 0.02) 0 4px 6px -2px;
+    rgba(0, 0, 0, 0.04) 0 10px 15px -3px, rgba(0, 0, 0, 0.01) 0 4px 6px -2px;
 
   --bg-grid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='1.5' fill='%23cbd5e1'/%3E%3C/svg%3E");
 
-  --sans: 'Shantell Sans', system-ui, -apple-system, sans-serif;
-  --heading: 'Shantell Sans', system-ui, -apple-system, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --heading: 'Outfit', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
+  font: 16px/1.6 var(--sans); /* Clean, standard body sizing for high-end feel */
   letter-spacing: 0.18px;
   color-scheme: light;
   color: var(--text);
@@ -31,7 +32,7 @@
   -moz-osx-font-smoothing: grayscale;
 
   @media (max-width: 1024px) {
-    font-size: 16px;
+    font-size: 15px;
   }
 }
 
@@ -47,32 +48,31 @@ body {
 }
 
 h1,
-h2 {
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--heading);
-  font-weight: 500;
+  font-weight: 800;
   color: var(--text-h);
+  margin: 0;
+  letter-spacing: -0.02em;
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+  font-size: clamp(2.5rem, 5.5vw, 4.4rem);
+  line-height: 1.15;
 }
+
 h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.2;
 }
+
 p {
   margin: 0;
+  line-height: 1.6;
 }
 
 code,
@@ -84,38 +84,219 @@ code,
 }
 
 code {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
 }
 
-/* Typography Helpers */
+/* Typography Helpers (Mapped cleanly for existing JSX components) */
 .font-sketch {
-  font-family: 'Cabin Sketch', cursive, sans-serif;
-  font-weight: 700;
+  font-family: var(--heading);
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
 .font-outline {
-  font-family: 'Londrina Outline', cursive, sans-serif;
-  -webkit-text-stroke: 1px var(--text-h);
+  font-family: var(--heading);
+  font-weight: 800;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--text-h);
+  letter-spacing: -0.02em;
 }
 
 .font-solid {
-  font-family: 'Londrina Solid', cursive, sans-serif;
-  font-weight: 900;
+  font-family: var(--heading);
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .font-marker {
-  font-family: 'Architects Daughter', cursive, sans-serif;
+  font-family: var(--sans);
   font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
 }
 
 .font-thin-marker {
-  font-family: 'Shadows Into Light', cursive, sans-serif;
-  font-weight: 700;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: 0.01em;
 }
 
 .font-ink {
-  font-family: 'Permanent Marker', cursive, sans-serif;
+  font-family: var(--mono);
+  font-weight: 400;
+}
+
+/* =========================================================================
+   DARK THEME SYSTEM & VARIABLES
+   ========================================================================= */
+:root[data-theme='dark'] {
+  --text: #94a3b8; /* slate-400 */
+  --text-h: #f8fafc; /* slate-50 */
+  --bg: #090d16; /* midnight background */
+  --border: #1e293b; /* slate-800 */
+  --code-bg: #0f172a;
+  --accent: #818cf8; /* Light Indigo */
+  --accent-gradient: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+  --accent-bg: rgba(129, 140, 248, 0.06);
+  --accent-border: rgba(129, 140, 248, 0.25);
+  --bg-grid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='1.5' fill='%231e293b'/%3E%3C/svg%3E");
+  color-scheme: dark;
+}
+
+/* Component Overrides for Dark Theme */
+:root[data-theme='dark'] .navbar__bg {
+  background: rgba(9, 13, 22, 0.8) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+:root[data-theme='dark'] .navbar__burger span {
+  background: #f8fafc !important;
+}
+
+:root[data-theme='dark'] .navbar__section--center {
+  background: #0f172a !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+:root[data-theme='dark'] .hero__cta-secondary {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #f8fafc !important;
+}
+:root[data-theme='dark'] .hero__cta-secondary:hover {
+  background: rgba(129, 140, 248, 0.04) !important;
+}
+
+:root[data-theme='dark'] .cube-label {
+  background: rgba(15, 23, 42, 0.95) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+:root[data-theme='dark'] .cube-label span {
+  color: #94a3b8 !important;
+}
+
+:root[data-theme='dark'] .service-card {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+:root[data-theme='dark'] .service-card:hover {
+  background: #0f172a !important;
+}
+
+:root[data-theme='dark'] .timeline-item__content {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+:root[data-theme='dark'] .timeline-item:hover .timeline-item__content {
+  background: #0f172a !important;
+}
+:root[data-theme='dark'] .timeline-item__icon-inner {
+  background: #0f172a !important;
+}
+
+:root[data-theme='dark'] .work-card {
+  background-color: rgba(15, 23, 42, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+:root[data-theme='dark'] .work-card:hover {
+  background-color: #0f172a !important;
+}
+:root[data-theme='dark'] .work-filter-btn {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #94a3b8 !important;
+}
+:root[data-theme='dark'] .work-filter-btn:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+:root[data-theme='dark'] .faq-row {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+:root[data-theme='dark'] .faq-row:hover {
+  border-color: rgba(99, 102, 241, 0.25) !important;
+}
+:root[data-theme='dark'] .faq-row.is-open {
+  background: #0f172a !important;
+  border-color: rgba(99, 102, 241, 0.25) !important;
+}
+:root[data-theme='dark'] .faq-row__trigger-container {
+  background: #0f172a !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+:root[data-theme='dark'] .reviews-section {
+  background: radial-gradient(circle at center, #090d16 0%, #030712 100%) !important;
+}
+:root[data-theme='dark'] .review-card {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+:root[data-theme='dark'] .review-card:hover {
+  background: #0f172a !important;
+}
+
+:root[data-theme='dark'] .contact-card {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+:root[data-theme='dark'] .contact-card:hover {
+  background: #0f172a !important;
+}
+:root[data-theme='dark'] .form-input,
+:root[data-theme='dark'] .form-textarea {
+  background: #090d16 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #f8fafc !important;
+}
+
+:root[data-theme='dark'] .footer {
+  background: linear-gradient(180deg, #090d16 0%, #030712 100%) !important;
+  border-top-color: rgba(255, 255, 255, 0.06) !important;
+}
+:root[data-theme='dark'] .footer-laser-line {
+  background: linear-gradient(90deg, transparent, var(--accent) 30%, #ff5a79 50%, var(--accent) 70%, transparent 100%) !important;
+  opacity: 0.6 !important;
+}
+:root[data-theme='dark'] .footer-col-title {
+  color: #ffffff !important;
+}
+:root[data-theme='dark'] .footer-logo-brand {
+  filter: brightness(0) invert(1) !important;
+}
+:root[data-theme='dark'] .social-icon {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+  color: #94a3b8 !important;
+}
+:root[data-theme='dark'] .social-icon:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: var(--accent) !important;
+  color: #ffffff !important;
+}
+:root[data-theme='dark'] .footer-newsletter-input {
+  background: #090d16 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #f8fafc !important;
+}
+
+:root[data-theme='dark'] .hero-logo,
+:root[data-theme='dark'] .navbar__logo {
+  filter: invert(1) hue-rotate(180deg) brightness(1.2) !important;
+}
+
+:root[data-theme='dark'] .pencil-smudge-shadow {
+  background: radial-gradient(ellipse at center,
+      rgba(99, 102, 241, 0.4) 0%,
+      rgba(129, 140, 248, 0.15) 50%,
+      transparent 70%) !important;
+}
+
+:root[data-theme='dark'] .orbit-line {
+  stroke: rgba(255, 255, 255, 0.15) !important;
 }

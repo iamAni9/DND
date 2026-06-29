@@ -3,27 +3,22 @@ import RoughAnnotation from '@/components/RoughAnnotation';
 import ScrollReveal from '@/components/ScrollReveal';
 import '@/styles/work.css';
 
-/* ───────── Decorative Brass Rivet ───────── */
-const CardRivet = ({ style }) => (
-  <div className="card-rivet" style={style} />
-);
-
 /* ───────── Custom Magical SVGs ───────── */
 const AetherIcon = () => (
-  <svg viewBox="0 0 50 50" className="work-card-icon" fill="none" stroke="#aa3bff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+  <svg viewBox="0 0 50 50" className="work-card-icon" fill="none" stroke="#6366f1" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="25" cy="25" r="14" strokeDasharray="3 3" />
     <path d="M17,25 L33,25 M25,17 L25,33" />
-    <circle cx="25" cy="25" r="6" fill="rgba(170, 59, 255, 0.15)" />
+    <circle cx="25" cy="25" r="6" fill="rgba(99, 102, 241, 0.15)" />
     <path d="M19,19 Q25,13 31,19 T31,31 T19,31 Z" />
   </svg>
 );
 
 const ScribeIcon = () => (
-  <svg viewBox="0 0 50 50" className="work-card-icon" fill="none" stroke="#f472b6" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M15,35 Q30,35 35,20 C38,12 42,10 40,8 C38,6 36,10 28,13 C13,20 15,30 15,35" fill="rgba(244, 114, 182, 0.15)" />
+  <svg viewBox="0 0 50 50" className="work-card-icon" fill="none" stroke="#a855f7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M15,35 Q30,35 35,20 C38,12 42,10 40,8 C38,6 36,10 28,13 C13,20 15,30 15,35" fill="rgba(168, 85, 247, 0.15)" />
     <line x1="15" y1="35" x2="35" y2="15" />
     <path d="M22,28 Q30,22 33,20" strokeWidth="1.5" />
-    <circle cx="15" cy="35" r="2" fill="#f472b6" />
+    <circle cx="15" cy="35" r="2" fill="#a855f7" />
   </svg>
 );
 
@@ -40,32 +35,42 @@ const ChronoIcon = () => (
 
 const PROJECTS = [
   {
-    title: 'AetherAI 🤖',
+    title: 'AetherAI',
+    type: 'ai',
     category: 'AI Agents & Chat companions',
     description: 'An autonomous engine powered by custom LLM agents that auto-generates storylines, character stats, and custom lore on the fly.',
     link: '#',
-    highlightColor: 'rgba(170, 59, 255, 0.45)',
-    fontClass: 'font-sketch',
+    highlightColor: 'rgba(99, 102, 241, 0.3)',
+    fontClass: 'font-solid',
     Icon: AetherIcon,
   },
   {
-    title: 'ScribeSaaS 🚀',
+    title: 'ScribeSaaS',
+    type: 'saas',
     category: 'Workflow & Collaboration Platforms',
     description: 'A real-time workspace for remote writers and gaming guilds with character template integrations and document pipelines.',
     link: '#',
-    highlightColor: 'rgba(244, 114, 182, 0.45)',
-    fontClass: 'font-outline',
+    highlightColor: 'rgba(168, 85, 247, 0.3)',
+    fontClass: 'font-solid',
     Icon: ScribeIcon,
   },
   {
-    title: 'ChronoWeb 🌐',
+    title: 'ChronoWeb',
+    type: 'web',
     category: 'High-Performance Marketing Hubs',
     description: 'A landing platform built with Next.js featuring fully customized interactive SVG timelines and physics animations.',
     link: '#',
-    highlightColor: 'rgba(234, 179, 8, 0.45)',
+    highlightColor: 'rgba(234, 179, 8, 0.3)',
     fontClass: 'font-solid',
     Icon: ChronoIcon,
   },
+];
+
+const TABS = [
+  { label: 'All Projects', type: 'all' },
+  { label: 'AI Systems', type: 'ai' },
+  { label: 'SaaS Platforms', type: 'saas' },
+  { label: 'Web Systems', type: 'web' }
 ];
 
 const ProjectCard = ({ title, category, description, link, highlightColor, fontClass, Icon, delay }) => {
@@ -78,12 +83,6 @@ const ProjectCard = ({ title, category, description, link, highlightColor, fontC
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        {/* Brass rivets in card corners */}
-        <CardRivet style={{ top: '8px', left: '8px' }} />
-        <CardRivet style={{ top: '8px', right: '8px' }} />
-        <CardRivet style={{ bottom: '8px', right: '8px' }} />
-        <CardRivet style={{ bottom: '8px', left: '8px' }} />
-
         {/* Custom icon container */}
         <div className="work-card__header-row">
           <div className="work-card__category font-marker">{category}</div>
@@ -102,7 +101,7 @@ const ProjectCard = ({ title, category, description, link, highlightColor, fontC
         </h3>
         <p className="work-card__desc">{description}</p>
         <a href={link} className="work-card__btn font-sketch">
-          Take a Peak →
+          View Project →
         </a>
       </div>
     </ScrollReveal>
@@ -110,12 +109,18 @@ const ProjectCard = ({ title, category, description, link, highlightColor, fontC
 };
 
 const WorkSection = () => {
+  const [activeTab, setActiveTab] = useState('all');
+
+  const filteredProjects = activeTab === 'all'
+    ? PROJECTS
+    : PROJECTS.filter(proj => proj.type === activeTab);
+
   return (
     <section className="work-section" id="work" aria-labelledby="work-title">
       <div className="work-section__header">
         <ScrollReveal delay={50}>
           <h2 id="work-title" className="work-section__title font-solid">
-            RECENT CREATIONS
+            Recent Creations
           </h2>
         </ScrollReveal>
         <ScrollReveal delay={150}>
@@ -125,9 +130,23 @@ const WorkSection = () => {
         </ScrollReveal>
       </div>
 
+      {/* Category filter tabs */}
+      <div className="work-filters">
+        {TABS.map((tab, idx) => (
+          <ScrollReveal key={tab.type} delay={idx * 50} display="inline-block">
+            <button
+              onClick={() => setActiveTab(tab.type)}
+              className={`work-filter-btn ${activeTab === tab.type ? 'active' : ''}`}
+            >
+              {tab.label}
+            </button>
+          </ScrollReveal>
+        ))}
+      </div>
+
       <div className="work-grid">
-        {PROJECTS.map((proj, idx) => (
-          <ProjectCard key={idx} {...proj} delay={idx * 150} />
+        {filteredProjects.map((proj, idx) => (
+          <ProjectCard key={proj.title} {...proj} delay={idx * 100} />
         ))}
       </div>
     </section>

@@ -8,7 +8,6 @@ import FAQSection from '@/sections/FAQSection'
 import ReviewsSection from '@/sections/ReviewsSection'
 import ContactSection from '@/sections/ContactSection'
 import Footer from '@/sections/Footer'
-import InteractiveBird from '@/components/InteractiveBird'
 
 function App() {
   return (
@@ -22,7 +21,6 @@ function App() {
       <ReviewsSection />
       <ContactSection />
       <Footer />
-      <InteractiveBird />
     </div>
   )
 }

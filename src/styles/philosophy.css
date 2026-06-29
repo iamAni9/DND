@@ -1,355 +1,192 @@
-/* Philosophy/Cosmic Section Styles */
+/* ═══════════════════════════════════════════
+   Philosophy / About Section Styles
+   ═══════════════════════════════════════════ */
+
 .philosophy {
   position: relative;
-  padding: 6rem 2rem;
+  padding: 7rem 2rem 8rem;
   width: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
+  background: var(--bg);
 }
 
-/* Doodle Hand Cloud Header (Screenshot 2) */
-.philosophy__doodle-header {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 2rem;
-  width: 100%;
-  max-width: 300px;
-}
-
-.cloud-doodle-svg {
-  display: block;
-}
-
-.doodle-header-text {
+/* Background Ambient Glow Flare */
+.philosophy-radial-glow {
   position: absolute;
-  top: 65px;
-  width: 280px;
-  display: flex;
-  justify-content: space-between;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.03) 0%, transparent 70%);
   pointer-events: none;
-}
-
-.doodle-header-what {
-  font-size: 1.8rem;
-  transform: rotate(-10deg) translateX(-10px);
-  color: var(--text-h);
-  font-weight: bold;
-}
-
-.doodle-header-wedo {
-  font-size: 2rem;
-  transform: rotate(10deg) translateX(10px);
-  color: var(--text-h);
+  z-index: 1;
 }
 
 .philosophy__header {
   text-align: center;
-  margin-top: 120px;
-  margin-bottom: 3rem;
+  max-width: 750px;
+  margin-bottom: 5rem;
   z-index: 2;
+  position: relative;
 }
 
 .philosophy__title {
   font-size: clamp(2.3rem, 6vw, 4.2rem);
   color: var(--text-h);
-  margin: 0;
-  letter-spacing: -0.01em;
-  line-height: 1.1;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.02em;
 }
 
 .philosophy__subtitle {
-  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
 }
 
 .philosophy__subtitle-text {
+  border-radius: 99px;
+  padding: 0.5rem 1.25rem;
+  background: rgba(99, 102, 241, 0.04);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   font-family: var(--sans);
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--text-h);
-  background: linear-gradient(120deg, rgba(254, 240, 138, 0.45) 0%, rgba(254, 240, 138, 0.65) 100%);
-  padding: 0.35rem 0.85rem;
-  border-radius: 6px;
   display: inline-block;
-  border: 1.5px dashed rgba(170, 59, 255, 0.2);
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.04);
 }
 
-/* Cosmic Doodle Illustration */
-.cosmic-canvas {
-  position: relative;
-  width: 100%;
-  max-width: 900px;
-  height: 380px;
-  margin: 1.5rem auto 5rem;
-  border: 3px solid var(--text-h);
-  border-radius: 30px 10px 40px 10px/10px 40px 10px 30px;
-  background: var(--bg);
-  overflow: hidden;
-  box-sizing: border-box;
-  box-shadow: 6px 6px 0px var(--text-h);
-}
-
-.cosmic-canvas__content {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 3;
-  pointer-events: none;
-  text-align: center;
-  padding: 2rem;
-}
-
-.cosmic-canvas__title {
-  font-size: clamp(1.8rem, 4vw, 3rem);
-  color: var(--text-h);
-  margin: 0 0 0.5rem;
-  pointer-events: auto;
-}
-
-.cosmic-canvas__subtitle {
-  font-size: 1.15rem;
-  color: var(--text);
-  font-weight: 600;
-  pointer-events: auto;
-}
-
-.magic-canvas-content {
-  justify-content: center;
-  align-items: center;
-}
-
-.magic-canvas-text {
-  color: #3b1e06 !important; /* Rich wood-burnt dark brown */
-  font-size: clamp(1.1rem, 2.5vw, 1.45rem) !important;
-  max-width: 320px;
-  line-height: 1.45;
-  margin: 0;
-  font-weight: 700;
-  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
-  transform: translateY(-8px) rotate(-1.5deg); /* Aligns perfectly with the curved banner */
-}
-
-/* Cosmic SVG Elements & Animations */
-.svg-overlay {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.astronaut-float {
-  animation: bobbing 5s ease-in-out infinite;
-  transform-origin: center;
-}
-
-.rover-bounce {
-  animation: bump 4s ease-in-out infinite;
-  transform-origin: center;
-}
-
-.star-twinkle {
-  animation: twinkle 2.5s ease-in-out infinite;
-  transform-origin: center;
-}
-
-.star-twinkle:nth-child(2n) {
-  animation-delay: -0.8s;
-  animation-duration: 3s;
-}
-
-.star-twinkle:nth-child(3n) {
-  animation-delay: -1.6s;
-  animation-duration: 2s;
-}
-
-.animated-trail {
-  stroke-dasharray: 8, 8;
-  animation: trail-flow 1.5s linear infinite;
-}
-
-@keyframes bobbing {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-12px) rotate(4deg); }
-}
-
-@keyframes bump {
-  0%, 100% { transform: translateY(0px) rotate(-1deg); }
-  50% { transform: translateY(-4px) rotate(2deg); }
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 0.3; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.2); }
-}
-
-@keyframes trail-flow {
-  to {
-    stroke-dashoffset: -16;
-  }
-}
-
-/* Feature Grid & Cards */
-.feature-grid {
+/* Services Grid & Cards */
+.services-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  gap: 2.2rem;
   width: 100%;
   max-width: 1100px;
   z-index: 2;
   box-sizing: border-box;
 }
 
-@media (max-width: 900px) {
-  .feature-grid {
-    grid-template-columns: 1fr;
-    max-width: 600px;
-  }
-}
-
-.phil-card {
-  background: var(--bg);
-  border: 2.5px solid var(--text-h);
-  border-radius: 20px 8px 25px 8px/8px 25px 8px 20px;
-  box-shadow: 4px 4px 0px var(--text-h);
-  padding: 2rem;
-  box-sizing: border-box;
+.service-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.75); /* Frosted Glass */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 16px;
+  padding: 3rem 2.2rem 2.8rem;
   text-align: left;
-  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease;
+  box-sizing: border-box;
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.phil-card:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: 8px 8px 0px var(--text-h);
+/* Card Glow Underlay */
+.service-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, var(--accent-border), transparent 45%) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.phil-card__title {
-  font-size: 1.6rem;
-  color: var(--text-h);
-  margin: 0 0 1rem 0;
-}
-
-.phil-card__text {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: var(--text);
-  margin: 0;
-}
-
-/* ─── Handdrawn Clouds at the Top of Philosophy Section ─── */
-.philosophy-clouds {
+/* Top Accent Bar */
+.service-card__top-bar {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 130px;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 1;
+  right: 0;
+  height: 4px;
+  background: var(--accent-gradient);
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
 }
 
-.cloud-doodle {
-  position: absolute;
-  filter: drop-shadow(4px 4px 0px var(--text-h));
-  animation: cloudBob 6s infinite ease-in-out alternate;
-  width: 90px;
-  height: 55px;
-  transform-origin: center;
+.service-card:hover {
+  transform: translateY(-6px);
+  background: #ffffff;
+  border-color: rgba(99, 102, 241, 0.25);
+  box-shadow: 
+    0 20px 40px rgba(99, 102, 241, 0.05),
+    0 4px 12px rgba(0, 0, 0, 0.01);
 }
 
-.cloud-doodle:nth-child(1) {
-  top: 10px;
-  left: 6%;
-  animation-delay: 0s;
-  animation-duration: 5.5s;
+.service-card:hover::before {
+  opacity: 1;
 }
 
-.cloud-doodle:nth-child(2) {
-  top: 25px;
-  left: 32%;
-  width: 110px;
-  height: 65px;
-  animation-delay: -1.5s;
-  animation-duration: 7s;
+.service-card:hover .service-card__top-bar {
+  opacity: 1;
 }
 
-.cloud-doodle:nth-child(3) {
-  top: 15px;
-  right: 28%;
-  width: 95px;
+/* Icon Circular Container */
+.service-card__icon-container {
+  width: 58px;
   height: 58px;
-  animation-delay: -3s;
-  animation-duration: 6.2s;
+  border-radius: 50%;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  box-sizing: border-box;
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.cloud-doodle:nth-child(4) {
-  top: 28px;
-  right: 8%;
-  width: 105px;
-  height: 62px;
-  animation-delay: -4.5s;
-  animation-duration: 6.8s;
+.service-card:hover .service-card__icon-container {
+  transform: scale(1.1) rotate(5deg);
+  border-color: var(--accent);
+  background: rgba(99, 102, 241, 0.06);
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.1);
 }
 
-@keyframes cloudBob {
-  0% { transform: translateY(0px) rotate(0deg) scale(1); }
-  50% { transform: translateY(-6px) rotate(1.2deg) scale(1.03); }
-  100% { transform: translateY(0px) rotate(0deg) scale(1); }
+.philosophy-svg {
+  width: 30px;
+  height: 30px;
+  display: block;
 }
 
-@media (max-width: 600px) {
-  .philosophy {
-    padding: 4rem 1rem;
-  }
-  .feature-grid {
-    gap: 1.25rem;
-  }
-  .phil-card {
-    padding: 1.5rem;
-  }
-  .phil-card__title {
-    font-size: 1.35rem;
-  }
-
-  /* Scale down clouds and hide extras to prevent overlap on narrow screens */
-  .philosophy-clouds {
-    height: 80px;
-  }
-  .cloud-doodle {
-    width: 55px;
-    height: 34px;
-  }
-  .cloud-doodle:nth-child(1) {
-    top: 8px;
-    left: 3%;
-    width: 55px;
-    height: 34px;
-  }
-  .cloud-doodle:nth-child(2) {
-    top: 12px;
-    left: 35%;
-    width: 60px;
-    height: 38px;
-  }
-  .cloud-doodle:nth-child(3) {
-    top: 8px;
-    right: 3%;
-    left: auto;
-    width: 55px;
-    height: 34px;
-  }
-  .cloud-doodle:nth-child(4) {
-    display: none;
-  }
+.service-card__title {
+  font-size: 1.45rem;
+  color: var(--text-h);
+  margin: 0 0 1rem 0;
+  font-weight: 700;
+  font-family: var(--heading);
 }
 
+.service-card__text {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text);
+  margin: 0;
+  font-family: var(--sans);
+}
 
+/* Responsive view */
+@media (max-width: 900px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    gap: 2.5rem;
+  }
+  .service-card {
+    padding: 2.5rem 2rem 2.2rem;
+  }
+}

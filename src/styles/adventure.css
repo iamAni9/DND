@@ -1,588 +1,312 @@
 /* ═══════════════════════════════════════════
-   The Adventure Map — CSS 3D Mixed Flip Book
+   Process Timeline Styles (Premium & Interactive)
    ═══════════════════════════════════════════ */
 
 .adventure-section {
-  padding: 5rem 2rem 4rem;
+  padding: 7rem 2rem 8rem;
   width: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
+  position: relative;
+  background: var(--bg);
 }
 
-/* Section Header */
 .adventure-header {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 5rem;
   z-index: 2;
 }
 
 .adventure-title {
-  font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+  font-size: clamp(2.3rem, 6vw, 4.2rem);
   color: var(--text-h);
   margin: 0;
-  letter-spacing: -0.01em;
-  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 .adventure-subtitle-line {
   font-size: 1.15rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text);
   margin-top: 0.8rem;
-}
-
-/* ─── 3D Scene ─── */
-.flipbook-scene {
-  perspective: 2500px;
-  width: min(920px, 90vw);
-  aspect-ratio: 5 / 3;
-  margin: 0 auto;
-  container-type: inline-size;
-  container-name: bookScene;
-}
-
-.flipbook {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-}
-
-/* Under-shadow following the sliding book (transform-only for GPU smoothness) */
-.book-under-shadow {
-  position: absolute;
-  bottom: -4%;
-  left: 5%;
-  right: 5%;
-  width: 90%;
-  height: 10%;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
-  filter: blur(5px);
-  pointer-events: none;
-  z-index: -1;
-  transition: transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
-  transform: scaleX(var(--shadow-scale, 1));
-}
-
-/* ─── Static Left Background (underneath leaves) ─── */
-.book-left-bg {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  background-color: #faf6ee;
-  background-image:
-    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.015) 0px, rgba(0, 0, 0, 0.015) 1px, transparent 1px, transparent 10px),
-    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.01) 0px, rgba(0, 0, 0, 0.01) 1px, transparent 1px, transparent 8px);
-  border: 2px solid #1a1a1a;
-  border-right: 1px solid rgba(26, 26, 26, 0.2);
-  border-radius: 6px 0 0 6px;
-  z-index: 0;
-  box-sizing: border-box;
-  filter: url(#sketchy-filter);
-}
-
-/* Left bg inner double border */
-.book-left-bg::before {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  border: 1px solid rgba(26, 26, 26, 0.4);
-  border-right: none;
-  border-radius: 5px 0 0 5px;
-  pointer-events: none;
-}
-
-/* ─── Leaf (each flipping page) ─── */
-.leaf {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  transform-origin: left center;
-  transform-style: preserve-3d;
-  cursor: pointer;
-  z-index: var(--leaf-z-index, 10);
-  transform: translate(var(--book-translate, 0%)) rotateY(var(--leaf-rotate, 0deg));
-  transition: transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1), z-index 0.65s step-end;
-  will-change: transform;
-}
-
-/* Leaf Face (Front or Back) */
-.leaf-face {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-/* Hard Cover Styling (Hand-drawn deep blue cover) */
-.cover-front-face {
-  background:
-    repeating-linear-gradient(55deg, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0.05) 1px, transparent 1px, transparent 6px),
-    repeating-linear-gradient(-35deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 1px, transparent 1px, transparent 8px),
-    linear-gradient(135deg, #28507c 0%, #386494 50%, #20436a 100%);
-  border: 2.5px solid #1c1c1c;
-  /* hand-drawn sketchy cover border */
-  border-radius: 12px 255px 15px 225px/255px 15px 225px 12px;
-  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.25), 5px 5px 15px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  filter: url(#sketchy-filter);
-}
-
-.cover-back-face {
-  background:
-    repeating-linear-gradient(-55deg, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0.05) 1px, transparent 1px, transparent 6px),
-    repeating-linear-gradient(35deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 1px, transparent 1px, transparent 8px),
-    linear-gradient(225deg, #28507c 0%, #386494 50%, #20436a 100%);
-  border: 2.5px solid #1c1c1c;
-  /* flipped sketchy border */
-  border-radius: 255px 12px 225px 15px/15px 255px 12px 225px;
-  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.25), -5px 5px 15px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  transform: rotateY(180deg);
-  filter: url(#sketchy-filter);
-}
-
-/* Cover spine strip on left edge of Front Cover */
-.cover-spine-strip {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 14%;
-  height: 100%;
-  background:
-    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.04) 0px, rgba(0, 0, 0, 0.04) 1px, transparent 1px, transparent 5px),
-    linear-gradient(90deg, #1b3d63, #2b5687, #3e6d9f, #2b5687);
-  border-right: 2.2px solid #1c1c1c;
-  box-sizing: border-box;
-}
-
-/* Cover spine strip on right edge of Back Cover */
-.cover-back-face .cover-spine-strip {
-  left: auto;
-  right: 0;
-  border-right: none;
-  border-left: 2px solid #1c1c1c;
-  background:
-    repeating-linear-gradient(270deg, rgba(0, 0, 0, 0.04) 0px, rgba(0, 0, 0, 0.04) 1px, transparent 1px, transparent 5px),
-    linear-gradient(270deg, #1b3d63, #2b5687, #3e6d9f, #2b5687);
-}
-
-.cover-spine-strip .spine-band {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 7%;
-  background:
-    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0.05) 1px, transparent 1px, transparent 4px),
-    linear-gradient(180deg, #e8c54c, #d4a843);
-  border: 1.8px solid #1c1c1c;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-/* Cover transparent overlay image container */
-.cover-overlay-container {
-  position: relative;
-  margin-left: 14%;
-  width: 86%;
-  height: 100%;
-  background-image: url('/dnd b/cover.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  box-sizing: border-box;
-}
-
-/* Back cover empty contents (spine strip + clean blue center with maybe gold badge) */
-.back-cover-body {
-  position: relative;
-  margin-right: 14%;
-  width: 86%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-}
-
-.back-cover-emblem {
-  width: 80px;
-  height: 80px;
-  border: 2px solid #e8c54c;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(232, 197, 76, 0.05);
-  box-shadow: inset 0 0 10px rgba(232, 197, 76, 0.2);
-}
-
-.back-cover-emblem svg {
-  width: 60%;
-  height: 60%;
-}
-
-/* Inner Page Face (Warm cream paper, sketchy borders) */
-.paper-page-face {
-  background-color: #faf6ee;
-  background-image:
-    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.015) 0px, rgba(0, 0, 0, 0.015) 1px, transparent 1px, transparent 10px),
-    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.01) 0px, rgba(0, 0, 0, 0.01) 1px, transparent 1px, transparent 8px);
-  border: 1.8px solid #1a1a1a;
-  /* hand-drawn sketchy border radius */
-  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
-  box-shadow: inset 0 0 15px rgba(42, 37, 34, 0.05);
-  filter: url(#sketchy-filter);
-}
-
-.paper-page-face::before {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  border: 1px solid rgba(26, 26, 26, 0.4);
-  border-radius: 240px 12px 210px 12px/12px 210px 12px 240px;
-  pointer-events: none;
-}
-
-/* Back face of page is flipped 180deg */
-.paper-page-face.leaf-back {
-  transform: rotateY(180deg);
-  border-radius: 15px 255px 15px 225px/225px 15px 255px 15px;
-}
-
-.paper-page-face.leaf-back::before {
-  border-radius: 12px 240px 12px 210px/210px 12px 240px 12px;
-}
-
-/* Page shadow overlay for curl depth */
-.page-shadow-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 10;
-  transition: opacity 0.65s ease;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 100%);
-  opacity: 0;
-}
-
-.leaf-back .page-shadow-overlay {
-  background: linear-gradient(to left, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 100%);
-}
-
-/* Page animations handled via transitions */
-
-/* Page Content Layout */
-.page-content {
-  height: 100%;
-  padding: 8% 10%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-/* Page Typography */
-.pg-phase {
-  font-family: 'Shadows Into Light', cursive;
-  font-size: clamp(10px, 2.8cqw, 16px);
-  color: var(--accent);
-  font-weight: 700;
-  margin-bottom: 1cqw;
-}
-
-.pg-title {
-  font-family: var(--heading);
-  font-size: clamp(13px, 4cqw, 24px);
-  line-height: 1.15;
-  color: var(--text-h);
-  font-weight: 800;
-  margin: 0 0 2cqw 0;
-}
-
-.pg-desc {
   font-family: var(--sans);
-  font-size: clamp(10px, 2.6cqw, 14px);
-  line-height: 1.4;
-  color: var(--text);
-  font-weight: 500;
-  margin: 0;
 }
 
-.pg-badge {
-  font-family: var(--mono);
-  font-size: clamp(8px, 2cqw, 11px);
-  background: var(--accent-bg);
-  border: 1.5px solid var(--accent-border);
-  padding: 0.6cqw 1.4cqw;
-  border-radius: 5px;
-  align-self: flex-start;
-  margin-top: 2cqw;
-  color: var(--text-h);
-}
-
-.pg-hint {
-  font-family: 'Shadows Into Light', cursive;
-  font-size: clamp(10px, 2.4cqw, 15px);
-  color: var(--text);
-  margin-top: auto;
-  opacity: 0.7;
-  display: flex;
-  align-items: center;
-  gap: 0.5cqw;
-}
-
-/* Page illustrations */
-.pg-illustration {
-  margin-top: auto;
+/* Timeline grid & alignment */
+.timeline-container {
+  position: relative;
+  max-width: 1000px;
   width: 100%;
-  height: clamp(50px, 14cqw, 120px);
+  margin: 0 auto;
+  padding: 2rem 0;
+  box-sizing: border-box;
+}
+
+/* Central line using rich gradient */
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, rgba(99, 102, 241, 0.02) 0%, var(--accent) 15%, #ff5a79 50%, var(--accent) 85%, rgba(99, 102, 241, 0.02) 100%);
+  transform: translateX(-50%);
+  opacity: 0.35;
+}
+
+/* Individual item */
+.timeline-item {
   display: flex;
+  width: 100%;
+  margin-bottom: 5.5rem;
+  position: relative;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
-.pg-illustration svg {
-  width: auto;
-  height: 100%;
-  max-width: 100%;
+.timeline-item:last-child {
+  margin-bottom: 0;
 }
 
-/* Self-drawing SVG */
-.draw-svg path,
-.draw-svg circle,
-.draw-svg rect,
-.draw-svg line,
-.draw-svg ellipse {
-  stroke-dasharray: 500;
-  stroke-dashoffset: 500;
-  animation: drawStroke 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  animation-delay: 0.5s;
+.timeline-item__content {
+  width: 44%;
+  background: rgba(255, 255, 255, 0.75); /* Frosted Glass */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  padding: 2.5rem;
+  box-sizing: border-box;
+  text-align: left;
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-@keyframes drawStroke {
-  to {
-    stroke-dashoffset: 0;
-  }
+/* Left Accent Strip */
+.timeline-item__content::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--accent-gradient);
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
 }
 
-/* Navigation Controls ─── */
-.book-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-top: 2rem;
-  z-index: 5;
+/* Card Glow Underlay */
+.timeline-item__content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, var(--accent-border), transparent 45%) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.book-nav-btn {
-  width: 48px;
-  height: 48px;
+.timeline-item:hover .timeline-item__content {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 45px rgba(99, 102, 241, 0.05), 0 4px 12px rgba(0, 0, 0, 0.01);
+  border-color: rgba(99, 102, 241, 0.25);
+  background: #ffffff;
+}
+
+.timeline-item:hover .timeline-item__content::before {
+  opacity: 1;
+}
+
+.timeline-item:hover .timeline-item__content::after {
+  opacity: 1;
+}
+
+/* Alignments */
+.timeline-item.left-align {
+  flex-direction: row;
+}
+
+.timeline-item.right-align {
+  flex-direction: row-reverse;
+}
+
+.timeline-item.left-align .timeline-item__content {
+  margin-right: auto;
+}
+
+.timeline-item.right-align .timeline-item__content {
+  margin-left: auto;
+}
+
+/* Watermark Step Number Indicator */
+.timeline-item__watermark {
+  position: absolute;
+  top: 0.5rem;
+  right: 1.5rem;
+  font-size: 5.5rem;
+  font-weight: 900;
+  color: rgba(99, 102, 241, 0.05); /* Soft background typography */
+  font-family: var(--heading);
+  user-select: none;
+  line-height: 1;
+  z-index: 1;
+  transition: color 0.3s ease;
+}
+
+.timeline-item:hover .timeline-item__watermark {
+  color: rgba(99, 102, 241, 0.08);
+}
+
+/* Position text above watermark */
+.timeline-item__phase,
+.timeline-item__title,
+.timeline-item__badge,
+.timeline-item__desc {
+  position: relative;
+  z-index: 2;
+}
+
+/* Double-ring pulsing icon wrapper */
+.timeline-item__icon-box {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 54px;
+  height: 54px;
+  z-index: 10;
+}
+
+.timeline-item__icon-pulse {
+  position: absolute;
+  inset: -4px;
   border-radius: 50%;
-  border: 2.5px solid var(--text-h);
-  background: var(--bg);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 3px 3px 0 var(--text-h);
-  font-size: 1.2rem;
-  color: var(--text-h);
-}
-
-.book-nav-btn:hover:not(:disabled) {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 var(--text-h);
-}
-
-.book-nav-btn:active:not(:disabled) {
-  transform: translate(1px, 1px);
-  box-shadow: 2px 2px 0 var(--text-h);
-}
-
-.book-nav-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-  box-shadow: 2px 2px 0 var(--text-h);
-}
-
-.book-nav-dots {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.book-nav-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 2px solid var(--text-h);
-  background: transparent;
-  cursor: pointer;
+  border: 2px solid var(--accent);
+  opacity: 0;
   transition: all 0.3s ease;
-  padding: 0;
+  pointer-events: none;
 }
 
-.book-nav-dot.active {
-  background: var(--text-h);
-  transform: scale(1.3);
+.timeline-item:hover .timeline-item__icon-pulse {
+  animation: pulseRing 1.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
-/* Performance Optimization: Disable wobbly filters during 3D page flip animations */
-.flipbook.flipping .book-left-bg,
-.flipbook.flipping .paper-page-face,
-.flipbook.flipping .cover-front-face,
-.flipbook.flipping .cover-back-face {
-  filter: none !important;
+.timeline-item__icon-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid var(--accent);
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  box-sizing: border-box;
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Prevent Z-Fighting / visual flickering on card faces */
-.leaf-face.leaf-front {
-  transform: translateZ(1px);
+.timeline-item:hover .timeline-item__icon-inner {
+  transform: scale(1.1) rotate(8deg);
+  border-color: #ff5a79;
+  box-shadow: 0 8px 25px rgba(255, 90, 121, 0.15);
 }
 
-/* ─── Responsive ─── */
+.process-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Typography styles */
+.timeline-item__phase {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
+  display: block;
+  font-family: var(--sans);
+}
+
+.timeline-item__title {
+  font-size: 1.45rem;
+  color: var(--text-h);
+  margin: 0 0 0.8rem 0;
+  font-weight: 700;
+  font-family: var(--heading);
+}
+
+.timeline-item__badge {
+  font-size: 0.75rem;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  display: inline-block;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 1rem;
+  font-family: var(--sans);
+}
+
+.timeline-item__desc {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text);
+  margin: 0;
+  font-family: var(--sans);
+}
+
+/* Keyframes for node breathing pulse */
+@keyframes pulseRing {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* Responsive view */
 @media (max-width: 768px) {
-  .adventure-section {
-    padding: 3rem 1rem 2rem;
+  .timeline-container::before {
+    left: 20px;
+    transform: none;
   }
 
-  .flipbook-scene {
-    width: 95vw;
-    aspect-ratio: 5 / 3.5;
+  .timeline-item {
+    flex-direction: row !important;
+    padding-left: 50px;
+    box-sizing: border-box;
+    margin-bottom: 4rem;
   }
 
-  .book-nav-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .flipbook-scene {
-    aspect-ratio: 5 / 4;
-  }
-}
-
-/* Portrait orientation - Vertical flipping book layout */
-@media only screen and (max-width: 767px) and (orientation: portrait) {
-  .adventure-header {
-    margin-bottom: 1.2rem;
-  }
-
-  .flipbook-scene {
-    width: 95vw;
-    height: 52vh;
-    aspect-ratio: auto;
-    margin-top: 2.2rem; /* Clean margin below the header */
-  }
-
-  .flipbook {
-    transform: translateY(var(--book-translate-y, 0%));
-    transition: transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-
-  .book-left-bg {
-    display: none;
-    /* Hide static left bg since vertical pages stack completely */
-  }
-
-  .leaf {
+  .timeline-item__content {
     width: 100%;
-    height: 50%;
-    top: 50%;
-    transform-origin: top center;
-    transform: rotateX(var(--leaf-rotate, 0deg));
+    padding: 2rem;
   }
 
-  .leaf-face.leaf-back,
-  .cover-back-face {
-    transform: rotateX(180deg);
+  .timeline-item__icon-box {
+    left: 20px;
+    transform: translate(-50%, -50%);
   }
 
-  .cover-spine-strip {
-    display: none;
-    /* Hide the spine on portrait to prevent stretching issues */
-  }
-
-  .cover-overlay-container {
-    margin-left: 0;
-    width: 100%;
-  }
-
-  .back-cover-body {
-    margin-right: 0;
-    width: 100%;
-  }
-
-  /* Vertical page borders style adjustments */
-  .paper-page-face.leaf-front,
-  .cover-front-face {
-    border-radius: 6px 6px 15px 15px/6px 6px 15px 15px;
-  }
-
-  .paper-page-face.leaf-back,
-  .cover-back-face {
-    border-radius: 15px 15px 6px 6px/15px 15px 6px 6px;
-  }
-
-  .book-under-shadow {
-    display: none; /* Hide shadow on mobile portrait for clean display & performance */
-  }
-
-  /* Force readable text sizes and spacing on portrait viewports */
-  .pg-phase {
-    font-size: 13px !important;
-    margin-bottom: 6px !important;
-  }
-  .pg-title {
-    font-size: 18px !important;
-    margin-bottom: 8px !important;
-  }
-  .pg-desc {
-    font-size: 12px !important;
-    line-height: 1.35 !important;
-  }
-  .pg-badge {
-    font-size: 10px !important;
-    padding: 4px 8px !important;
-    margin-top: 8px !important;
-  }
-  .pg-hint {
-    font-size: 12px !important;
-    margin-top: 10px !important;
-  }
-  .pg-illustration {
-    margin-top: 8px !important;
-    height: 70px !important;
-  }
-  .page-content {
-    padding: 6% 8% !important;
-  }
-}
-
-/* Small landscape heights (e.g. mobile landscape) */
-@media (max-height: 580px) and (orientation: landscape) {
-  .flipbook-scene {
-    height: 65vh;
-    width: auto;
-    aspect-ratio: 5 / 3;
-  }
-  .adventure-section {
-    padding: 2rem 1rem 1.5rem;
-  }
-  .adventure-header {
-    margin-bottom: 1rem;
+  .timeline-item:hover .timeline-item__icon-box {
+    transform: translate(-50%, -50%) scale(1.05);
   }
 }

@@ -134,10 +134,11 @@
 
 /* ─── Card Body Component Styles ─── */
 .hanging-card-body {
-  background: var(--bg, #ffffff);
-  border: 2px solid var(--text-h, #1e293b);
-  border-radius: 4px 15px 4px 15px/15px 4px 15px 4px;
-  box-shadow: 3px 3px 0 var(--text-h, #1e293b);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--accent-color, rgba(15, 23, 42, 0.12));
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
   width: 155px;
   height: 48px;
   padding: 0.5rem;
@@ -151,8 +152,6 @@
   overflow: hidden;
   position: relative;
   cursor: pointer;
-  background-image: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 100%);
-  border-color: var(--accent-color, var(--text-h, #1e293b));
 }
 
 .hanging-card-body::before {
@@ -208,11 +207,11 @@
 }
 
 .hanging-card-item:hover .hanging-card-body {
-  height: 115px;
-  width: 175px;
-  box-shadow: 6px 6px 0 var(--text-h, #1e293b);
-  border-color: var(--text-h, #1e293b);
-  background: #fdfbf7;
+  height: 120px;
+  width: 180px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border-color: var(--accent-color, var(--text-h, #1e293b));
+  background: #ffffff;
 }
 
 .hanging-card-item:hover .card-desc {

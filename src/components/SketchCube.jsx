@@ -4,7 +4,7 @@ import '@/styles/sketchCube.css';
 const renderIcon = (text) => {
   const normalizedText = text.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim().toLowerCase();
   switch (normalizedText) {
-    case 'ai agents':
+    case 'ai integration':
       return (
         <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
           <path d="M50,28 L50,16" />
@@ -17,7 +17,7 @@ const renderIcon = (text) => {
           <rect x="76" y="44" width="6" height="14" rx="2" fill="currentColor" stroke="none" />
         </g>
       );
-    case 'saas programs':
+    case 'saas applications':
       return (
         <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
           <rect x="20" y="25" width="60" height="50" rx="8" />
@@ -30,7 +30,7 @@ const renderIcon = (text) => {
           <line x1="50" y1="58" x2="66" y2="58" strokeWidth="3.5" />
         </g>
       );
-    case 'websites':
+    case 'web systems':
       return (
         <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
           <circle cx="50" cy="50" r="32" />
@@ -40,7 +40,7 @@ const renderIcon = (text) => {
           <path d="M 22,66 C 32,58 68,58 78,66" />
         </g>
       );
-    case 'mobile apps':
+    case 'mobile applications':
       return (
         <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
           <rect x="28" y="18" width="44" height="64" rx="8" />
@@ -49,7 +49,7 @@ const renderIcon = (text) => {
           <rect x="34" y="30" width="32" height="38" rx="2" strokeWidth="3" />
         </g>
       );
-    case 'api platforms':
+    case 'api engineering':
       return (
         <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
           <circle cx="50" cy="50" r="10" fill="currentColor" />
@@ -61,7 +61,7 @@ const renderIcon = (text) => {
           <circle cx="78" cy="50" r="6" fill="#ffffff" strokeWidth="3.5" />
         </g>
       );
-    case 'automations':
+    case 'process automations':
     default:
       return (
         <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
@@ -77,7 +77,7 @@ const renderIcon = (text) => {
 const getTechIcons = (text) => {
   const normalizedText = text.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim().toLowerCase();
   switch (normalizedText) {
-    case 'ai agents':
+    case 'ai integration':
       return [
         {
           name: 'OpenAI',
@@ -113,7 +113,7 @@ const getTechIcons = (text) => {
           )
         }
       ];
-    case 'saas programs':
+    case 'saas applications':
       return [
         {
           name: 'React',
@@ -155,7 +155,7 @@ const getTechIcons = (text) => {
           )
         }
       ];
-    case 'websites':
+    case 'web systems':
       return [
         {
           name: 'HTML5',
@@ -193,7 +193,7 @@ const getTechIcons = (text) => {
           )
         }
       ];
-    case 'mobile apps':
+    case 'mobile applications':
       return [
         {
           name: 'iOS App',
@@ -231,7 +231,7 @@ const getTechIcons = (text) => {
           )
         }
       ];
-    case 'api platforms':
+    case 'api engineering':
       return [
         {
           name: 'GraphQL',
@@ -271,7 +271,7 @@ const getTechIcons = (text) => {
           )
         }
       ];
-    case 'automations':
+    case 'process automations':
     default:
       return [
         {

@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
-
 /* ========================================
    NAVBAR CORE WRAPPER
    ======================================== */
@@ -18,7 +16,7 @@
   background: transparent;
   border: none;
   filter: none;
-  font-family: 'Patrick Hand', cursive, sans-serif;
+  font-family: var(--sans);
 
   transition:
     top 0.4s cubic-bezier(0.25, 1, 0.5, 1),
@@ -37,9 +35,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: #232329;
-  border: 2px solid #36363a;
-  filter: url(#excalidraw-sketch);
+  background: rgba(253, 251, 247, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: inherit;
   z-index: 1;
   pointer-events: none;
@@ -47,46 +46,17 @@
 }
 
 /* ========================================
-   ATTACHED STATE (Phone-Style Camera Notch)
+   ATTACHED STATE
    ======================================== */
 .navbar--attached {
-  top: 0;
-  max-width: min(720px, 92vw);
-  border-radius: 0 0 14px 14px;
+  top: 1rem;
+  max-width: min(850px, 92vw);
+  border-radius: 16px;
 }
 
-.navbar--attached .navbar__bg {
-  border-top: none;
-}
-
-/* Wings for the attached state */
 .navbar--attached::before,
 .navbar--attached::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  height: 24px;
-  background: #232329;
-  pointer-events: none;
-  opacity: 1;
-}
-
-.navbar--attached::before {
-  left: 0;
-  right: 50%;
-  margin-right: min(360px, 46vw);
-  border-bottom: 2px solid #36363a;
-  border-right: 2px solid #36363a;
-  border-bottom-right-radius: 14px;
-}
-
-.navbar--attached::after {
-  right: 0;
-  left: 50%;
-  margin-left: min(360px, 46vw);
-  border-bottom: 2px solid #36363a;
-  border-left: 2px solid #36363a;
-  border-bottom-left-radius: 14px;
+  display: none;
 }
 
 /* ========================================
@@ -99,8 +69,8 @@
 }
 
 .navbar--detached .navbar__bg {
-  /* NO 3D EFFECT: Just a very soft UI shadow to lift it off background elements */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .navbar--detached::before,
@@ -156,8 +126,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  background: #fbf9f4;
-  border: 2px solid #36363a;
+  background: rgba(15, 23, 42, 0.03);
+  border: 1px solid rgba(15, 23, 42, 0.08);
 }
 
 .navbar__logo {
@@ -167,7 +137,7 @@
 }
 
 .navbar__title {
-  color: #e1e1e3;
+  color: var(--text-h);
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -188,9 +158,9 @@
 
 .navbar__link {
   display: block;
-  color: #a0aec0;
+  color: var(--text);
   text-decoration: none;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 500;
   padding: 0.4rem 0.9rem;
   border-radius: 8px;
@@ -200,7 +170,7 @@
 }
 
 .navbar__link:hover {
-  color: #e1e1e3;
+  color: var(--accent);
   cursor: pointer;
 }
 
@@ -223,7 +193,7 @@
 .navbar__burger span {
   width: 100%;
   height: 2px;
-  background-color: #e1e1e3;
+  background-color: var(--text-h);
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -276,9 +246,9 @@
     overflow: hidden;
     opacity: 0;
     pointer-events: none;
-    background: #232329;
+    background: #fdfbf7;
     border-radius: 0 0 12px 12px;
-    border: 2px solid #36363a;
+    border: 1px solid rgba(15, 23, 42, 0.08);
     border-top: none;
     transition: max-height 0.35s ease, opacity 0.25s ease;
   }
@@ -314,4 +284,31 @@
     padding: 0.75rem;
     font-size: 1.1rem;
   }
+}
+
+.navbar__theme-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.25s ease;
+  margin-right: 0.75rem;
+  z-index: 5;
+}
+
+.navbar__theme-toggle:hover {
+  background: rgba(99, 102, 241, 0.08);
+  color: var(--accent);
+}
+
+.theme-toggle-svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  display: block;
 }

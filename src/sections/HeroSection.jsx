@@ -1,40 +1,40 @@
 import React, { useState, useEffect, useRef } from 'react';
-import '@/styles/hero.css';
+import ScrollReveal from '@/components/ScrollReveal';
 import SketchCube from '@/components/SketchCube';
+import '@/styles/hero.css';
 
 const SERVICES = [
   {
-    text: 'AI Agents 🤖',
-    className: 'cube-pos-top',
-    description: 'Autonomous workflows, custom LLM integrations, and intelligent agents built to automate complex business operations.'
+    text: 'AI Integration',
+    description: 'Autonomous LLM workflows, custom AI integrations, and intelligent assistant features trained on your proprietary data.',
+    className: 'cube-pos-top'
   },
   {
-    text: 'SaaS Programs 🚀',
-    className: 'cube-pos-top-right',
-    description: 'Robust, multi-tenant cloud applications, customized dashboards, and secure backend portals built to scale with ease.'
+    text: 'SaaS Applications',
+    description: 'Scalable multi-tenant cloud architectures, dashboard telemetry, billing pipelines, and custom back-office applications.',
+    className: 'cube-pos-top-right'
   },
   {
-    text: 'Websites 🌐',
-    className: 'cube-pos-bottom-right',
-    description: 'Bespoke, high-performance web experiences featuring premium designs, interactive animations, and responsive layouts.'
+    text: 'Web Systems',
+    description: 'Modern, blazing-fast web applications designed with premium animations and responsive modern typography.',
+    className: 'cube-pos-bottom-right'
   },
   {
-    text: 'Mobile Apps 📱',
-    className: 'cube-pos-bottom',
-    description: 'Sleek native and cross-platform mobile applications for iOS and Android, optimized for performance and fluid UX.'
+    text: 'Mobile Applications',
+    description: 'Native-feeling cross-platform iOS & Android mobile applications engineered from concept to app store deployment.',
+    className: 'cube-pos-bottom'
   },
   {
-    text: 'API Platforms 🔌',
-    className: 'cube-pos-bottom-left',
-    description: 'Fast, secure, and structured API integrations, backend architectures, and database orchestration pipelines.'
+    text: 'API Engineering',
+    description: 'Fast, secure, and structured API integrations, backend architectures, and database orchestration pipelines.',
+    className: 'cube-pos-bottom-left'
   },
   {
-    text: 'Automations ⚙️',
-    className: 'cube-pos-top-left',
-    description: 'Custom background scripts, tool connectors, and automated schedules designed to eliminate repetitive operational work.'
+    text: 'Process Automations',
+    description: 'Custom workflow scripts, database syncs, webhook orchestrations, and automated tool integrations.',
+    className: 'cube-pos-top-left'
   }
 ];
-
 
 const HeroSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -120,18 +120,43 @@ const HeroSection = () => {
 
         {/* Left Column: Premium Minimalist Content & Text Rotator */}
         <div className="hero__content">
-          <h1 id="hero-title" className="hero__title">
-            DevNextDoor
-          </h1>
-          <div className="hero__subtitle-container">
-            <p className="hero__subtitle-base">We can design & build</p>
-            <span className={`hero__subtitle-dynamic ${isTransitioning ? 'fade-out' : 'fade-in'}`}>
-              {SERVICES[activeIndex].text}
-            </span>
-          </div>
-          <p className={`hero__description ${isTransitioning ? 'desc-fade-out' : 'desc-fade-in'}`}>
-            {SERVICES[activeIndex].description}
-          </p>
+          <ScrollReveal delay={50}>
+            <div className="hero__badge">
+              <span className="hero__badge-text">✨ Crafting Premium Applications</span>
+            </div>
+          </ScrollReveal>
+          
+          <ScrollReveal delay={150}>
+            <h1 id="hero-title" className="hero__title font-solid">
+              DevNextDoor
+            </h1>
+          </ScrollReveal>
+
+          <ScrollReveal delay={250}>
+            <div className="hero__subtitle-container">
+              <p className="hero__subtitle-base">We can design & build</p>
+              <span className={`hero__subtitle-dynamic ${isTransitioning ? 'fade-out' : 'fade-in'}`}>
+                {SERVICES[activeIndex].text}
+              </span>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal delay={350}>
+            <p className={`hero__description ${isTransitioning ? 'desc-fade-out' : 'desc-fade-in'}`}>
+              {SERVICES[activeIndex].description}
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={450}>
+            <div className="hero__ctas">
+              <a href="#contact" className="hero__cta-primary">
+                Get in Touch <span className="cta-arrow">→</span>
+              </a>
+              <a href="#work" className="hero__cta-secondary">
+                Explore Work
+              </a>
+            </div>
+          </ScrollReveal>
         </div>
 
         {/* Right Column: Sketchy 3D Box Orbit Orbit Ring */}
@@ -141,48 +166,24 @@ const HeroSection = () => {
           onMouseLeave={() => setIsHovered(false)}
         >
 
-          {/* Blueprint Layout Calibration Marks */}
-          <span className="draft-crosshair top-left">+</span>
-          <span className="draft-crosshair top-right">+</span>
-          <span className="draft-crosshair bottom-left">+</span>
-          <span className="draft-crosshair bottom-right">+</span>
-
-          {/* Blueprint Guide Axis Lines */}
-          <div className="blueprint-axis horizontal" />
-
           {/* Orbit Ring SVG */}
           <svg className="orbit-ring-svg" viewBox="0 0 100 100" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
             <circle cx="50" cy="50" r="46" className="orbit-line" />
             
-            {/* Orbit Spark Group */}
+            {/* Orbit Particle Group */}
             <g
-              className={`orbit-spark-group ${isTransitioning ? 'is-transit' : 'is-resting'}`}
+              className={`orbit-particle-group ${isTransitioning ? 'is-transit' : 'is-resting'}`}
               style={{
                 transform: `rotate(${90 + currentIndex * 60}deg)`,
               }}
             >
               <g
-                className="orbit-spark-bolt-wrapper"
+                className="orbit-particle-wrapper"
                 style={{
                   transform: `rotate(${-(90 + currentIndex * 60)}deg)`,
                 }}
               >
-                <g className="orbit-spark-bolt-jitter">
-                  {/* Thin golden circle container */}
-                  <circle cx="50" cy="4" r="10" className="spark-symbol-circle" />
-                  
-                  {/* The main solid lightning bolt */}
-                  <path
-                    d="M 52 -4 L 46.25 3 L 49.25 3 L 45 8.5 L 51.25 13 L 50.5 6 L 54.25 6 Z"
-                    className="spark-symbol-bolt"
-                  />
-
-                  {/* Jagged electric crackle lines radiating outwards */}
-                  <path d="M 43 4 L 39 2 L 36.5 4" className="resting-spark-line spark-line-1" />
-                  <path d="M 57 4 L 61 6 L 63.5 4" className="resting-spark-line spark-line-2" />
-                  <path d="M 50 -4 L 48.5 -8 L 49.5 -11.5" className="resting-spark-line spark-line-3" />
-                  <path d="M 50 12 L 52 16 L 50.5 19.5" className="resting-spark-line spark-line-4" />
-                </g>
+                <circle cx="50" cy="4" r="5" className="orbit-glow-particle" />
               </g>
             </g>
           </svg>
