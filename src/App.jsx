@@ -9,6 +9,9 @@ import ReviewsSection from '@/sections/ReviewsSection'
 import ContactSection from '@/sections/ContactSection'
 import Footer from '@/sections/Footer'
 
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 function App() {
   return (
     <div style={styles.appWrapper}>
@@ -21,6 +24,8 @@ function App() {
       <ReviewsSection />
       <ContactSection />
       <Footer />
+      <Analytics />
+      <SpeedInsights />
     </div>
   )
 }
