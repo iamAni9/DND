@@ -76,7 +76,11 @@
   z-index: 2;
   box-sizing: border-box;
   perspective: 1200px; /* Enable 3D depth context */
-  align-items: stretch;
+  align-items: stretch; /* Default: stretch to match height when all closed */
+}
+
+.services-grid.has-expanded {
+  align-items: start; /* Prevent closed cards stretching when one is expanded */
 }
 
 /* Force ScrollReveal wrappers to fill grid height */
@@ -84,6 +88,10 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.services-grid.has-expanded > div {
+  height: auto;
 }
 
 /* 3D Cyber Card Component */
@@ -103,11 +111,20 @@
   overflow: hidden;
   height: 100%;
   flex-grow: 1;
+  min-height: 410px; /* Baseline closed height */
   
   /* Tilt transformations */
   transform-style: preserve-3d;
   transform: perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) translateY(0px);
   transition: transform 0.1s ease-out, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.services-grid.has-expanded .service-card {
+  height: auto;
+}
+
+.services-grid.has-expanded .service-card:not(.is-expanded) {
+  min-height: 410px; /* Keeps closed cards equal height when another is expanded */
 }
 
 .service-card.is-hovered {
@@ -443,6 +460,46 @@
    ========================================================================= */
 
 /* Card 1: Tech stack Matrix grid */
+.drawer-tech-explorer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.drawer-tech-tabs {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 1.1rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  padding-bottom: 0.7rem;
+}
+
+.tech-tab-btn {
+  background: rgba(15, 23, 42, 0.02);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 8px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.tech-tab-btn:hover {
+  color: var(--accent);
+  background: rgba(99, 102, 241, 0.05);
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+.tech-tab-btn.active {
+  color: #ffffff;
+  background: var(--accent-gradient);
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+}
+
 .drawer-tech-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -458,14 +515,19 @@
   display: flex;
   flex-direction: column;
   text-align: left;
-  transition: all 0.25s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   box-sizing: border-box;
 }
 
 .drawer-tech-capsule:hover {
-  border-color: rgba(99, 102, 241, 0.28);
-  background: rgba(99, 102, 241, 0.04);
-  transform: translateY(-2px);
+  border-color: var(--accent);
+  background: rgba(99, 102, 241, 0.06);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 6px 15px rgba(99, 102, 241, 0.08);
+}
+
+.drawer-tech-capsule:hover .tech-capsule-name {
+  color: var(--accent);
 }
 
 .tech-capsule-name {
@@ -600,6 +662,70 @@
   width: 100%;
 }
 
+/* Staggered Entry Animation for drawer elements */
+@keyframes drawerItemFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 1. Tech stack capsules stagger */
+.service-card__drawer-inner .drawer-tech-capsule {
+  opacity: 0;
+}
+
+.service-card__drawer.open .drawer-tech-capsule {
+  animation: drawerItemFadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.service-card__drawer.open .drawer-tech-capsule:nth-child(1) { animation-delay: 0.04s; }
+.service-card__drawer.open .drawer-tech-capsule:nth-child(2) { animation-delay: 0.08s; }
+.service-card__drawer.open .drawer-tech-capsule:nth-child(3) { animation-delay: 0.12s; }
+.service-card__drawer.open .drawer-tech-capsule:nth-child(4) { animation-delay: 0.16s; }
+.service-card__drawer.open .drawer-tech-capsule:nth-child(5) { animation-delay: 0.20s; }
+.service-card__drawer.open .drawer-tech-capsule:nth-child(6) { animation-delay: 0.24s; }
+
+/* 2. Checklist items stagger */
+.service-card__drawer-inner .drawer-checklist-item {
+  opacity: 0;
+}
+
+.service-card__drawer.open .drawer-checklist-item {
+  animation: drawerItemFadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.service-card__drawer.open .drawer-checklist-item:nth-child(1) { animation-delay: 0.05s; }
+.service-card__drawer.open .drawer-checklist-item:nth-child(2) { animation-delay: 0.13s; }
+.service-card__drawer.open .drawer-checklist-item:nth-child(3) { animation-delay: 0.21s; }
+
+/* 3. Workflow compare branch stagger & arrow pulse */
+.service-card__drawer-inner .workflow-branch {
+  opacity: 0;
+}
+
+.service-card__drawer.open .workflow-branch {
+  animation: drawerItemFadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.service-card__drawer.open .workflow-branch.good { animation-delay: 0.06s; }
+.service-card__drawer.open .workflow-branch.bad { animation-delay: 0.18s; }
+
+@keyframes slideArrowAnim {
+  0% { transform: translateX(-2px); opacity: 0.45; }
+  50% { transform: translateX(2px); opacity: 1; }
+  100% { transform: translateX(-2px); opacity: 0.45; }
+}
+
+.workflow-arrow {
+  display: inline-block;
+  animation: slideArrowAnim 2s infinite ease-in-out;
+}
+
 /* =========================================================================
    DARK THEME SYSTEM & VARIABLES OVERRIDES
    ========================================================================= */
@@ -687,6 +813,29 @@
 
 :root[data-theme='dark'] .workflow-divider {
   background-color: rgba(255, 255, 255, 0.08);
+}
+
+:root[data-theme='dark'] .drawer-tech-tabs {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+:root[data-theme='dark'] .tech-tab-btn {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+:root[data-theme='dark'] .tech-tab-btn:hover {
+  color: var(--accent);
+  background: rgba(129, 140, 248, 0.08);
+  border-color: rgba(129, 140, 248, 0.3);
+}
+
+:root[data-theme='dark'] .tech-tab-btn.active {
+  color: #ffffff;
+  background: var(--accent-gradient);
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(129, 140, 248, 0.25);
 }
 
 /* =========================================================================

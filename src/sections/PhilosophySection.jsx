@@ -64,40 +64,96 @@ const PHILOSOPHY_CARDS = [
   }
 ];
 
-const RealTechStack = () => (
-  <div className="drawer-tech-grid">
-    <div className="drawer-tech-capsule">
-      <span className="tech-capsule-name">React / Next.js</span>
-      <span className="tech-capsule-role">UI & SaaS Frontends</span>
+const TECH_DATA = {
+  frontend: [
+    { name: 'React / Next.js', desc: 'Modern UI & SSR SaaS Frontends' },
+    { name: 'Vue / Nuxt.js', desc: 'Reactive Single Page Applications' },
+    { name: 'Tailwind CSS', desc: 'Highly optimized fluid design systems' },
+    { name: 'Svelte / SvelteKit', desc: 'Lightweight high-performance UI engines' }
+  ],
+  backend: [
+    { name: 'Node.js / Express', desc: 'High-throughput scalable server logic' },
+    { name: 'Go (Golang)', desc: 'Microservices & concurrent cloud engines' },
+    { name: 'Python / FastAPI', desc: 'Robust data backends & API layers' },
+    { name: 'GraphQL / gRPC / REST', desc: 'Modern performant protocol engineering' }
+  ],
+  databases: [
+    { name: 'PostgreSQL', desc: 'Relational SQL & JSONB document stores' },
+    { name: 'MongoDB', desc: 'Flexible JSON-like NoSQL document storage' },
+    { name: 'Redis', desc: 'Ultra-fast in-memory caching & session stores' },
+    { name: 'MySQL / SQLite', desc: 'Reliable transactional relational databases' }
+  ],
+  mobile: [
+    { name: 'Flutter / Dart', desc: 'Cross-platform iOS & Android deployment' },
+    { name: 'React Native', desc: 'Native hybrid application framework' },
+    { name: 'Swift / SwiftUI', desc: 'Native Apple ecosystem development' },
+    { name: 'Kotlin', desc: 'Native Android core application development' }
+  ],
+  aiInfra: [
+    { name: 'OpenAI / Gemini / Claude', desc: 'LLM APIs, completions & agent fine-tuning' },
+    { name: 'LangChain / AutoGen', desc: 'Autonomous AI agent workflow builders' },
+    { name: 'Docker / Kubernetes', desc: 'Containerized deployment & scaling' },
+    { name: 'AWS / Vercel / GCP', desc: 'Serverless architecture & hosting pipelines' }
+  ]
+};
+
+const RealTechStack = () => {
+  const [activeTab, setActiveTab] = useState('frontend');
+
+  return (
+    <div className="drawer-tech-explorer">
+      {/* Category Tabs */}
+      <div className="drawer-tech-tabs">
+        <button 
+          onClick={() => setActiveTab('frontend')} 
+          className={`tech-tab-btn ${activeTab === 'frontend' ? 'active' : ''}`}
+        >
+          Frontend
+        </button>
+        <button 
+          onClick={() => setActiveTab('backend')} 
+          className={`tech-tab-btn ${activeTab === 'backend' ? 'active' : ''}`}
+        >
+          Backend
+        </button>
+        <button 
+          onClick={() => setActiveTab('databases')} 
+          className={`tech-tab-btn ${activeTab === 'databases' ? 'active' : ''}`}
+        >
+          Databases
+        </button>
+        <button 
+          onClick={() => setActiveTab('mobile')} 
+          className={`tech-tab-btn ${activeTab === 'mobile' ? 'active' : ''}`}
+        >
+          Mobile
+        </button>
+        <button 
+          onClick={() => setActiveTab('aiInfra')} 
+          className={`tech-tab-btn ${activeTab === 'aiInfra' ? 'active' : ''}`}
+        >
+          AI & Infra
+        </button>
+      </div>
+
+      {/* Tech grid keyed by activeTab to trigger stagger entry animations on switch */}
+      <div className="drawer-tech-grid" key={activeTab}>
+        {TECH_DATA[activeTab].map((tech, idx) => (
+          <div className="drawer-tech-capsule" key={idx}>
+            <span className="tech-capsule-name">{tech.name}</span>
+            <span className="tech-capsule-role">{tech.desc}</span>
+          </div>
+        ))}
+      </div>
     </div>
-    <div className="drawer-tech-capsule">
-      <span className="tech-capsule-name">Node.js / TS</span>
-      <span className="tech-capsule-role">API & Cloud Logic</span>
-    </div>
-    <div className="drawer-tech-capsule">
-      <span className="tech-capsule-name">Python / AI</span>
-      <span className="tech-capsule-role">LLM Agents & Workflows</span>
-    </div>
-    <div className="drawer-tech-capsule">
-      <span className="tech-capsule-name">PostgreSQL</span>
-      <span className="tech-capsule-role">Scalable Data Stores</span>
-    </div>
-    <div className="drawer-tech-capsule">
-      <span className="tech-capsule-name">GraphQL / REST</span>
-      <span className="tech-capsule-role">API Engineering</span>
-    </div>
-    <div className="drawer-tech-capsule">
-      <span className="tech-capsule-name">Flutter / Swift</span>
-      <span className="tech-capsule-role">Mobile Applications</span>
-    </div>
-  </div>
-);
+  );
+};
 
 const RoiBlueprint = () => (
   <ul className="drawer-checklist">
     <li className="drawer-checklist-item">
       <CheckIcon />
-      <span>Lighthouse speed indexing (95+)</span>
+      <span>Engineered for optimal Core Web Vitals and load speeds</span>
     </li>
     <li className="drawer-checklist-item">
       <CheckIcon />
@@ -138,8 +194,7 @@ const PipelineWorkflow = () => (
   </div>
 );
 
-const PhilosophyCard = ({ card, idx, delay }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const PhilosophyCard = ({ card, idx, delay, isExpanded, onToggle }) => {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -216,7 +271,7 @@ const PhilosophyCard = ({ card, idx, delay }) => {
         {/* Interactive toggle button */}
         <div className="service-card__action float-3d">
           <button 
-            onClick={() => setIsExpanded(!isExpanded)}
+            onClick={onToggle}
             className={`service-card__toggle-pill ${isExpanded ? 'active' : ''}`}
             aria-expanded={isExpanded}
           >
@@ -241,6 +296,8 @@ const PhilosophyCard = ({ card, idx, delay }) => {
 };
 
 const PhilosophySection = () => {
+  const [activeExpanded, setActiveExpanded] = useState(null);
+
   return (
     <section className="philosophy" id="about" aria-labelledby="phil-title">
       <div className="philosophy-radial-glow" />
@@ -262,9 +319,16 @@ const PhilosophySection = () => {
       </div>
 
       {/* Main 3-Column Card Grid */}
-      <div className="services-grid">
+      <div className={`services-grid ${activeExpanded !== null ? 'has-expanded' : ''}`}>
         {PHILOSOPHY_CARDS.map((card, idx) => (
-          <PhilosophyCard key={idx} card={card} idx={idx} delay={idx * 150} />
+          <PhilosophyCard 
+            key={idx} 
+            card={card} 
+            idx={idx} 
+            delay={idx * 150} 
+            isExpanded={activeExpanded === idx}
+            onToggle={() => setActiveExpanded(activeExpanded === idx ? null : idx)}
+          />
         ))}
       </div>
     </section>
