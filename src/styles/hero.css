@@ -130,14 +130,17 @@
   text-decoration: none;
   padding: 0.8rem 1.8rem;
   border-radius: 8px;
+  border: 1px solid transparent; /* matches secondary height exactly */
   font-size: 0.95rem;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   transition: all 0.25s ease;
   font-family: var(--sans);
   box-shadow: 0 4px 15px rgba(99, 102, 241, 0.18);
+  box-sizing: border-box;
 }
 
 .hero__cta-primary:hover {
@@ -164,8 +167,12 @@
   border: 1px solid rgba(15, 23, 42, 0.12);
   font-size: 0.95rem;
   font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.25s ease;
   font-family: var(--sans);
+  box-sizing: border-box;
 }
 
 .hero__cta-secondary:hover {
@@ -689,13 +696,18 @@
     text-align: center;
   }
 
+  .hero__ctas {
+    justify-content: center;
+    margin-top: 1.8rem;
+  }
+
   .hero__visual {
     min-height: auto;
-    width: 80vw;
-    max-width: 420px;
-    height: 80vw;
-    max-height: 420px;
-    margin: 20px auto 0;
+    width: 90vw;
+    max-width: 480px;
+    height: 90vw;
+    max-height: 480px;
+    margin: 35px auto 0;
     padding: 0;
   }
 

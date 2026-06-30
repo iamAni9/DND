@@ -312,3 +312,16 @@
   stroke: currentColor;
   display: block;
 }
+
+@media (max-width: 1024px) {
+  .navbar__link {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.95rem;
+  }
+  .navbar__links {
+    gap: 0.25rem;
+  }
+  .navbar__title {
+    font-size: 1.15rem;
+  }
+}
