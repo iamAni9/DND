@@ -18,20 +18,58 @@ const MapPinIcon = () => (
 );
 
 const ContactSection = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', scope: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', scope: '' , botcheck: false });
   const [status, setStatus] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData, 
+      [name]: type === 'checkbox' ? checked : value
+    });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('sending');
-    setTimeout(() => {
-      setStatus('success');
-      setFormData({ name: '', email: '', scope: '' });
-    }, 1200);
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // Mapping 'scope' to 'project_scope' right here for the API
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          project_scope: formData.scope,
+          botcheck: formData.botcheck,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setStatus('success');
+        // Reset form fields
+        setFormData({ name: '', email: '', scope: '', botcheck: false });
+        
+        // Optional: Revert button status back to default after 4 seconds
+        setTimeout(() => setStatus(''), 4000);
+      } else {
+        throw new Error(data.error || 'Something went wrong.');
+      }
+    } catch (error) {
+      console.error(error);
+      setStatus('error');
+      setErrorMessage(error.message || 'Failed to send message.');
+      
+      // Revert button back to normal so they can try again
+      setTimeout(() => setStatus(''), 4000);
+    }
   };
 
   return (
@@ -87,6 +125,18 @@ const ContactSection = () => {
           <ScrollReveal delay={100}>
             <div className="contact-card">
               <form onSubmit={handleSubmit} className="contact-form">
+                
+                {/* Invisible Honeypot to trap spam bots */}
+                <input
+                  type="checkbox"
+                  name="botcheck"
+                  checked={formData.botcheck}
+                  onChange={handleChange}
+                  style={{ display: 'none' }}
+                  tabIndex="-1"
+                  autoComplete="off"
+                />
+
                 <div className="form-group">
                   <label htmlFor="name" className="form-label">
                     Your Name
@@ -94,7 +144,7 @@ const ContactSection = () => {
                   <input
                     type="text"
                     id="name"
-                    name="name"
+                    name="name" // Ensure name attribute matches state key
                     value={formData.name}
                     onChange={handleChange}
                     className="form-input"
@@ -110,7 +160,7 @@ const ContactSection = () => {
                   <input
                     type="email"
                     id="email"
-                    name="email"
+                    name="email" // Ensure name attribute matches state key
                     value={formData.email}
                     onChange={handleChange}
                     className="form-input"
@@ -125,7 +175,7 @@ const ContactSection = () => {
                   </label>
                   <textarea
                     id="scope"
-                    name="scope"
+                    name="scope" // Ensure name attribute matches state key
                     value={formData.scope}
                     onChange={handleChange}
                     className="form-textarea"
@@ -142,12 +192,19 @@ const ContactSection = () => {
                 >
                   {status === 'sending' && 'Sending...'}
                   {status === 'success' && 'Message Sent! ✓'}
-                  {status === '' && (
+                  {(status === '' || status === 'error') && (
                     <>
                       Send Message <span className="btn-arrow">→</span>
                     </>
                   )}
                 </button>
+
+                {/* Display backend error message if code execution breaks */}
+                {status === 'error' && (
+                  <p className="form-error-msg" style={{ color: '#ef4444', marginTop: '1rem', fontSize: '0.875rem' }}>
+                    {errorMessage}
+                  </p>
+                )}
               </form>
             </div>
           </ScrollReveal>
