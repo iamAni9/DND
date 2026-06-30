@@ -50,7 +50,7 @@
    ======================================== */
 .navbar--attached {
   top: 1rem;
-  max-width: min(850px, 92vw);
+  max-width: min(900px, 92vw);
   border-radius: 16px;
 }
 
