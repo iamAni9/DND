@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ScrollReveal from '@/components/ScrollReveal';
 import '@/styles/adventure.css';
 
@@ -47,40 +47,89 @@ const CastleKey = () => (
   </svg>
 );
 
+const CheckIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="deliverable-check-icon">
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
 const STEPS = [
   {
     phase: 'Phase 01',
     title: 'Discovery & Inquiry',
     badge: 'Discovery',
     desc: 'We start by discussing your concept, goals, and business requirements to align expectations and build a solid technical roadmap.',
-    Icon: BrowserPencil
+    Icon: BrowserPencil,
+    deliverables: [
+      'Deep-dive concept alignment & strategy session',
+      'Technical feasibility & complexity analysis',
+      'Comprehensive project roadmap & milestones proposal'
+    ]
   },
   {
     phase: 'Phase 02',
     title: 'Strategy & Scope',
     badge: 'Strategy',
     desc: 'We map out the architecture, design blueprints, wireframe database schemas, and align on a 2026-ready modern tech stack.',
-    Icon: ScrollQuill
+    Icon: ScrollQuill,
+    deliverables: [
+      'Sleek wireframe blueprints & UX content outline',
+      'Scalable database schemas & dataflow mapping',
+      'Vetted, high-performance tech stack architecture'
+    ]
   },
   {
     phase: 'Phase 03',
     title: 'Development & Design',
     badge: 'Development',
     desc: 'Our team designs custom, high-end layouts and engineers clean, modular, and optimized code via fast iterative sprints.',
-    Icon: MagicWand
+    Icon: MagicWand,
+    deliverables: [
+      'Bespoke, high-end visual UI design mockups',
+      'Clean, modular, and optimized React codebase',
+      'Rapid, iterative weekly builds with interactive feedback'
+    ]
   },
   {
     phase: 'Phase 04',
     title: 'Launch & Integration',
     badge: 'Delivery',
     desc: 'We deploy your platform to live production, run detailed QA audits, and hand over the documentation and access keys.',
-    Icon: CastleKey
+    Icon: CastleKey,
+    deliverables: [
+      'Continuous deployment setup (Vercel/Netlify/AWS)',
+      'Rigorous cross-browser QA & lighthouse audit',
+      'Developer handoff documentation & secure admin keys'
+    ]
   }
 ];
 
 const AdventureMap = () => {
+  const [activeStep, setActiveStep] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  // Auto-playing cycle between process phases
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % STEPS.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [isAutoPlaying]);
+
+  const handleStepSelect = (idx) => {
+    setActiveStep(idx);
+    // Pause auto-play temporarily so the user can inspect their chosen step
+    setIsAutoPlaying(false);
+  };
+
+  const activeData = STEPS[activeStep];
+
   return (
     <section className="adventure-section" id="process" aria-labelledby="adventure-title">
+      {/* Dynamic Background Flare */}
+      <div className="process-ambient-flare" />
+      
       <div className="adventure-header">
         <ScrollReveal delay={50}>
           <h2 id="adventure-title" className="adventure-title font-solid">
@@ -94,27 +143,100 @@ const AdventureMap = () => {
         </ScrollReveal>
       </div>
 
-      <div className="timeline-container">
-        {STEPS.map((step, idx) => (
-          <ScrollReveal key={idx} delay={idx * 150}>
-            <div className={`timeline-item ${idx % 2 === 0 ? 'left-align' : 'right-align'}`}>
-              <div className="timeline-item__content">
-                <span className="timeline-item__watermark">0{idx + 1}</span>
-                <span className="timeline-item__phase">{step.phase}</span>
-                <h3 className="timeline-item__title font-solid">{step.title}</h3>
-                <span className="timeline-item__badge">{step.badge}</span>
-                <p className="timeline-item__desc">{step.desc}</p>
-              </div>
-              <div className="timeline-item__icon-box">
-                <div className="timeline-item__icon-pulse" />
-                <div className="timeline-item__icon-inner">
-                  <step.Icon />
+      <ScrollReveal delay={250}>
+        <div 
+          className="process-dashboard"
+          onMouseEnter={() => setIsAutoPlaying(false)}
+          onMouseLeave={() => setIsAutoPlaying(true)}
+        >
+          {/* Navigation Milestone cards (Left column on desktop) */}
+          <div className="process-nav">
+            {STEPS.map((step, idx) => {
+              const isActive = idx === activeStep;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => handleStepSelect(idx)}
+                  className={`process-nav-item ${isActive ? 'is-active' : ''}`}
+                  aria-pressed={isActive}
+                >
+                  <div className="process-nav-item__indicator">
+                    <div className="process-nav-item__indicator-dot" />
+                    {idx < STEPS.length - 1 && <div className="process-nav-item__indicator-line" />}
+                  </div>
+                  
+                  <div className="process-nav-item__card-body">
+                    <span className="process-nav-item__number">0{idx + 1}</span>
+                    <div className="process-nav-item__text-wrap">
+                      <span className="process-nav-item__badge">{step.badge}</span>
+                      <h3 className="process-nav-item__title font-solid">{step.title}</h3>
+                    </div>
+                  </div>
+
+                  {/* Inline Mobile Details Panel (Accordion display) */}
+                  {isActive && (
+                    <div className="process-mobile-details">
+                      <p className="process-mobile-details__desc">{step.desc}</p>
+                      <div className="process-mobile-details__deliverables">
+                        <span className="process-mobile-details__subtitle">Key Deliverables</span>
+                        <ul className="process-mobile-details__list">
+                          {step.deliverables.map((item, dIdx) => (
+                            <li key={dIdx} className="process-mobile-details__item">
+                              <CheckIcon />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Desktop Detail Showcase Panel (Right column on desktop) */}
+          <div className="process-showcase" key={activeStep}>
+            <div className="process-showcase__content">
+              {/* Background watermark */}
+              <div className="process-showcase__watermark">0{activeStep + 1}</div>
+              
+              <div className="process-showcase__layout">
+                {/* Visual Icon display with pulsing rings */}
+                <div className="process-showcase__visual">
+                  <div className="process-showcase__icon-box">
+                    <div className="process-showcase__icon-pulse" />
+                    <div className="process-showcase__icon-inner">
+                      {React.createElement(activeData.Icon)}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Details text & deliverables */}
+                <div className="process-showcase__details">
+                  <span className="process-showcase__phase">{activeData.phase}</span>
+                  <h3 className="process-showcase__title font-solid">{activeData.title}</h3>
+                  <p className="process-showcase__desc">{activeData.desc}</p>
+                  
+                  <div className="process-showcase__deliverables">
+                    <h4 className="process-showcase__deliverables-title font-marker">
+                      Key Deliverables
+                    </h4>
+                    <ul className="process-showcase__deliverables-list">
+                      {activeData.deliverables.map((item, dIdx) => (
+                        <li key={dIdx} className="process-showcase__deliverable-item">
+                          <CheckIcon />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
-          </ScrollReveal>
-        ))}
-      </div>
+          </div>
+        </div>
+      </ScrollReveal>
     </section>
   );
 };

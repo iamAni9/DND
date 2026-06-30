@@ -397,7 +397,7 @@
 /* Architectural Layout Markers (+ Signs) */
 .draft-crosshair {
   position: absolute;
-  font-family: monospace;
+  font-family: var(--mono);
   font-size: 16px;
   color: #cbd5e1;
   user-select: none;

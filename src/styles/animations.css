@@ -1,0 +1,466 @@
+/* ============================================================
+   ANIMATIONS.CSS — Premium Micro-Animations & Interactive Effects
+   ============================================================
+   Reusable utility classes for subtle, performant animations.
+   Apply these classes to any element across the site.
+
+   Theme tokens used:
+     --accent          : primary accent color (#6366f1 light / #818cf8 dark)
+     --accent-glow     : glow color with alpha (derived below)
+   ============================================================ */
+
+/* --- Custom Properties (defaults) --- */
+:root {
+  --accent: #6366f1;
+  --accent-glow: rgba(99, 102, 241, 0.45);
+  --accent-glow-soft: rgba(99, 102, 241, 0.18);
+  --shine-color: rgba(255, 255, 255, 0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent: #818cf8;
+    --accent-glow: rgba(129, 140, 248, 0.5);
+    --accent-glow-soft: rgba(129, 140, 248, 0.2);
+    --shine-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* --- Reduced-motion safety net --- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   1. FLOATING / BREATHING GLOW  —  .glow-pulse
+   Soft box-shadow that breathes between a subtle and
+   a more pronounced indigo glow.
+   ============================================================ */
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 6px 1px var(--accent-glow-soft),
+                0 0 16px 2px transparent;
+  }
+  50% {
+    box-shadow: 0 0 12px 4px var(--accent-glow),
+                0 0 28px 8px var(--accent-glow-soft);
+  }
+}
+
+.glow-pulse {
+  animation: glow-pulse 3.2s ease-in-out infinite;
+  will-change: box-shadow;
+}
+
+/* ============================================================
+   2. GRADIENT BORDER SHIMMER  —  .shimmer-border
+   Animated gradient border that continuously shimmers
+   around the element via a rotating conic gradient on
+   a pseudo-element behind it.
+   ============================================================ */
+@keyframes shimmer-rotate {
+  0%   { --shimmer-angle: 0deg; }
+  100% { --shimmer-angle: 360deg; }
+}
+
+/* Fallback: translate-based shimmer for broad support */
+@keyframes shimmer-border-move {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.shimmer-border {
+  position: relative;
+  isolation: isolate;
+  border-radius: inherit;
+}
+
+.shimmer-border::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    var(--accent),
+    #a78bfa,
+    #818cf8,
+    #6366f1,
+    #a78bfa,
+    var(--accent)
+  );
+  background-size: 300% 100%;
+  animation: shimmer-border-move 4s ease infinite;
+  will-change: background-position;
+}
+
+/* Inner mask to reveal only the border */
+.shimmer-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: inherit;
+  /* Inherit the element's own background so only
+     the 2px border created by ::before is visible */
+}
+
+/* ============================================================
+   3. TILT ON HOVER  —  .hover-tilt
+   Subtle 3D perspective tilt on hover.
+   ============================================================ */
+.hover-tilt {
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.hover-tilt:hover {
+  transform: perspective(800px) rotateX(4deg) rotateY(-3deg) scale(1.015);
+}
+
+.hover-tilt:active {
+  transform: perspective(800px) rotateX(2deg) rotateY(-1.5deg) scale(0.99);
+  transition-duration: 0.12s;
+}
+
+/* ============================================================
+   4. MAGNETIC HOVER LIFT  —  .hover-lift
+   Smooth upward float with an enhanced diffused shadow.
+   ============================================================ */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s ease;
+  will-change: transform, box-shadow;
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.12),
+              0 6px 12px -4px rgba(0, 0, 0, 0.08);
+}
+
+.hover-lift:active {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px -4px rgba(0, 0, 0, 0.1);
+  transition-duration: 0.12s;
+}
+
+/* ============================================================
+   5. TEXT GRADIENT ANIMATION  —  .text-shimmer
+   Animated gradient that slides across text.
+   ============================================================ */
+@keyframes text-shimmer {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: -100% 50%; }
+}
+
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--accent) 0%,
+    #a78bfa 25%,
+    #c4b5fd 50%,
+    #a78bfa 75%,
+    var(--accent) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: text-shimmer 4s ease-in-out infinite;
+  will-change: background-position;
+}
+
+/* ============================================================
+   6. DOT GRID PULSE  —  .dot-pulse
+   Pulsing dot for status indicators.
+   ============================================================ */
+@keyframes dot-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.6);
+    opacity: 0.55;
+  }
+}
+
+.dot-pulse {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  animation: dot-pulse 2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* Optional ring around the dot */
+.dot-pulse::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent-glow-soft);
+  animation: dot-pulse 2s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.dot-pulse {
+  position: relative;
+}
+
+/* ============================================================
+   7. AMBIENT FLOAT  —  .float-ambient
+   Gentle, organic up-and-down floating motion.
+   ============================================================ */
+@keyframes float-ambient {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  33% {
+    transform: translateY(-6px);
+  }
+  66% {
+    transform: translateY(3px);
+  }
+}
+
+.float-ambient {
+  animation: float-ambient 5s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ============================================================
+   8. STAGGER FADE-IN  —  .stagger-1 through .stagger-6
+   Apply alongside a fade-in animation to create staggered
+   entrance sequences.
+   ============================================================ */
+@keyframes stagger-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+[class*="stagger-"] {
+  animation: stagger-fade-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: opacity, transform;
+}
+
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.12s; }
+.stagger-3 { animation-delay: 0.19s; }
+.stagger-4 { animation-delay: 0.26s; }
+.stagger-5 { animation-delay: 0.33s; }
+.stagger-6 { animation-delay: 0.40s; }
+
+/* ============================================================
+   9. CARD SHINE SWEEP  —  .card-shine
+   Diagonal light sweep that plays once on hover via a
+   pseudo-element translating from left to right.
+   ============================================================ */
+.card-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.card-shine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    var(--shine-color) 45%,
+    var(--shine-color) 50%,
+    transparent 55%
+  );
+  transform: translateX(-110%);
+  transition: none;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.card-shine:hover::before {
+  animation: card-shine-sweep 0.7s ease forwards;
+}
+
+@keyframes card-shine-sweep {
+  0%   { transform: translateX(-110%); }
+  100% { transform: translateX(110%); }
+}
+
+/* ============================================================
+   10. GLOWING ACCENT UNDERLINE  —  .glow-underline
+   Animated underline that glows with the accent color
+   and expands from center on hover.
+   ============================================================ */
+.glow-underline {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.glow-underline::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+  transform: translateX(-50%);
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.35s ease;
+  will-change: width, box-shadow;
+}
+
+.glow-underline:hover::after,
+.glow-underline:focus-visible::after {
+  width: 100%;
+  box-shadow: 0 0 8px 2px var(--accent-glow),
+              0 0 16px 4px var(--accent-glow-soft);
+}
+
+/* Always-visible variant (for active nav items, etc.) */
+.glow-underline--active::after {
+  width: 60%;
+  box-shadow: 0 0 6px 1px var(--accent-glow-soft);
+}
+
+.glow-underline--active:hover::after {
+  width: 100%;
+}
+
+/* ============================================================
+   11. PARTICLE FLOAT  —  .particle-float
+   Random-feeling gentle drifting for decorative
+   background particles.  Pair with absolute positioning
+   and low opacity for best results.
+   ============================================================ */
+@keyframes particle-float {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(18px, -24px) rotate(14deg);
+    opacity: 0.6;
+  }
+  80% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate(-10px, -48px) rotate(-8deg);
+    opacity: 0;
+  }
+}
+
+.particle-float {
+  position: absolute;
+  pointer-events: none;
+  animation: particle-float 6s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* Offset variants for visual variety */
+.particle-float:nth-child(2n)  { animation-duration: 7.5s; animation-delay: 0.8s; }
+.particle-float:nth-child(3n)  { animation-duration: 8.2s; animation-delay: 1.6s; }
+.particle-float:nth-child(4n)  { animation-duration: 6.8s; animation-delay: 2.4s; }
+.particle-float:nth-child(5n)  { animation-duration: 9s;   animation-delay: 0.4s; }
+
+/* ============================================================
+   12. SCROLL-TRIGGERED ENTRANCES
+   CSS-only entrance animations activated by adding the
+   `.is-visible` class (e.g. via IntersectionObserver).
+
+   Usage:
+     <div class="entrance-slide-up">…</div>
+     // JS: el.classList.add('is-visible')
+
+   .entrance-slide-up
+   .entrance-slide-left
+   .entrance-slide-right
+   ============================================================ */
+
+/* -- Shared base -- */
+.entrance-slide-up,
+.entrance-slide-left,
+.entrance-slide-right {
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+/* -- Starting positions -- */
+.entrance-slide-up {
+  transform: translateY(32px);
+}
+
+.entrance-slide-left {
+  transform: translateX(-32px);
+}
+
+.entrance-slide-right {
+  transform: translateX(32px);
+}
+
+/* -- Visible state -- */
+.entrance-slide-up.is-visible,
+.entrance-slide-left.is-visible,
+.entrance-slide-right.is-visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* Stagger support for entrance animations */
+.entrance-slide-up.stagger-1,
+.entrance-slide-left.stagger-1,
+.entrance-slide-right.stagger-1 { transition-delay: 0.05s; }
+
+.entrance-slide-up.stagger-2,
+.entrance-slide-left.stagger-2,
+.entrance-slide-right.stagger-2 { transition-delay: 0.12s; }
+
+.entrance-slide-up.stagger-3,
+.entrance-slide-left.stagger-3,
+.entrance-slide-right.stagger-3 { transition-delay: 0.19s; }
+
+.entrance-slide-up.stagger-4,
+.entrance-slide-left.stagger-4,
+.entrance-slide-right.stagger-4 { transition-delay: 0.26s; }
+
+.entrance-slide-up.stagger-5,
+.entrance-slide-left.stagger-5,
+.entrance-slide-right.stagger-5 { transition-delay: 0.33s; }
+
+.entrance-slide-up.stagger-6,
+.entrance-slide-left.stagger-6,
+.entrance-slide-right.stagger-6 { transition-delay: 0.40s; }
