@@ -124,7 +124,7 @@ export const DevelopmentProcessSection: React.FC = () => {
   }, []);
 
   return (
-    <section id="process" className="relative w-full max-w-[1400px] mx-auto rounded-[48px] bg-[#0A0A0B] border border-white/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.7)] overflow-hidden py-20 px-6 md:px-12 flex flex-col items-center justify-center mt-6">
+    <section id="process" className="relative w-full max-w-[1400px] mx-auto rounded-3xl md:rounded-[48px] bg-[#0A0A0B] border border-white/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.7)] overflow-hidden py-10 px-4 md:py-20 md:px-12 flex flex-col items-center justify-center mt-6">
       
       {/* CSS Keyframes styles scoped to this component */}
       <style>{`
@@ -232,7 +232,7 @@ export const DevelopmentProcessSection: React.FC = () => {
       <div className="absolute bottom-[-10%] left-[-10%] w-[45%] h-[45%] bg-[#EC4899]/5 rounded-full blur-[130px] pointer-events-none" />
 
       {/* Header Container */}
-      <div className="text-center mb-16 max-w-2xl mx-auto z-10 relative">
+      <div className="text-center mb-5 md:mb-16 max-w-2xl mx-auto z-10 relative">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-sky-400 mb-4 font-sans shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
           <Sparkles className="h-3.5 w-3.5 text-[#7DD3FC] animate-pulse" />
           Our Methodology
@@ -481,15 +481,15 @@ export const DevelopmentProcessSection: React.FC = () => {
       </div>
 
       {/* Mobile Wavy Landscape Timeline (lg and down) */}
-      <div className="lg:hidden flex flex-col items-center w-full z-10 px-2 mt-4 gap-6">
+      <div className="lg:hidden flex flex-col items-center w-full z-10 px-2 mt-1 gap-2">
         
         {/* SVG Landscape Flow Map */}
-        <div className="relative w-full max-w-[380px] aspect-[380/280] bg-[#121214]/30 border border-white/5 rounded-3xl p-3 backdrop-blur-md overflow-hidden flex items-center justify-center">
+        <div className="relative w-full max-w-[380px] aspect-[380/210] bg-[#121214]/30 border border-white/5 rounded-3xl p-3 backdrop-blur-md overflow-hidden flex items-center justify-center">
           {/* Subtle glow behind the map */}
           <div className="absolute w-[180px] h-[180px] rounded-full bg-[#06B6D4]/5 blur-[50px] pointer-events-none" />
 
           <svg
-            viewBox="0 0 380 270"
+            viewBox="0 0 380 210"
             className="w-full h-full overflow-visible"
           >
             {/* Definitions for Glow Filter */}
@@ -511,7 +511,7 @@ export const DevelopmentProcessSection: React.FC = () => {
 
             {/* Static Grey Path */}
             <path
-              d="M 50,60 L 270,60 C 350,60 350,220 270,220 L 50,220"
+              d="M 50,50 L 270,50 C 340,50 340,160 270,160 L 50,160"
               fill="none"
               stroke="rgba(255, 255, 255, 0.05)"
               strokeWidth="3.5"
@@ -520,7 +520,7 @@ export const DevelopmentProcessSection: React.FC = () => {
 
             {/* Animated Flowing Signal Line */}
             <path
-              d="M 50,60 L 270,60 C 350,60 350,220 270,220 L 50,220"
+              d="M 50,50 L 270,50 C 340,50 340,160 270,160 L 50,160"
               fill="none"
               stroke="url(#mobile-flow-grad)"
               strokeWidth="2.5"
@@ -536,13 +536,13 @@ export const DevelopmentProcessSection: React.FC = () => {
               let textX = 0;
               let textY = 0;
 
-              if (idx === 0) { x = 50; y = 60; textX = 50; textY = 40; }
-              else if (idx === 1) { x = 160; y = 60; textX = 160; textY = 40; }
-              else if (idx === 2) { x = 270; y = 60; textX = 270; textY = 40; }
-              else if (idx === 3) { x = 330; y = 140; textX = 348; textY = 143; textAnchor = "start"; }
-              else if (idx === 4) { x = 270; y = 220; textX = 270; textY = 242; }
-              else if (idx === 5) { x = 160; y = 220; textX = 160; textY = 242; }
-              else if (idx === 6) { x = 50; y = 220; textX = 50; textY = 242; }
+              if (idx === 0) { x = 50; y = 50; textX = 50; textY = 32; }
+              else if (idx === 1) { x = 160; y = 50; textX = 160; textY = 32; }
+              else if (idx === 2) { x = 270; y = 50; textX = 270; textY = 32; }
+              else if (idx === 3) { x = 322; y = 105; textX = 340; textY = 108; textAnchor = "start"; }
+              else if (idx === 4) { x = 270; y = 160; textX = 270; textY = 182; }
+              else if (idx === 5) { x = 160; y = 160; textX = 160; textY = 182; }
+              else if (idx === 6) { x = 50; y = 160; textX = 50; textY = 182; }
 
               const isActive = activeMobileIndex === idx;
               const shortLabels = ["Discovery", "Planning", "UI/UX", "Build", "QA/Test", "Launch", "Support"];
@@ -626,7 +626,7 @@ export const DevelopmentProcessSection: React.FC = () => {
 
           return (
             <div
-              className="w-full max-w-[380px] p-5 rounded-2xl bg-[#121214]/60 border backdrop-blur-md flex flex-col transition-all duration-500 relative"
+              className="w-full max-w-[380px] p-4 rounded-2xl bg-[#121214]/60 border backdrop-blur-md flex flex-col transition-all duration-500 relative"
               style={{
                 borderColor: activeStep.color,
                 boxShadow: `0 0 25px ${activeStep.color}15`,
@@ -640,7 +640,7 @@ export const DevelopmentProcessSection: React.FC = () => {
                 }}
               />
 
-              <div className="flex items-center gap-3.5 mb-3 relative z-10">
+              <div className="flex items-center gap-2.5 mb-2.5 relative z-10">
                 {/* Step Number */}
                 <span
                   className="text-sm font-bold font-mono tracking-wider transition-colors duration-300"
@@ -673,7 +673,7 @@ export const DevelopmentProcessSection: React.FC = () => {
               </p>
               
               {/* Manual Indicator / Interaction guide */}
-              <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/5 text-[9px] text-gray-500 relative z-10">
+              <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/5 text-[9px] text-gray-500 relative z-10">
                 <span>Tap any node above to inspect</span>
                 {isAutoCyclePaused ? (
                   <span className="text-[#06B6D4] animate-pulse">Paused (auto-resuming)</span>
