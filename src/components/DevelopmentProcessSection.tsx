@@ -6,8 +6,7 @@ import {
   Code2,
   ShieldCheck,
   Rocket,
-  HeartHandshake,
-  Sparkles
+  HeartHandshake
 } from "lucide-react";
 
 interface ProcessStep {
@@ -233,10 +232,6 @@ export const DevelopmentProcessSection: React.FC = () => {
 
       {/* Header Container */}
       <div className="text-center mb-5 md:mb-16 max-w-2xl mx-auto z-10 relative">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-sky-400 mb-4 font-sans shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
-          <Sparkles className="h-3.5 w-3.5 text-[#7DD3FC] animate-pulse" />
-          Our Methodology
-        </div>
         <h2 className="text-3xl md:text-4xl lg:text-4.5xl font-semibold tracking-tight text-white font-display leading-[1.15]">
           Our{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF3D77] via-[#7DD3FC] to-[#F72585] font-semibold">

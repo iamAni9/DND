@@ -47,13 +47,6 @@ export const AboutSection: React.FC = () => {
               
               {/* Left Column: Badge and Headline */}
               <div className="lg:col-span-5 flex flex-col justify-start items-start">
-                
-                {/* Badge */}
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-sky-400 tracking-wider uppercase mb-4 md:mb-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
-                  <Sparkles className="w-3.5 h-3.5 text-[#7DD3FC] animate-pulse" />
-                  About Dev Next Door
-                </div>
-
                 {/* Headline */}
                 <h2 className="text-white font-medium text-2.5xl md:text-4xl lg:text-4.5xl leading-[1.15] tracking-tight text-left">
                   We Build Software That{" "}

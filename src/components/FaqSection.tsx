@@ -43,7 +43,7 @@ export const FaqSection: React.FC = () => {
   };
 
   return (
-    <section id="faq" className="relative w-full max-w-6xl mx-auto py-16 px-4 md:px-6 flex flex-col mt-6 gap-8">
+    <section id="faq" className="relative w-full max-w-6xl mx-auto py-1 md:py-12 px-4 md:px-6 flex flex-col mt-6 gap-8">
       {/* Scoped CSS for the special custom Ask a Question button */}
       <style>{`
         .button {

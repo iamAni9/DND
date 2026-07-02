@@ -167,26 +167,6 @@ export const IndustriesSection: React.FC = () => {
 
       {/* Header Container (Light Background theme: Dark text) */}
       <div className="text-center mb-16 max-w-2xl mx-auto z-10 relative">
-        <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-100/80 px-3 py-1 text-xs font-semibold text-zinc-800 backdrop-blur mb-6">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-3.5 w-3.5 text-indigo-600"
-          >
-            <rect width="7" height="7" x="3" y="3" rx="1" />
-            <rect width="7" height="7" x="14" y="3" rx="1" />
-            <rect width="7" height="7" x="14" y="14" rx="1" />
-            <rect width="7" height="7" x="3" y="14" rx="1" />
-          </svg>
-          Sectors We Transform
-        </div>
         <h2 className="sm:text-4xl text-3xl font-semibold text-neutral-900 tracking-tight font-display">
           Industries We Serve
         </h2>
