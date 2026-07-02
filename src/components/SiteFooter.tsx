@@ -1,0 +1,376 @@
+import React from "react";
+import { ParticleLogoSection } from "./ParticleLogoSection";
+import { InteractiveNimbu } from "./InteractiveNimbu";
+
+const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect x="2" y="9" width="4" height="12" />
+    <circle cx="4" cy="4" r="2" />
+  </svg>
+);
+
+const TwitterIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+  </svg>
+);
+
+const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+  </svg>
+);
+
+export const SiteFooter: React.FC = () => {
+  return (
+    <footer className="site-footer">
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        .site-footer {
+          --hero-max-width: 1820px;
+          position: relative;
+          z-index: 100;
+          overflow: hidden;
+          background-color: #ffffff;
+          color: #0a1b33;
+          width: 100%;
+          max-width: 1400px;
+          margin: 1.5rem auto 0 auto;
+          border: 1px solid rgba(148, 163, 184, 0.15);
+          box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.02);
+          border-radius: 48px;
+          font-family: "Mazzard H", "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          text-rendering: geometricPrecision;
+        }
+
+        .footer-dots {
+          position: relative;
+          height: 120px;
+          overflow: hidden;
+          background-color: #ffffff;
+        }
+
+        .footer-dots__line {
+          position: absolute;
+          left: 0;
+          top: 50%;
+          width: 200%;
+          height: 70px;
+          opacity: 0.75;
+          transform: translateY(-50%);
+          background-image: 
+            radial-gradient(circle, rgba(10, 27, 51, 0.25) 1.5px, transparent 2px),
+            radial-gradient(circle, rgba(10, 27, 51, 0.12) 1px, transparent 1.5px),
+            radial-gradient(circle, rgba(10, 27, 51, 0.18) 1.2px, transparent 1.8px);
+          background-position: 0 8px, 24px 22px, 48px 14px;
+          background-size: 72px 38px, 110px 44px, 160px 52px;
+          animation: footerDotsMove 18s linear infinite;
+        }
+
+        @keyframes footerDotsMove {
+          from { transform: translate3d(0, -50%, 0); }
+          to   { transform: translate3d(-50%, -50%, 0); }
+        }
+
+        .site-footer__inner {
+          width: min(100% - 96px, var(--hero-max-width));
+          margin: 0 auto;
+          padding: clamp(34px, 4vw, 66px) 0 clamp(18px, 2vw, 34px);
+        }
+
+        .site-footer__top {
+          display: grid;
+          grid-template-columns: minmax(320px, 1.25fr) repeat(3, minmax(150px, 0.42fr));
+          gap: clamp(28px, 4vw, 76px);
+          min-height: clamp(220px, 24vw, 330px);
+        }
+
+        .site-footer__top h2 {
+          max-width: 680px;
+          margin: 0;
+          color: #0a1b33;
+          font-size: clamp(34px, 3.5vw, 62px);
+          font-weight: 600;
+          letter-spacing: 0;
+          line-height: 1.06;
+        }
+
+        .site-footer__nav {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: clamp(14px, 1.35vw, 22px);
+        }
+
+        .site-footer__nav--connect {
+          transform: translateX(-40px);
+        }
+
+        .site-footer__nav-title {
+          font-size: 11px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          color: rgba(10, 27, 51, 0.65);
+          margin-bottom: -4px;
+        }
+
+        .site-footer__nav a {
+          color: rgba(10, 27, 51, 0.9);
+          font-size: 16px;
+          font-weight: 650;
+          line-height: 1.1;
+          transition: color 180ms ease, transform 180ms ease;
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        .site-footer__nav a:hover {
+          color: #FF3D77;
+          transform: translateX(3px);
+        }
+
+        .site-footer__brand-row {
+          width: 100%;
+          margin-top: clamp(18px, 3vw, 46px);
+        }
+
+        .site-footer__brand {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          color: #0a1b33;
+          text-decoration: none;
+        }
+
+        .site-footer__mark {
+          position: relative;
+          flex: 0 0 clamp(36px, 5.0vw, 95px);
+          aspect-ratio: 1;
+          margin-right: clamp(14px, 1.6vw, 28px);
+          overflow: hidden;
+          border-radius: 50%;
+          background-color: #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid rgba(10, 27, 51, 0.08);
+          box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+        }
+
+        .site-footer__logo-img {
+          width: 80%;
+          height: 80%;
+          object-fit: contain;
+          display: block;
+        }
+
+        .site-footer__wordmark {
+          display: block;
+          flex: 1 1 auto;
+          min-width: 0;
+          font-size: clamp(58px, 11.1vw, 214px);
+          font-weight: 760;
+          letter-spacing: -0.055em;
+          line-height: 0.78;
+          white-space: nowrap;
+        }
+
+        .site-footer__legal {
+          display: flex;
+          flex-flow: row wrap;
+          justify-content: flex-start;
+          gap: 8px 18px;
+          margin-top: clamp(14px, 1.4vw, 24px);
+          color: rgba(10, 27, 51, 0.75);
+          font-size: 9px;
+          line-height: 1.35;
+        }
+
+        .site-footer__legal p {
+          margin: 0;
+        }
+
+        .site-footer__legal a {
+          color: inherit;
+          text-decoration: none;
+          transition: color 180ms ease;
+        }
+
+        .site-footer__legal a:hover {
+          color: #0a1b33;
+          text-decoration: underline;
+        }
+
+        /* RESPONSIVE BREAKPOINTS */
+        @media (max-width: 980px) {
+          .site-footer__inner {
+            width: min(100% - 48px, var(--hero-max-width));
+          }
+
+          .site-footer__top {
+            grid-template-columns: 1fr 1fr;
+          }
+
+          .site-footer__top h2 {
+            grid-column: 1 / -1;
+          }
+
+          .site-footer__nav--connect {
+            transform: none;
+          }
+        }
+
+        @media (max-width: 560px) {
+          .site-footer__inner {
+            width: min(100% - 32px, var(--hero-max-width));
+            padding-top: 16px;
+          }
+
+          .footer-dots {
+            height: 60px;
+          }
+
+          .site-footer__top {
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            min-height: auto;
+          }
+
+          .site-footer__top h2 {
+            grid-column: 1 / -1;
+            margin-top: 0;
+          }
+
+          .site-footer__nav--connect {
+            grid-column: 1 / -1;
+            margin-top: 8px;
+          }
+
+          .site-footer__nav a {
+            font-size: 15px;
+          }
+
+          .site-footer__mark {
+            flex-basis: clamp(28px, 10vw, 48px);
+          }
+
+          .site-footer__wordmark {
+            font-size: clamp(45px, 18vw, 84px);
+          }
+        }
+      ` }} />
+
+      {/* ANIMATED DOTS STRIP */}
+      <div className="footer-dots" aria-hidden="true">
+        <div className="footer-dots__line"></div>
+      </div>
+
+      {/* Interactive Nimbu Mascot */}
+      <InteractiveNimbu />
+
+      {/* FOOTER INNER */}
+      <div className="site-footer__inner">
+        {/* TOP GRID */}
+        <div className="site-footer__top">
+          {/* H2 */}
+          <h2>Proven Digital Solutions & Intelligent Systems.</h2>
+
+          {/* Navigation Column 1: Services (Adapted to DND, satisfying "add one") */}
+          <nav className="site-footer__nav" aria-label="Services navigation">
+            <span className="site-footer__nav-title">Services</span>
+            <a href="#services-custom">Custom Software</a>
+            <a href="#services-ai">AI & Machine Learning</a>
+            <a href="#services-saas">SaaS Development</a>
+            <a href="#services-cloud">Cloud Solutions</a>
+            <a href="#services-apps">Web & Mobile Apps</a>
+          </nav>
+
+          {/* Navigation Column 2: Company */}
+          <nav className="site-footer__nav" aria-label="Footer navigation">
+            <span className="site-footer__nav-title">Company</span>
+            <a href="#about">About Us</a>
+            <a href="#team">Our Team</a>
+            <a href="#process">Our Process</a>
+            <a href="#careers">Careers</a>
+            <a href="#contact">Contact Us</a>
+          </nav>
+
+          {/* Navigation Column 3: Connect */}
+          <nav className="site-footer__nav site-footer__nav--connect" aria-label="Social links">
+            <span className="site-footer__nav-title">Connect</span>
+
+            {/* Desktop Links (Hidden on mobile) */}
+            <div className="hidden min-[561px]:flex flex-col gap-[clamp(14px,1.35vw,22px)]">
+              <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
+                LinkedIn
+              </a>
+              <a href="https://x.com" target="_blank" rel="noreferrer">
+                Follow Us on X
+              </a>
+              <a href="https://github.com" target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+            </div>
+
+            {/* Mobile Logos (Visible on mobile only) */}
+            <div className="flex min-[561px]:hidden flex-row gap-4 mt-1">
+              <a
+                href="https://www.linkedin.com"
+                target="_blank"
+                rel="noreferrer"
+                className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/60 flex items-center justify-center text-slate-700 hover:text-[#FF3D77] transition-all hover:scale-105"
+              >
+                <LinkedinIcon className="w-5 h-5" />
+              </a>
+              <a
+                href="https://x.com"
+                target="_blank"
+                rel="noreferrer"
+                className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/60 flex items-center justify-center text-slate-700 hover:text-[#FF3D77] transition-all hover:scale-105"
+              >
+                <TwitterIcon className="w-5 h-5" />
+              </a>
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noreferrer"
+                className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/60 flex items-center justify-center text-slate-700 hover:text-[#FF3D77] transition-all hover:scale-105"
+              >
+                <GithubIcon className="w-5 h-5" />
+              </a>
+            </div>
+
+            {/* Mobile Particle Logo (Under Connect on smaller screen) */}
+            <div className="block min-[561px]:hidden w-full h-[90px] relative mt-6">
+              <ParticleLogoSection />
+            </div>
+          </nav>
+        </div>
+
+        {/* BRAND ROW (Hidden on mobile) */}
+        <div className="site-footer__brand-row hidden min-[561px]:block">
+          <div className="site-footer__brand">
+            {/* Brand mark */}
+            <div className="site-footer__mark" aria-hidden="true">
+              <img src="/dnd_logo.png" alt="DND Logo" className="site-footer__logo-img" />
+            </div>
+            {/* Brand wordmark - Animated Particles */}
+            <div className="flex-1 min-w-0 h-[clamp(45px,9.0vw,170px)] min-h-[50px] relative">
+              <ParticleLogoSection />
+            </div>
+          </div>
+        </div>
+
+        {/* LEGAL LINE */}
+        <div className="site-footer__legal">
+          <p>© 2026 Dev Next Door. All rights reserved.</p>
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Use</a>
+        </div>
+      </div>
+    </footer>
+  );
+};
