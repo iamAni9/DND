@@ -198,13 +198,6 @@ export const ContactSection: React.FC = () => {
     "hello@company.com"
   ]);
 
-  // const inquiryPlaceholder = useTypingPlaceholder([
-  //   "Need an AI chatbot...",
-  //   "Looking for a SaaS platform...",
-  //   "Need a React developer...",
-  //   "Want to redesign our website..."
-  // ]);
-
   // Refs for scroll and focus management
   const terminalContentRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -334,39 +327,42 @@ export const ContactSection: React.FC = () => {
   return (
     <section
       id="contact"
-      className="w-full max-w-[1400px] mx-auto mb-8 bg-[#0a0a0b] border border-white/5 rounded-[48px] py-12"
+      // Removed outer dark backgrounds and padding on mobile, retained them on lg screens
+      className="w-full max-w-[1400px] mx-auto lg:mb-8 bg-transparent lg:bg-[#0a0a0b] lg:border border-white/5 rounded-none lg:rounded-[48px] py-0 lg:py-12"
     >
-      <div className="max-w-7xl sm:px-6 lg:px-8 mr-auto ml-auto pr-4 pl-4">
-        {/* Dark container with glassmorphic border */}
-        <div className="relative overflow-hidden bg-white/5 ring-white/10 ring-1 rounded-3xl backdrop-blur">
+      <div className="max-w-7xl mx-auto px-0 lg:px-8">
+        {/* Glassmorphic border container (hidden on mobile, visible on lg) */}
+        <div className="relative overflow-hidden bg-transparent lg:bg-white/5 ring-0 lg:ring-1 ring-white/10 rounded-none lg:rounded-3xl lg:backdrop-blur">
           
-          <div className="relative z-10 md:p-12 lg:p-16 pt-8 pr-8 pb-8 pl-8">
-            {/* Mobile Header (Hidden on lg screens) */}
-            <div className="lg:hidden text-center mb-6">
-              <h2 className="text-3xl font-semibold text-white tracking-tight font-sans">
-                Start Your Project
-              </h2>
-              <p className="text-sm text-white/70 mt-1.5 font-sans">
-                Fill this form
-              </p>
-            </div>
+          <div className="relative z-10 p-0 lg:p-16">
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-12 items-start">
               
               {/* Left Side: Form card (White background, containing radiating dark constellation + CLI Terminal) */}
-              <div className="lg:col-span-5">
+              <div className="lg:col-span-5 w-full">
                 <div 
                   id="contact-card" 
-                  className="relative rounded-2xl bg-white/95 backdrop-blur ring-1 ring-white/20 shadow-lg p-4 sm:p-6 min-h-[460px] flex items-center justify-center overflow-hidden cursor-text"
+                  // Full bleed on mobile, rounded card on desktop
+                  className="relative rounded-none lg:rounded-2xl bg-transparent lg:bg-white/95 lg:backdrop-blur ring-0 lg:ring-1 lg:ring-white/20 lg:shadow-lg px-4 py-16 sm:p-12 lg:p-6 min-h-[100svh] sm:min-h-[600px] lg:min-h-[460px] flex flex-col items-center justify-center overflow-hidden cursor-text w-full"
                   onClick={focusActiveInput}
                 >
-                  {/* Dense Constellation/Starburst Canvas (Dark line structure in the background) */}
+                  {/* Mobile Header (Hidden on lg screens, moved inside white card for proper contrast) */}
+                  <div className="lg:hidden text-center mb-8 relative z-10">
+                    <h2 className="text-3xl min-[370px]:text-4xl font-semibold text-slate-900 tracking-tight font-sans">
+                      Start Your Project
+                    </h2>
+                    <p className="text-sm min-[370px]:text-base text-slate-600 mt-2 font-sans">
+                      Fill this form
+                    </p>
+                  </div>
+
+                  {/* Dense Constellation/Starburst Canvas */}
                   <ConstellationCanvas className="absolute inset-0 w-full h-full pointer-events-none" />
 
-                  {/* Terminal CLI Window - Designed 100% same as the Password Prompt Image - Solid Opaque Background */}
-                  <div className="relative z-10 w-full max-w-[270px] min-[370px]:max-w-[320px] md:max-w-[360px] rounded-lg bg-[#1e1f22] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col font-mono text-[12.5px] text-[#b4b7be] select-text">
+                  {/* Terminal CLI Window - Dynamically widened for better mobile viewing */}
+                  <div className="relative z-10 w-[92%] max-w-[340px] sm:max-w-[400px] lg:max-w-[360px] rounded-lg bg-[#1e1f22] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col font-mono text-[12.5px] text-[#b4b7be] select-text">
                     
-                    {/* Header bar matching the image - Solid Opaque Background */}
+                    {/* Header bar */}
                     <div className="bg-[#2b2d31] px-4 py-2.5 border-b border-zinc-800/80 flex items-center relative select-none">
                       {/* Three gray dots on the left */}
                       <div className="flex items-center gap-1.5 absolute left-4 top-1/2 -translate-y-1/2">
@@ -564,6 +560,16 @@ export const ContactSection: React.FC = () => {
                           </button>
                         </div>
                       )}
+
+                      {/* Highlighted direct email fallback */}
+                      <div className="mt-3 pt-3 border-t border-zinc-800/40 flex items-center justify-center">
+                        <a 
+                          href="mailto:hello@devnextdoor.com" 
+                          className="text-[11px] text-indigo-400 font-semibold hover:bg-indigo-500/20 px-2 py-0.5 rounded transition-colors"
+                        >
+                          hello@devnextdoor.com
+                        </a>
+                      </div>
                     </div>
 
                   </div>
