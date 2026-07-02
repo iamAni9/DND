@@ -18,7 +18,7 @@ export function Navbar({ className, style }: NavbarProps) {
   const { scrollY } = useScroll();
   const [anchorRect, setAnchorRect] = useState<{ top: number } | null>(null);
   const [detached, setDetached] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   // Track breakpoint — below 768px we switch to the fixed-top hamburger layout
@@ -55,10 +55,10 @@ export function Navbar({ className, style }: NavbarProps) {
   }, []);
 
   // Desktop: detach once the anchor scrolls within 24px of the top.
-  // Mobile: always detached — the bar lives at the top of the viewport from the start.
+  // Mobile: detach once user scrolls down past 40px, matching saysskinn reference.
   useMotionValueEvent(scrollY, 'change', (latest) => {
     if (isMobile) {
-      setDetached(true);
+      setDetached(latest > 40);
       return;
     }
     if (anchorRect) {
@@ -68,10 +68,8 @@ export function Navbar({ className, style }: NavbarProps) {
   });
 
   // Desktop: track the anchor, then hold at 24px once scrolled past.
-  // Mobile: pinned at 16px from the top, full stop — no anchor tracking.
-  const y = useTransform(scrollY, (latest) => {
-    if (isMobile) return 16;
-
+  // Mobile: handled by the animate prop directly (switches between 0 and 12).
+  const desktopY = useTransform(scrollY, (latest) => {
     if (!anchorRect) {
       if (typeof window !== 'undefined') {
         return window.innerWidth < 768 ? 440 : 548;
@@ -80,6 +78,13 @@ export function Navbar({ className, style }: NavbarProps) {
     }
     return Math.max(24, anchorRect.top - latest);
   });
+
+  // Sync mobile detached state on mount / media query changes
+  useEffect(() => {
+    if (isMobile) {
+      setDetached(scrollY.get() > 40);
+    }
+  }, [isMobile, scrollY]);
 
   const scrollToSection = (id: string) => {
     setMenuOpen(false);
@@ -103,12 +108,17 @@ export function Navbar({ className, style }: NavbarProps) {
       style={{
         ...style,
         top: 0,
-        y,
         left: '50%',
         x: '-50%',
+        ...(isMobile ? {} : { y: desktopY }),
       }}
-      animate={{
-        scale: detached && !isMobile ? 0.985 : 1,
+      animate={isMobile ? {
+        y: detached ? 32 : 16,
+        width: detached ? '75%' : '92%',
+        borderRadius: '28px',
+        scale: detached ? 0.97 : 1,
+      } : {
+        scale: detached ? 0.985 : 1,
       }}
       transition={{
         type: 'spring',
@@ -116,7 +126,11 @@ export function Navbar({ className, style }: NavbarProps) {
         damping: 28,
         mass: 0.8,
       }}
-      className={`fixed z-50 flex flex-col items-center px-1 py-1 sm:px-1.5 sm:py-1.5 rounded-[28px] transition-[border-radius] duration-300 ease-out ${bgClasses} ${className || ''} w-[92%] md:w-auto ${menuOpen ? '!rounded-[28px]' : ''}`}
+      className={`fixed z-50 flex flex-col items-center px-1 py-1 sm:px-1.5 sm:py-1.5 transition-[background-color,border-color,box-shadow,padding,border-radius] duration-300 ease-out ${bgClasses} ${className || ''} ${
+        isMobile
+          ? ''
+          : `rounded-[28px] w-[92%] md:w-auto ${menuOpen ? '!rounded-[28px]' : ''}`
+      }`}
     >
       {/* Main bar container */}
       <div className="flex items-center justify-between w-full gap-1.5 sm:gap-2">
@@ -143,6 +157,13 @@ export function Navbar({ className, style }: NavbarProps) {
               {link.label}
             </button>
           ))}
+        </div>
+
+        {/* Mobile center brand text */}
+        <div className="md:hidden flex items-center justify-center font-display font-semibold text-[15px] tracking-tight select-none">
+          <span className="text-[#0a1b33]">Dev</span>
+          <span className="text-[#3b82f6]">Next</span>
+          <span className="text-[#0a1b33]">Door</span>
         </div>
 
         {/* Right side: Get in touch on desktop, hamburger toggle on mobile */}
