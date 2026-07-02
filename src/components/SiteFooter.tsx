@@ -28,28 +28,48 @@ export const SiteFooter: React.FC = () => {
       <style dangerouslySetInnerHTML={{
         __html: `
         .site-footer {
-          --hero-max-width: 1820px;
           position: relative;
           z-index: 100;
           overflow: hidden;
           background-color: #ffffff;
           color: #0a1b33;
-          width: 100%;
+          width: calc(100% - 24px);
           max-width: 1400px;
-          margin: 1.5rem auto 0 auto;
+          margin: 2rem auto 1rem auto;
           border: 1px solid rgba(148, 163, 184, 0.15);
           box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.02);
-          border-radius: 48px;
+          border-radius: 32px;
           font-family: "Mazzard H", "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
           -webkit-font-smoothing: antialiased;
           text-rendering: geometricPrecision;
         }
 
+        @media (min-width: 640px) {
+          .site-footer {
+            width: calc(100% - 32px);
+            border-radius: 40px;
+            margin-top: 3rem;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .site-footer {
+            width: 100%;
+            border-radius: 48px;
+          }
+        }
+
         .footer-dots {
           position: relative;
-          height: 120px;
+          height: 100px;
           overflow: hidden;
           background-color: #ffffff;
+        }
+
+        @media (min-width: 768px) {
+          .footer-dots {
+            height: 120px;
+          }
         }
 
         .footer-dots__line {
@@ -75,37 +95,74 @@ export const SiteFooter: React.FC = () => {
         }
 
         .site-footer__inner {
-          width: min(100% - 96px, var(--hero-max-width));
+          width: 100%;
+          padding: clamp(32px, 5vw, 64px) 24px clamp(20px, 3vw, 32px);
           margin: 0 auto;
-          padding: clamp(34px, 4vw, 66px) 0 clamp(18px, 2vw, 34px);
+          box-sizing: border-box;
+        }
+
+        @media (min-width: 640px) {
+          .site-footer__inner {
+            padding-left: 40px;
+            padding-right: 40px;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .site-footer__inner {
+            padding-left: 48px;
+            padding-right: 48px;
+          }
         }
 
         .site-footer__top {
           display: grid;
-          grid-template-columns: minmax(320px, 1.25fr) repeat(3, minmax(150px, 0.42fr));
-          gap: clamp(28px, 4vw, 76px);
-          min-height: clamp(220px, 24vw, 330px);
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+
+        @media (min-width: 480px) {
+          .site-footer__top {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 36px 24px;
+          }
+        }
+
+        @media (min-width: 980px) {
+          .site-footer__top {
+            grid-template-columns: minmax(280px, 1.2fr) repeat(3, minmax(130px, 0.45fr));
+            gap: clamp(24px, 3vw, 64px);
+          }
         }
 
         .site-footer__top h2 {
-          max-width: 680px;
+          grid-column: 1 / -1;
           margin: 0;
           color: #0a1b33;
-          font-size: clamp(34px, 3.5vw, 62px);
+          font-size: clamp(28px, 4vw, 52px);
           font-weight: 600;
-          letter-spacing: 0;
-          line-height: 1.06;
+          letter-spacing: -0.02em;
+          line-height: 1.1;
+        }
+
+        @media (min-width: 980px) {
+          .site-footer__top h2 {
+            grid-column: auto;
+            max-width: 480px;
+          }
         }
 
         .site-footer__nav {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: clamp(14px, 1.35vw, 22px);
+          gap: 12px;
         }
 
-        .site-footer__nav--connect {
-          transform: translateX(-40px);
+        @media (min-width: 768px) {
+          .site-footer__nav {
+            gap: clamp(12px, 1.2vw, 18px);
+          }
         }
 
         .site-footer__nav-title {
@@ -113,15 +170,15 @@ export const SiteFooter: React.FC = () => {
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.1em;
-          color: rgba(10, 27, 51, 0.65);
-          margin-bottom: -4px;
+          color: rgba(10, 27, 51, 0.55);
+          margin-bottom: 2px;
         }
 
         .site-footer__nav a {
-          color: rgba(10, 27, 51, 0.9);
-          font-size: 16px;
-          font-weight: 650;
-          line-height: 1.1;
+          color: rgba(10, 27, 51, 0.8);
+          font-size: 15px;
+          font-weight: 600;
+          line-height: 1.2;
           transition: color 180ms ease, transform 180ms ease;
           text-decoration: none;
           cursor: pointer;
@@ -134,7 +191,9 @@ export const SiteFooter: React.FC = () => {
 
         .site-footer__brand-row {
           width: 100%;
-          margin-top: clamp(18px, 3vw, 46px);
+          margin-top: clamp(32px, 5vw, 56px);
+          border-top: 1px solid rgba(10, 27, 51, 0.06);
+          padding-top: 24px;
         }
 
         .site-footer__brand {
@@ -147,9 +206,9 @@ export const SiteFooter: React.FC = () => {
 
         .site-footer__mark {
           position: relative;
-          flex: 0 0 clamp(36px, 5.0vw, 95px);
+          flex: 0 0 clamp(40px, 6vw, 72px);
           aspect-ratio: 1;
-          margin-right: clamp(14px, 1.6vw, 28px);
+          margin-right: 16px;
           overflow: hidden;
           border-radius: 50%;
           background-color: #ffffff;
@@ -161,32 +220,39 @@ export const SiteFooter: React.FC = () => {
         }
 
         .site-footer__logo-img {
-          width: 80%;
-          height: 80%;
+          width: 65%;
+          height: 65%;
           object-fit: contain;
           display: block;
         }
 
-        .site-footer__wordmark {
-          display: block;
-          flex: 1 1 auto;
-          min-width: 0;
-          font-size: clamp(58px, 11.1vw, 214px);
-          font-weight: 760;
-          letter-spacing: -0.055em;
-          line-height: 0.78;
-          white-space: nowrap;
-        }
-
         .site-footer__legal {
           display: flex;
-          flex-flow: row wrap;
-          justify-content: flex-start;
-          gap: 8px 18px;
-          margin-top: clamp(14px, 1.4vw, 24px);
-          color: rgba(10, 27, 51, 0.75);
-          font-size: 9px;
-          line-height: 1.35;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+          margin-top: 24px;
+          border-top: 1px solid rgba(10, 27, 51, 0.06);
+          padding-top: 20px;
+          color: rgba(10, 27, 51, 0.5);
+          font-size: 12px;
+        }
+
+        @media (min-width: 640px) {
+          .site-footer__legal {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            border-top: none;
+            padding-top: 0;
+            margin-top: clamp(20px, 3vw, 32px);
+            font-size: 13px;
+          }
+        }
+
+        .site-footer__legal-links {
+          display: flex;
+          gap: 20px;
         }
 
         .site-footer__legal p {
@@ -200,66 +266,7 @@ export const SiteFooter: React.FC = () => {
         }
 
         .site-footer__legal a:hover {
-          color: #0a1b33;
-          text-decoration: underline;
-        }
-
-        /* RESPONSIVE BREAKPOINTS */
-        @media (max-width: 980px) {
-          .site-footer__inner {
-            width: min(100% - 48px, var(--hero-max-width));
-          }
-
-          .site-footer__top {
-            grid-template-columns: 1fr 1fr;
-          }
-
-          .site-footer__top h2 {
-            grid-column: 1 / -1;
-          }
-
-          .site-footer__nav--connect {
-            transform: none;
-          }
-        }
-
-        @media (max-width: 560px) {
-          .site-footer__inner {
-            width: min(100% - 32px, var(--hero-max-width));
-            padding-top: 16px;
-          }
-
-          .footer-dots {
-            height: 60px;
-          }
-
-          .site-footer__top {
-            grid-template-columns: 1fr 1fr;
-            gap: 28px;
-            min-height: auto;
-          }
-
-          .site-footer__top h2 {
-            grid-column: 1 / -1;
-            margin-top: 0;
-          }
-
-          .site-footer__nav--connect {
-            grid-column: 1 / -1;
-            margin-top: 8px;
-          }
-
-          .site-footer__nav a {
-            font-size: 15px;
-          }
-
-          .site-footer__mark {
-            flex-basis: clamp(28px, 10vw, 48px);
-          }
-
-          .site-footer__wordmark {
-            font-size: clamp(45px, 18vw, 84px);
-          }
+          color: #FF3D77;
         }
       ` }} />
 
@@ -276,16 +283,16 @@ export const SiteFooter: React.FC = () => {
         {/* TOP GRID */}
         <div className="site-footer__top">
           {/* H2 */}
-          <h2>Proven Digital Solutions & Intelligent Systems.</h2>
+          <h2>Proven Digital Solutions &amp; Intelligent Systems.</h2>
 
-          {/* Navigation Column 1: Services (Adapted to DND, satisfying "add one") */}
+          {/* Navigation Column 1: Services */}
           <nav className="site-footer__nav" aria-label="Services navigation">
             <span className="site-footer__nav-title">Services</span>
             <a href="#services-custom">Custom Software</a>
-            <a href="#services-ai">AI & Machine Learning</a>
+            <a href="#services-ai">AI &amp; Machine Learning</a>
             <a href="#services-saas">SaaS Development</a>
             <a href="#services-cloud">Cloud Solutions</a>
-            <a href="#services-apps">Web & Mobile Apps</a>
+            <a href="#services-apps">Web &amp; Mobile Apps</a>
           </nav>
 
           {/* Navigation Column 2: Company */}
@@ -299,16 +306,16 @@ export const SiteFooter: React.FC = () => {
           </nav>
 
           {/* Navigation Column 3: Connect */}
-          <nav className="site-footer__nav site-footer__nav--connect" aria-label="Social links">
+          <nav className="site-footer__nav" aria-label="Social links">
             <span className="site-footer__nav-title">Connect</span>
 
             {/* Desktop Links (Hidden on mobile) */}
-            <div className="hidden min-[561px]:flex flex-col gap-[clamp(14px,1.35vw,22px)]">
+            <div className="hidden sm:flex flex-col gap-3">
               <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
                 LinkedIn
               </a>
               <a href="https://x.com" target="_blank" rel="noreferrer">
-                Follow Us on X
+                Twitter / X
               </a>
               <a href="https://github.com" target="_blank" rel="noreferrer">
                 GitHub
@@ -316,12 +323,12 @@ export const SiteFooter: React.FC = () => {
             </div>
 
             {/* Mobile Logos (Visible on mobile only) */}
-            <div className="flex min-[561px]:hidden flex-row gap-4 mt-1">
+            <div className="flex sm:hidden flex-row gap-3 mt-1">
               <a
                 href="https://www.linkedin.com"
                 target="_blank"
                 rel="noreferrer"
-                className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/60 flex items-center justify-center text-slate-700 hover:text-[#FF3D77] transition-all hover:scale-105"
+                className="w-10 h-10 rounded-full bg-slate-50 border border-slate-200/60 flex items-center justify-center text-slate-700 hover:text-[#FF3D77] transition-all hover:scale-105"
               >
                 <LinkedinIcon className="w-5 h-5" />
               </a>
@@ -329,7 +336,7 @@ export const SiteFooter: React.FC = () => {
                 href="https://x.com"
                 target="_blank"
                 rel="noreferrer"
-                className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/60 flex items-center justify-center text-slate-700 hover:text-[#FF3D77] transition-all hover:scale-105"
+                className="w-10 h-10 rounded-full bg-slate-50 border border-slate-200/60 flex items-center justify-center text-slate-700 hover:text-[#FF3D77] transition-all hover:scale-105"
               >
                 <TwitterIcon className="w-5 h-5" />
               </a>
@@ -337,28 +344,28 @@ export const SiteFooter: React.FC = () => {
                 href="https://github.com"
                 target="_blank"
                 rel="noreferrer"
-                className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/60 flex items-center justify-center text-slate-700 hover:text-[#FF3D77] transition-all hover:scale-105"
+                className="w-10 h-10 rounded-full bg-slate-50 border border-slate-200/60 flex items-center justify-center text-slate-700 hover:text-[#FF3D77] transition-all hover:scale-105"
               >
                 <GithubIcon className="w-5 h-5" />
               </a>
             </div>
 
-            {/* Mobile Particle Logo (Under Connect on smaller screen) */}
-            <div className="block min-[561px]:hidden w-full h-[90px] relative mt-6">
+            {/* Mobile Particle Logo */}
+            <div className="block sm:hidden w-full h-[60px] relative mt-4">
               <ParticleLogoSection />
             </div>
           </nav>
         </div>
 
         {/* BRAND ROW (Hidden on mobile) */}
-        <div className="site-footer__brand-row hidden min-[561px]:block">
+        <div className="site-footer__brand-row hidden sm:block">
           <div className="site-footer__brand">
             {/* Brand mark */}
             <div className="site-footer__mark" aria-hidden="true">
               <img src="/dnd_logo.png" alt="DND Logo" className="site-footer__logo-img" />
             </div>
             {/* Brand wordmark - Animated Particles */}
-            <div className="flex-1 min-w-0 h-[clamp(45px,9.0vw,170px)] min-h-[50px] relative">
+            <div className="flex-1 min-w-0 h-[clamp(50px,8vw,120px)] relative">
               <ParticleLogoSection />
             </div>
           </div>
@@ -367,8 +374,10 @@ export const SiteFooter: React.FC = () => {
         {/* LEGAL LINE */}
         <div className="site-footer__legal">
           <p>© 2026 Dev Next Door. All rights reserved.</p>
-          <a href="#privacy">Privacy Policy</a>
-          <a href="#terms">Terms of Use</a>
+          <div className="site-footer__legal-links">
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#terms">Terms of Use</a>
+          </div>
         </div>
       </div>
     </footer>
