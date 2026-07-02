@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTypingPlaceholder } from "../hooks/useTypingPlaceholder";
 import {
   CornerDownLeft,
   Sparkles,
@@ -184,6 +185,25 @@ export const ContactSection: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [terminalInputVal, setTerminalInputVal] = useState("");
   const [hasInteracted, setHasInteracted] = useState(false);
+
+  const namePlaceholder = useTypingPlaceholder([
+    "Sai Patel",
+    "Sarah Johnson",
+    "Manoj Kumar"
+  ]);
+
+  const emailPlaceholder = useTypingPlaceholder([
+    "sai@gmail.com",
+    "founder@startup.com",
+    "hello@company.com"
+  ]);
+
+  // const inquiryPlaceholder = useTypingPlaceholder([
+  //   "Need an AI chatbot...",
+  //   "Looking for a SaaS platform...",
+  //   "Need a React developer...",
+  //   "Want to redesign our website..."
+  // ]);
 
   // Refs for scroll and focus management
   const terminalContentRef = useRef<HTMLDivElement>(null);
@@ -418,21 +438,25 @@ export const ContactSection: React.FC = () => {
                           <form onSubmit={handleTerminalSubmit} className="flex items-center flex-wrap gap-x-2">
                             <span className="text-[#a6aab0] font-bold">$</span>
                             <label htmlFor="cli-name" className="text-zinc-500">name:</label>
-                            <input
-                              ref={inputRef}
-                              id="cli-name"
-                              type="text"
-                              value={terminalInputVal}
-                              onChange={(e) => setTerminalInputVal(e.target.value)}
-                              onFocus={() => setHasInteracted(true)}
-                              placeholder=""
-                              className="bg-transparent border-none outline-none text-[#e4e4e7] font-mono flex-1 caret-white p-0 m-0 focus:ring-0 focus:outline-none"
-                              autoComplete="off"
-                            />
-                            {/* Blinking vertical cursor */}
-                            {!terminalInputVal && (
-                              <span className="w-1.5 h-4 bg-zinc-300 animate-pulse inline-block align-middle ml-[-4px]" />
-                            )}
+                            <div className="relative flex-1">
+                              <input
+                                ref={inputRef}
+                                id="cli-name"
+                                type="text"
+                                value={terminalInputVal}
+                                onChange={(e) => setTerminalInputVal(e.target.value)}
+                                onFocus={() => setHasInteracted(true)}
+                                className="bg-transparent border-none outline-none text-[#e4e4e7] font-mono flex-1 caret-white p-0 m-0 focus:ring-0 focus:outline-none"
+                                autoComplete="off"
+                              />
+                              {/* Blinking vertical cursor */}
+                              {!terminalInputVal && (
+                                  <span className="absolute left-0 top-0 text-zinc-500 pointer-events-none">
+                                      {namePlaceholder}
+                                      <span className="animate-pulse text-zinc-300">|</span>
+                                  </span>
+                              )}
+                            </div>
                           </form>
                         )}
 
@@ -440,20 +464,24 @@ export const ContactSection: React.FC = () => {
                           <form onSubmit={handleTerminalSubmit} className="flex items-center flex-wrap gap-x-2">
                             <span className="text-[#a6aab0] font-bold">$</span>
                             <label htmlFor="cli-email" className="text-zinc-500">email:</label>
-                            <input
-                              ref={inputRef}
-                              id="cli-email"
-                              type="text"
-                              value={terminalInputVal}
-                              onChange={(e) => setTerminalInputVal(e.target.value)}
-                              onFocus={() => setHasInteracted(true)}
-                              placeholder=""
-                              className="bg-transparent border-none outline-none text-[#e4e4e7] font-mono flex-1 caret-white p-0 m-0 focus:ring-0 focus:outline-none"
-                              autoComplete="off"
-                            />
-                            {!terminalInputVal && (
-                              <span className="w-1.5 h-4 bg-zinc-300 animate-pulse inline-block align-middle ml-[-4px]" />
-                            )}
+                            <div className="relative flex-1">
+                              <input
+                                ref={inputRef}
+                                id="cli-email"
+                                type="text"
+                                value={terminalInputVal}
+                                onChange={(e) => setTerminalInputVal(e.target.value)}
+                                onFocus={() => setHasInteracted(true)}
+                                className="bg-transparent border-none outline-none text-[#e4e4e7] font-mono flex-1 caret-white p-0 m-0 focus:ring-0 focus:outline-none"
+                                autoComplete="off"
+                              />
+                              {!terminalInputVal && (
+                                  <span className="absolute left-0 top-0 text-zinc-500 pointer-events-none">
+                                      {emailPlaceholder}
+                                      <span className="animate-pulse text-zinc-300">|</span>
+                                  </span>
+                              )}
+                            </div>
                           </form>
                         )}
 
@@ -525,13 +553,13 @@ export const ContactSection: React.FC = () => {
                       {/* Prompt buttons helper inside CLI terminal */}
                       {step !== "sending" && step !== "success" && (
                         <div className="flex items-center justify-between pt-2 border-t border-zinc-800/40">
-                          <span className="text-[10px] text-zinc-600 select-none">Press Enter to run</span>
+                          <span className="text-[10px] text-zinc-600 select-none">Press Enter to send</span>
                           <button
                             type="button"
                             onClick={handleTerminalSubmit}
                             className="px-2.5 py-0.5 bg-zinc-800 hover:bg-zinc-700 text-[#cbd5e1] border border-white/5 rounded text-[11px] font-semibold cursor-pointer transition-colors flex items-center gap-1"
                           >
-                            <span>Execute</span>
+                            <span>Send</span>
                             <CornerDownLeft className="w-3 h-3" />
                           </button>
                         </div>
