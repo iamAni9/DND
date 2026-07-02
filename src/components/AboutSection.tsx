@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
-import { Sparkles, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
 import { Creature } from "./Creature";
 
 export const AboutSection: React.FC = () => {

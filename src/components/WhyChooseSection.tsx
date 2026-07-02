@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import {
-  Sparkles,
   Target,
   Terminal,
   IterationCw,

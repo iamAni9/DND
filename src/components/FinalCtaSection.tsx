@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import { Sparkles } from "lucide-react";
 import { gsap } from "gsap";
 
 interface LaunchButtonProps {
