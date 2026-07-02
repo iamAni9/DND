@@ -52,12 +52,14 @@ const SEAMLESS_LOGOS = [...LOGOS, ...LOGOS];
 
 export const MarqueeScroller: React.FC = () => {
   return (
-    <div className="relative w-full max-w-[1400px] mx-auto mt-10 overflow-hidden mask-edges py-6">
-      <div className="animate-marquee flex gap-6 w-max">
+    <div className="relative w-full max-w-[1400px] mx-auto sm:mt-10 overflow-hidden mask-edges py-4 sm:py-6">
+      {/* Responsive gap handling for mobile, tablet, and desktop */}
+      <div className="animate-marquee flex gap-3 sm:gap-4 md:gap-6 w-max">
         {SEAMLESS_LOGOS.map((logo, idx) => (
           <div
             key={`${logo.name}-${idx}`}
-            className="group relative h-24 w-40 shrink-0 flex items-center justify-center rounded-full bg-white border border-slate-200/60 shadow-sm hover:border-slate-300 transition-all overflow-hidden"
+            // Responsive width and height transitions
+            className="group relative h-16 w-28 sm:h-20 sm:w-36 md:h-24 md:w-40 shrink-0 flex items-center justify-center rounded-full bg-white border border-slate-200/60 shadow-sm hover:border-slate-300 transition-all overflow-hidden"
           >
             {/* Hover Background Gradient */}
             <div
@@ -65,13 +67,13 @@ export const MarqueeScroller: React.FC = () => {
               className="absolute inset-0 scale-[1.5] opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 ease-out z-0 pointer-events-none"
             />
 
-            {/* Logo Image */}
+            {/* Logo Image — Switched to relative % bounds to scale with responsive parent cards */}
             <img
               src={logo.src}
               alt={logo.name}
-              className="relative z-10 w-20 h-10 object-contain transition-all duration-300 group-hover:brightness-0 group-hover:invert"
+              className="relative z-10 w-[55%] h-[45%] object-contain transition-all duration-300 group-hover:brightness-0 group-hover:invert"
               loading="lazy"
-            />
+                />
           </div>
         ))}
       </div>

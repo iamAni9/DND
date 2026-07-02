@@ -81,40 +81,6 @@ export function FreedomSection() {
     >
       {/* Block 1 — Header */}
       <div className="flex flex-col items-center gap-9 text-center">
-        {/* Badge pill */}
-        <div
-          className="flex items-center gap-2 text-sm sm:text-base md:text-lg font-medium rounded-full"
-          style={{
-            backgroundColor: 'rgb(249, 249, 249)',
-            padding: 'clamp(8px, 0.9vw, 14px) clamp(12px, 1.25vw, 20px)',
-            color: 'rgb(26, 11, 84)',
-          }}
-        >
-          <svg
-            width="19"
-            height="18"
-            style={{ flexShrink: 0 }}
-            viewBox="0 0 17 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g clipPath="url(#freedom-clip)">
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M8.50037 3.66955C7.53221 2.82462 6.41758 2.275 5.333 2.07887C4.11096 1.85888 2.84987 2.0826 1.96658 2.95885C1.10056 3.81944 0.866218 5.04172 1.06751 6.23193C1.24778 7.29835 1.7803 8.39907 2.60501 9.35959C2.41536 10.1071 2.46371 10.8946 2.7434 11.6137C3.02308 12.3327 3.52035 12.9481 4.16678 13.375C4.81321 13.802 5.57702 14.0195 6.35308 13.9976C7.12915 13.9758 7.87933 13.7157 8.50037 13.2531C9.12146 13.7161 9.87183 13.9765 10.6482 13.9985C11.4245 14.0205 12.1886 13.8029 12.8352 13.3758C13.4819 12.9487 13.9792 12.3331 14.2588 11.6137C14.5384 10.8943 14.5865 10.1065 14.3965 9.35884C15.2204 8.39832 15.753 7.29835 15.9325 6.23119C16.1338 5.04098 15.8994 3.81944 15.0334 2.9596C14.1501 2.0826 12.889 1.85888 11.667 2.07962C10.5824 2.275 9.46854 2.82537 8.50037 3.66955Z"
-                fill="rgb(200, 111, 255)"
-              />
-            </g>
-            <defs>
-              <clipPath id="freedom-clip">
-                <rect width="16" height="16" fill="white" transform="translate(0.5)" />
-              </clipPath>
-            </defs>
-          </svg>
-          Your Trusted Technology Partner
-        </div>
-
         <div className="flex flex-col gap-3">
           <h2
             className="font-medium px-4"

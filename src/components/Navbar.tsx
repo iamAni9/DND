@@ -1,20 +1,38 @@
 import { useEffect, useState } from 'react';
-import { motion, useScroll, useTransform, useMotionValueEvent } from 'motion/react';
-import { ChevronRight } from 'lucide-react';
+import { AnimatePresence, motion, useScroll, useTransform, useMotionValueEvent } from 'motion/react';
+import { ChevronRight, Menu, X } from 'lucide-react';
 
 interface NavbarProps {
   className?: string;
   style?: React.CSSProperties;
 }
 
+const NAV_LINKS = [
+  { id: 'about', label: 'About' },
+  { id: 'industries', label: 'Solutions' },
+  { id: 'process', label: 'Process' },
+  { id: 'faq', label: 'FAQ' },
+];
+
 export function Navbar({ className, style }: NavbarProps) {
   const { scrollY } = useScroll();
   const [anchorRect, setAnchorRect] = useState<{ top: number } | null>(null);
   const [detached, setDetached] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Track breakpoint — below 768px we switch to the fixed-top hamburger layout
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
 
   useEffect(() => {
     const measure = () => {
-      const anchor = document.getElementById("navbar-anchor");
+      const anchor = document.getElementById('navbar-anchor');
       if (anchor) {
         const rect = anchor.getBoundingClientRect();
         setAnchorRect({
@@ -24,32 +42,37 @@ export function Navbar({ className, style }: NavbarProps) {
     };
 
     measure();
-    // Wait a brief moment to ensure layout is fully settled after load
     const timer = setTimeout(measure, 100);
 
-    window.addEventListener("resize", measure);
-    window.addEventListener("scroll", measure, { passive: true });
-    
+    window.addEventListener('resize', measure);
+    window.addEventListener('scroll', measure, { passive: true });
+
     return () => {
       clearTimeout(timer);
-      window.removeEventListener("resize", measure);
-      window.removeEventListener("scroll", measure);
+      window.removeEventListener('resize', measure);
+      window.removeEventListener('scroll', measure);
     };
   }, []);
 
-  // Update detached state based on scroll position relative to the anchor
-  useMotionValueEvent(scrollY, "change", (latest) => {
+  // Desktop: detach once the anchor scrolls within 24px of the top.
+  // Mobile: always detached — the bar lives at the top of the viewport from the start.
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    if (isMobile) {
+      setDetached(true);
+      return;
+    }
     if (anchorRect) {
       const currentAnchorTopInViewport = anchorRect.top - latest;
-      // Detached threshold: 24px from top of viewport
       setDetached(currentAnchorTopInViewport <= 24);
     }
   });
 
-  // Calculate the y offset. When not detached, it tracks the anchor. When detached, it stays at 24px from the top.
+  // Desktop: track the anchor, then hold at 24px once scrolled past.
+  // Mobile: pinned at 16px from the top, full stop — no anchor tracking.
   const y = useTransform(scrollY, (latest) => {
+    if (isMobile) return 16;
+
     if (!anchorRect) {
-      // Set responsive initial fallback Y
       if (typeof window !== 'undefined') {
         return window.innerWidth < 768 ? 440 : 548;
       }
@@ -59,16 +82,21 @@ export function Navbar({ className, style }: NavbarProps) {
   });
 
   const scrollToSection = (id: string) => {
+    setMenuOpen(false);
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  // Glassmorphic styles copied from the NeoNav sample, with optimized white opacity for text contrast
+  // Close the mobile menu automatically if the viewport grows past the breakpoint
+  useEffect(() => {
+    if (!isMobile) setMenuOpen(false);
+  }, [isMobile]);
+
   const bgClasses = detached
-    ? "bg-white/75 backdrop-blur-[20px] border-white/20 shadow-[0_20px_40px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.2)]"
-    : "bg-white/90 backdrop-blur-[20px] border-white/30 shadow-[0_20px_40px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.2)]";
+    ? 'bg-white/75 backdrop-blur-[20px] border-white/20 shadow-[0_20px_40px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.2)]'
+    : 'bg-white/90 backdrop-blur-[20px] border-white/30 shadow-[0_20px_40px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.2)]';
 
   return (
     <motion.nav
@@ -76,25 +104,26 @@ export function Navbar({ className, style }: NavbarProps) {
         ...style,
         top: 0,
         y,
-        left: "50%",
-        x: "-50%",
+        left: '50%',
+        x: '-50%',
       }}
       animate={{
-        scale: detached ? 0.985 : 1,
+        scale: detached && !isMobile ? 0.985 : 1,
       }}
       transition={{
-        type: "spring",
+        type: 'spring',
         stiffness: 220,
         damping: 28,
         mass: 0.8,
       }}
-      className={`fixed z-50 flex flex-col items-center px-1 py-1 sm:px-1.5 sm:py-1.5 rounded-full transition-all duration-300 ease-out ${bgClasses} ${className || ''} w-[96%] min-[400px]:w-auto`}
+      className={`fixed z-50 flex flex-col items-center px-1 py-1 sm:px-1.5 sm:py-1.5 rounded-[28px] transition-[border-radius] duration-300 ease-out ${bgClasses} ${className || ''} w-[92%] md:w-auto ${menuOpen ? '!rounded-[28px]' : ''}`}
     >
       {/* Main bar container */}
       <div className="flex items-center justify-between w-full gap-1.5 sm:gap-2">
         {/* Logo in circle container */}
-        <button 
+        <button
           onClick={() => {
+            setMenuOpen(false);
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           className="w-9 h-9 bg-white rounded-full flex items-center justify-center border border-slate-200 shadow-sm select-none cursor-pointer hover:scale-105 transition-transform duration-200 focus:outline-none shrink-0"
@@ -103,47 +132,93 @@ export function Navbar({ className, style }: NavbarProps) {
           <img src="/dnd_logo.png" alt="DND Logo" className="w-[75%] h-[75%] object-contain" />
         </button>
 
-        {/* Navigation Links */}
-        <div className="flex items-center gap-0.5 sm:gap-1">
-          <button 
-            onClick={() => scrollToSection('about')}
-            className="text-[10px] min-[360px]:text-[11px] sm:text-[12px] font-semibold text-slate-600 hover:text-[#FF3D77] px-1.5 py-1 sm:px-3 sm:py-1.5 cursor-pointer transition-colors duration-200 focus:outline-none whitespace-nowrap"
-          >
-            About
-          </button>
-          <button 
-            onClick={() => scrollToSection('industries')}
-            className="text-[10px] min-[360px]:text-[11px] sm:text-[12px] font-semibold text-slate-600 hover:text-[#FF3D77] px-1.5 py-1 sm:px-3 sm:py-1.5 cursor-pointer transition-colors duration-200 focus:outline-none whitespace-nowrap"
-          >
-            Solutions
-          </button>
-          <button 
-            onClick={() => scrollToSection('process')}
-            className="hidden sm:inline-block text-[10px] min-[360px]:text-[11px] sm:text-[12px] font-semibold text-slate-600 hover:text-[#FF3D77] px-1.5 py-1 sm:px-3 sm:py-1.5 cursor-pointer transition-colors duration-200 focus:outline-none whitespace-nowrap"
-          >
-            Process
-          </button>
-          <button 
-            onClick={() => scrollToSection('faq')}
-            className="hidden sm:inline-block text-[10px] min-[360px]:text-[11px] sm:text-[12px] font-semibold text-slate-600 hover:text-[#FF3D77] px-1.5 py-1 sm:px-3 sm:py-1.5 cursor-pointer transition-colors duration-200 focus:outline-none whitespace-nowrap"
-          >
-            FAQ
-          </button>
+        {/* Desktop nav links — hidden below md, replaced by hamburger */}
+        <div className="hidden md:flex items-center gap-0.5 sm:gap-1">
+          {NAV_LINKS.map((link) => (
+            <button
+              key={link.id}
+              onClick={() => scrollToSection(link.id)}
+              className="text-[11px] sm:text-[12px] font-semibold text-slate-600 hover:text-[#FF3D77] px-1.5 py-1 sm:px-3 sm:py-1.5 cursor-pointer transition-colors duration-200 focus:outline-none whitespace-nowrap"
+            >
+              {link.label}
+            </button>
+          ))}
         </div>
 
-        {/* Right side controls: Get in touch */}
-        <div className="flex items-center shrink-0">
-          <button 
-            onClick={() => {
-              scrollToSection('contact');
-            }}
-            className="flex items-center gap-0.5 sm:gap-1 bg-white px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-[10px] sm:text-[12px] font-semibold text-[#0a1b33] border border-slate-200/60 shadow-sm hover:border-slate-300 hover:text-[#FF3D77] cursor-pointer transition-all focus:outline-none whitespace-nowrap"
+        {/* Right side: Get in touch on desktop, hamburger toggle on mobile */}
+        <div className="flex items-center gap-1.5 shrink-0">
+          <button
+            onClick={() => scrollToSection('contact')}
+            className="hidden md:flex items-center gap-0.5 sm:gap-1 bg-white px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-[10px] sm:text-[12px] font-semibold text-[#0a1b33] border border-slate-200/60 shadow-sm hover:border-slate-300 hover:text-[#FF3D77] cursor-pointer transition-all focus:outline-none whitespace-nowrap"
           >
             Get in touch
             <ChevronRight className="w-3.5 h-3.5 hidden sm:inline-block" />
           </button>
+
+          <button
+            onClick={() => setMenuOpen((open) => !open)}
+            className="md:hidden w-9 h-9 flex items-center justify-center rounded-full text-[#0a1b33] hover:bg-slate-100/70 cursor-pointer transition-colors duration-200 focus:outline-none"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              {menuOpen ? (
+                <motion.span
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <X className="w-5 h-5" />
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="menu"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <Menu className="w-5 h-5" />
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </button>
         </div>
       </div>
+
+      {/* Mobile dropdown panel */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.15, ease: 'easeOut' }}
+            className="w-full overflow-hidden md:hidden"
+          >
+            <div className="flex flex-col items-stretch gap-1 px-2 pt-2 pb-2">
+              {NAV_LINKS.map((link) => (
+                <button
+                  key={link.id}
+                  onClick={() => scrollToSection(link.id)}
+                  className="text-left text-[14px] font-semibold text-slate-700 hover:text-[#FF3D77] px-3 py-2.5 rounded-2xl hover:bg-slate-100/70 cursor-pointer transition-colors duration-200 focus:outline-none"
+                >
+                  {link.label}
+                </button>
+              ))}
+              <button
+                onClick={() => scrollToSection('contact')}
+                className="flex items-center justify-center gap-1 mt-1 bg-[#0a152d] text-white px-4 py-3 rounded-2xl text-[14px] font-semibold shadow-sm cursor-pointer transition-colors focus:outline-none"
+              >
+                Get in touch
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   );
 }
