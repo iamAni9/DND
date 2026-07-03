@@ -350,15 +350,11 @@ export const SiteFooter: React.FC = () => {
               </a>
             </div>
 
-            {/* Mobile Particle Logo */}
-            <div className="block sm:hidden w-full h-[60px] relative mt-4">
-              <ParticleLogoSection />
-            </div>
           </nav>
         </div>
 
-        {/* BRAND ROW (Hidden on mobile) */}
-        <div className="site-footer__brand-row hidden sm:block">
+        {/* BRAND ROW */}
+        <div className="site-footer__brand-row">
           <div className="site-footer__brand">
             {/* Brand mark */}
             <div className="site-footer__mark" aria-hidden="true">

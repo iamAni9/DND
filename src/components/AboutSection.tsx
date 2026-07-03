@@ -5,7 +5,7 @@ import { Creature } from "./Creature";
 
 export const AboutSection: React.FC = () => {
   return (
-    <section id="about" className="relative w-full max-w-[1400px] mx-auto rounded-3xl md:rounded-[48px] bg-[#0A0A0B] border border-white/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.7)] overflow-hidden py-10 px-4 md:py-16 md:px-16 flex flex-col items-center justify-center mt-6">
+    <section id="about" className="relative w-full max-w-[1400px] mx-auto rounded-3xl md:rounded-[48px] bg-[#0A0A0B] border border-white/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.7)] overflow-hidden py-10 px-4 md:py-16 md:px-16 flex flex-col items-center justify-center mt-6 scroll-mt-24 md:scroll-mt-32">
       {/* Decorative background grid and glowing patterns */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
       

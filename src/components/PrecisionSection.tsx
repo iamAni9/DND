@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 
 const LOGO_ICON =
   'https://cdn.prod.website-files.com/6720dd1ab6df0da205830ab1/6870f623cf3df417ce45df05_icon%20logo%20eternacloud.png';
@@ -15,9 +16,87 @@ const PILLARS = [
   { label: 'Scale',        items: ['deploying', 'and optimizing'],       leftVw: 68.0, bottomVw: 13.0, leftPct: 83.0, bottomPct: 46.0 },
 ];
 
+const MOBILE_STEPS = [
+  {
+    step: "01",
+    label: "Discover",
+    color: "#c86fff",
+    glowColor: "rgba(200, 111, 255, 0.15)",
+    description: "Deep dive into business logic & user needs.",
+    details: [
+      "In-depth business goal alignment",
+      "User persona & workflow mapping",
+      "Technical requirements definition"
+    ]
+  },
+  {
+    step: "02",
+    label: "Design",
+    color: "#3b82f6",
+    glowColor: "rgba(59, 130, 246, 0.15)",
+    description: "Creating premium, user-centric experiences.",
+    details: [
+      "High-fidelity UI/UX wireframes",
+      "Interactive component prototyping",
+      "Design system & branding guidelines"
+    ]
+  },
+  {
+    step: "03",
+    label: "Develop",
+    color: "#f59e0b",
+    glowColor: "rgba(245, 158, 11, 0.15)",
+    description: "Building production-grade software products.",
+    details: [
+      "Clean, maintainable frontend & backend",
+      "Scalable database architecture setup",
+      "Robust API integration"
+    ]
+  },
+  {
+    step: "04",
+    label: "Intelligence",
+    color: "#10b981",
+    glowColor: "rgba(16, 185, 129, 0.15)",
+    description: "Injecting cognitive and automated features.",
+    details: [
+      "Custom AI agents & LLM workflows",
+      "Predictive analytics integrations",
+      "Intelligent process automation"
+    ]
+  },
+  {
+    step: "05",
+    label: "Integrate",
+    color: "#6366f1",
+    glowColor: "rgba(99, 102, 241, 0.15)",
+    description: "Unifying systems for seamless data flow.",
+    details: [
+      "Syncing legacy software & modern APIs",
+      "Unified data pipelines & orchestration",
+      "Enterprise security compliance"
+    ]
+  },
+  {
+    step: "06",
+    label: "Scale",
+    color: "#ec4899",
+    glowColor: "rgba(236, 72, 153, 0.15)",
+    description: "Deploying and optimizing for massive growth.",
+    details: [
+      "Cloud native architecture & DevOps",
+      "Real-time performance monitoring",
+      "Continuous delivery & reliability tuning"
+    ]
+  }
+];
+
 export const PrecisionSection: React.FC = () => {
+  const [activeCardIndex, setActiveCardIndex] = React.useState(0);
+
   return (
     <section
+      className="precision-section"
       style={{
         backgroundImage: 'url("https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260418_125638_553b96dc-a1fd-4b2b-81a9-ed7daa80006e.png&w=1280&q=85")',
         backgroundSize: 'cover',
@@ -34,6 +113,7 @@ export const PrecisionSection: React.FC = () => {
     >
       {/* Block 1 — Header */}
       <div
+        className="precision-header"
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -94,6 +174,7 @@ export const PrecisionSection: React.FC = () => {
 
         {/* Heading + subtext wrapper */}
         <div
+          className="precision-title-wrapper"
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -104,6 +185,7 @@ export const PrecisionSection: React.FC = () => {
           }}
         >
           <h2
+            className="precision-title"
             style={{
               fontSize: 'clamp(28px, 4vw, 56px)',
               fontWeight: 500,
@@ -130,9 +212,10 @@ export const PrecisionSection: React.FC = () => {
             </span>
           </h2>
           <p
+            className="precision-desc"
             style={{
               fontSize: 'clamp(15px, 1.2vw, 20px)',
-              color: 'rgb(169, 151, 206)',
+              color: 'rgb(71, 85, 105)',
               margin: 0,
             }}
           >
@@ -254,127 +337,214 @@ export const PrecisionSection: React.FC = () => {
         </div>
 
         {/* Mobile & Tablet pillars (lg:hidden w-full) */}
-        <div
-          className="lg:hidden relative w-full max-w-[440px] mx-auto h-[900px] select-none"
-        >
-          {/* Mobile Vertical Winding Connecting Curve SVG */}
-          <svg
-            className="absolute inset-0 w-full h-full pointer-events-none z-0"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
+        <div className="lg:hidden relative w-full max-w-[480px] mx-auto px-4 py-8 flex flex-col items-center">
+          {/* Mobile view background override, hide-scrollbar, and glow pulse keyframes */}
+          <style dangerouslySetInnerHTML={{ __html: `
+            @media (max-width: 1023px) {
+              .precision-section {
+                background-image: none !important;
+                background: radial-gradient(at 0% 0%, rgba(200, 111, 255, 0.06) 0px, transparent 50%),
+                            radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.06) 0px, transparent 50%),
+                            radial-gradient(at 50% 100%, rgba(245, 158, 11, 0.04) 0px, transparent 50%),
+                            #ffffff !important;
+              }
+              .hide-scrollbar {
+                scrollbar-width: none !important;
+              }
+              .hide-scrollbar::-webkit-scrollbar {
+                display: none !important;
+              }
+            }
+          ` }} />
+
+          {/* Tabs selector above the card stack */}
+          <div
+            className="hide-scrollbar"
+            style={{
+              display: 'flex',
+              overflowX: 'auto',
+              gap: '8px',
+              width: '100%',
+              paddingBottom: '16px',
+              marginBottom: '12px',
+              WebkitOverflowScrolling: 'touch',
+            }}
           >
-            <defs>
-              <linearGradient id="precision-mobile-curve-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#c86fff" />
-                <stop offset="50%" stopColor="#3b82f6" />
-                <stop offset="100%" stopColor="#f59e0b" />
-              </linearGradient>
-              <filter id="precision-mobile-glow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="1.5" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
-            <path
-              d="M 12,6 C 88,12 88,20 88,24 C 12,28 12,37 12,42 C 88,46 88,55 88,60 C 12,64 12,73 12,78 C 88,82 88,90 88,94"
-              fill="none"
-              stroke="url(#precision-mobile-curve-grad)"
-              strokeWidth="0.6"
-              filter="url(#precision-mobile-glow)"
-              strokeLinecap="round"
-              className="opacity-70"
-            />
-          </svg>
-
-          {PILLARS.map((pillar, index) => {
-            const isRight = index % 2 !== 0;
-            const y = index === 0 ? 6 : (index === 1 ? 24 : (index === 2 ? 42 : (index === 3 ? 60 : (index === 4 ? 78 : 94))));
-
-            return (
-              <div
-                key={index}
-                style={{
-                  position: 'absolute',
-                  left: isRight ? 'auto' : '12%',
-                  right: isRight ? '12%' : 'auto',
-                  top: `${y}%`,
-                  transform: 'translateY(-50%)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: isRight ? 'flex-end' : 'flex-start',
-                }}
-              >
-                {/* Row for Circle + Chip */}
-                <div
+            {MOBILE_STEPS.map((step, idx) => {
+              const isActive = idx === activeCardIndex;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => setActiveCardIndex(idx)}
                   style={{
-                    display: 'flex',
-                    flexDirection: isRight ? 'row-reverse' : 'row',
-                    alignItems: 'center',
-                    gap: '12px',
-                    marginLeft: isRight ? 0 : '-5px',
-                    marginRight: isRight ? '-5px' : 0,
+                    padding: '8px 16px',
+                    borderRadius: '16px',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    whiteSpace: 'nowrap',
+                    border: 'none',
+                    outline: 'none',
+                    cursor: 'pointer',
+                    backgroundColor: isActive ? step.color : 'rgba(255, 255, 255, 0.7)',
+                    color: isActive ? '#FFFFFF' : 'rgb(26, 11, 84)',
+                    boxShadow: isActive
+                      ? `0 8px 16px -4px ${step.glowColor}, 0 4px 6px -2px ${step.glowColor}`
+                      : '0 2px 4px rgba(0,0,0,0.03)',
+                    transition: 'all 0.25s ease',
                   }}
                 >
-                  {/* Node Circle */}
-                  <div
-                    style={{
-                      width: '10px',
-                      height: '10px',
-                      borderRadius: '50%',
-                      backgroundColor: '#FFFFFF',
-                      border: `2.5px solid ${index % 3 === 0 ? '#c86fff' : (index % 3 === 1 ? '#3b82f6' : '#f59e0b')}`,
-                      boxShadow: `0 0 10px ${index % 3 === 0 ? '#c86fff' : (index % 3 === 1 ? '#3b82f6' : '#f59e0b')}`,
-                      zIndex: 10,
-                    }}
-                  />
+                  {step.step} {step.label}
+                </button>
+              );
+            })}
+          </div>
 
-                  {/* Chip */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      backgroundImage: 'linear-gradient(135deg, rgb(255, 255, 255), rgba(255, 255, 255, 0.75))',
-                      fontSize: '13px',
-                      fontWeight: 500,
-                      borderRadius: '16px',
-                      padding: '6px 12px',
-                      whiteSpace: 'nowrap',
-                      gap: '6px',
-                      boxShadow: '0 4px 12px rgba(26, 11, 84, 0.05)',
-                      border: '1px solid rgba(255,255,255,0.4)',
-                      color: 'rgb(26, 11, 84)',
-                    }}
-                  >
-                    <img src={LOGO_ICON} alt="" style={{ width: 14, height: 'auto' }} />
-                    {pillar.label}
-                  </div>
-                </div>
+          {/* Card stack deck */}
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '320px',
+            }}
+          >
+            {MOBILE_STEPS.map((step, index) => {
+              const diff = index - activeCardIndex;
+              const isActive = index === activeCardIndex;
 
-                {/* Items list */}
-                <div
+              // Fan card offsets (rotation and translation fanned from bottom center)
+              const rotateVal = isActive ? 0 : (diff < 0 ? -6 * Math.abs(diff) : 6 * diff);
+              const xVal = isActive ? 0 : (diff < 0 ? -12 * Math.abs(diff) : 12 * diff);
+              const yVal = isActive ? 0 : (diff < 0 ? 6 * Math.abs(diff) : 6 * diff);
+              const scaleVal = isActive ? 1 : Math.max(0.85, 1 - 0.04 * Math.abs(diff));
+              const opacityVal = isActive ? 1 : Math.max(0.4, 0.95 - 0.15 * Math.abs(diff));
+              const zIndexVal = isActive ? 40 : (diff < 0 ? 10 + index : 30 - index);
+
+              return (
+                <motion.div
+                  key={index}
+                  onClick={() => {
+                    if (isActive) {
+                      setActiveCardIndex((prev) => (prev + 1) % 6);
+                    } else {
+                      setActiveCardIndex(index);
+                    }
+                  }}
+                  animate={{
+                    rotate: rotateVal,
+                    x: xVal,
+                    y: yVal,
+                    scale: scaleVal,
+                    opacity: opacityVal,
+                    zIndex: zIndexVal,
+                  }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 280,
+                    damping: 24,
+                  }}
                   style={{
+                    position: 'absolute',
+                    left: '6%',
+                    right: '6%',
+                    top: 0,
+                    width: '88%',
+                    pointerEvents: 'auto',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '2px',
-                    fontSize: '12px',
-                    paddingLeft: isRight ? '0' : '17px',
-                    paddingRight: isRight ? '17px' : '0',
-                    paddingTop: '6px',
-                    alignItems: isRight ? 'flex-end' : 'flex-start',
+                    alignItems: 'flex-start',
+                    textAlign: 'left',
+                    gap: '12px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    borderRadius: '24px',
+                    padding: '20px 22px',
+                    boxShadow: isActive
+                      ? `0 15px 35px -10px rgba(26, 11, 84, 0.1), 0 20px 40px -15px ${step.glowColor}, 0 1px 2px rgba(0,0,0,0.02)`
+                      : `0 5px 15px -5px rgba(26, 11, 84, 0.05), 0 1px 1px rgba(0,0,0,0.01)`,
+                    border: isActive
+                      ? `1.5px solid ${step.color}`
+                      : '1px solid rgba(255, 255, 255, 0.6)',
+                    cursor: 'pointer',
+                    transformOrigin: 'bottom center',
                   }}
-                  className="text-slate-600 font-medium select-text"
                 >
-                  {pillar.items.map((item, idx) => (
-                    <div key={idx} className="bg-white/50 backdrop-blur-[1px] px-2.5 py-1 rounded border border-white/20 shadow-[0_1px_4px_rgba(26,11,84,0.01)]">
-                      {item}
+                  {/* Card Header */}
+                  <div className="flex items-center gap-3">
+                    <div
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '13px',
+                        fontWeight: 700,
+                        color: step.color,
+                        backgroundColor: step.glowColor,
+                        border: `1.5px solid ${step.color}`,
+                        boxShadow: `0 0 10px ${step.color}25`,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {step.step}
                     </div>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+
+                    <div className="flex flex-col items-start justify-center">
+                      <div className="flex items-center gap-1.5">
+                        <span style={{ fontSize: '17px', fontWeight: 700, color: 'rgb(26, 11, 84)', letterSpacing: '-0.015em' }}>
+                          {step.label}
+                        </span>
+                        <img src={LOGO_ICON} alt="" style={{ width: 13, height: 'auto' }} />
+                      </div>
+                      <span style={{ fontSize: '10px', fontWeight: 600, color: step.color, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        Process Phase
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Short Description */}
+                  <p style={{ fontSize: '13.5px', color: '#475569', margin: 0, fontWeight: 500, lineHeight: 1.45 }}>
+                    {step.description}
+                  </p>
+
+                  <div style={{ height: '1.5px', backgroundColor: 'rgba(26, 11, 84, 0.05)', margin: '1px 0', width: '100%' }} />
+
+                  {/* Checklist Items */}
+                  <div className="flex flex-col gap-2 w-full">
+                    {step.details.map((detail, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-2.5 text-[12.5px] text-slate-600 font-medium leading-relaxed"
+                      >
+                        <div
+                          style={{
+                            width: '18px',
+                            height: '18px',
+                            borderRadius: '50%',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            border: '1px solid rgba(16, 185, 129, 0.25)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '9px',
+                            fontWeight: 'bold',
+                            color: '#10b981',
+                            marginTop: '2px',
+                            flexShrink: 0,
+                          }}
+                        >
+                          ✓
+                        </div>
+                        <span className="pt-[1px]">{detail}</span>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

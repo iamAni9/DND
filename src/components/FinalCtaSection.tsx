@@ -248,7 +248,7 @@ export const FinalCtaSection: React.FC = () => {
 
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Text Content */}
-          <div className="lg:col-span-8 flex flex-col items-start text-left">
+          <div className="lg:col-span-8 flex flex-col items-center text-center lg:items-start lg:text-left">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-[#0a1b33] font-display leading-[1.15]">
               Let’s Build <span className="text-slate-500 font-bold">Something</span>{" "}
               <span className="bg-gradient-to-r from-[#9f1239] via-[#312e81] to-[#701a75] bg-clip-text text-transparent font-extrabold">

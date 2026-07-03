@@ -14,21 +14,22 @@ import { SiteFooter } from "./components/SiteFooter";
 
 export default function App() {
   return (
-    <main className="min-h-screen w-full bg-[#f9fafb] py-12 px-4 md:px-8 flex flex-col justify-center items-center gap-4 relative">
+    <>
       <Navbar />
-
-      <HeroSection />
-      <MarqueeScroller />
-      <FreedomSection />
-      <AboutSection />
-      <PrecisionSection />
-      <IndustriesSection />
-      <DevelopmentProcessSection />
-      <WhyChooseSection />
-      <FinalCtaSection />
-      <FaqSection />
-      <ContactSection />
-      <SiteFooter />
-    </main>
+      <main className="min-h-screen w-full bg-[#f9fafb] py-12 px-4 md:px-8 flex flex-col justify-center items-center gap-4 relative">
+        <HeroSection />
+        <MarqueeScroller />
+        <FreedomSection />
+        <AboutSection />
+        <PrecisionSection />
+        <IndustriesSection />
+        <DevelopmentProcessSection />
+        <WhyChooseSection />
+        <FinalCtaSection />
+        <FaqSection />
+        <ContactSection />
+        <SiteFooter />
+      </main>
+    </>
   );
 }

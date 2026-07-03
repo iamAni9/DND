@@ -88,10 +88,14 @@ export function Navbar({ className, style }: NavbarProps) {
 
   const scrollToSection = (id: string) => {
     setMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        const yOffset = -90;
+        const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }, 120);
   };
 
   // Close the mobile menu automatically if the viewport grows past the breakpoint
@@ -110,6 +114,7 @@ export function Navbar({ className, style }: NavbarProps) {
         top: 0,
         left: '50%',
         x: '-50%',
+        zIndex: 99999,
         ...(isMobile ? {} : { y: desktopY }),
       }}
       animate={isMobile ? {

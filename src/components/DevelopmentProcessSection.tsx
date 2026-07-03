@@ -123,7 +123,7 @@ export const DevelopmentProcessSection: React.FC = () => {
   }, []);
 
   return (
-    <section id="process" className="relative w-full max-w-[1400px] mx-auto rounded-3xl md:rounded-[48px] bg-[#0A0A0B] border border-white/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.7)] overflow-hidden py-10 px-4 md:py-20 md:px-12 flex flex-col items-center justify-center mt-6">
+    <section id="process" className="relative w-full max-w-[1400px] mx-auto rounded-3xl md:rounded-[48px] bg-[#0A0A0B] border border-white/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.7)] overflow-hidden py-10 px-4 md:py-20 md:px-12 flex flex-col items-center justify-center mt-6 scroll-mt-24 md:scroll-mt-32">
       
       {/* CSS Keyframes styles scoped to this component */}
       <style>{`

@@ -328,7 +328,7 @@ export const ContactSection: React.FC = () => {
     <section
       id="contact"
       // Removed outer dark backgrounds and padding on mobile, retained them on lg screens
-      className="w-full max-w-[1400px] mx-auto lg:mb-8 bg-transparent lg:bg-[#0a0a0b] lg:border border-white/5 rounded-none lg:rounded-[48px] py-0 lg:py-12"
+      className="w-full max-w-[1400px] mx-auto lg:mb-8 bg-transparent lg:bg-[#0a0a0b] lg:border border-white/5 rounded-none lg:rounded-[48px] py-0 lg:py-12 scroll-mt-24 md:scroll-mt-32"
     >
       <div className="max-w-7xl mx-auto px-0 lg:px-8">
         {/* Glassmorphic border container (hidden on mobile, visible on lg) */}
