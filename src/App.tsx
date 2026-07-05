@@ -12,10 +12,16 @@ import { FaqSection } from "./components/FaqSection";
 import { ContactSection } from "./components/ContactSection";
 import { SiteFooter } from "./components/SiteFooter";
 
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react';
+
+
 export default function App() {
   return (
     <>
       <Navbar />
+      <Analytics />
+      <SpeedInsights />
       <main className="min-h-screen w-full bg-[#f9fafb] py-12 px-4 md:px-8 flex flex-col justify-center items-center gap-4 relative">
         <HeroSection />
         <MarqueeScroller />
