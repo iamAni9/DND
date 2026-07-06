@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
-const PARTICLE_STEP = 1;   // Distance between particles (pixel sampling step)
-const PARTICLE_SIZE = 1.0; // Visual size of each particle dot
+const PARTICLE_STEP = 2;   // Distance between particles (pixel sampling step)
+const PARTICLE_SIZE = 1.5; // Visual size of each particle dot
 
 // Particle class for physics simulation
 class Particle {
@@ -183,7 +183,10 @@ export const ParticleLogoSection: React.FC = () => {
 
     // Animation Loop
     let animId: number;
+    let isIntersecting = false;
+
     const render = () => {
+      if (!isIntersecting) return;
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext("2d");
       if (canvas && ctx) {
@@ -216,8 +219,6 @@ export const ParticleLogoSection: React.FC = () => {
       animId = requestAnimationFrame(render);
     };
 
-    render();
-
     // Resize handler
     const resizeObserver = new ResizeObserver((entries) => {
       for (let entry of entries) {
@@ -248,9 +249,22 @@ export const ParticleLogoSection: React.FC = () => {
       resizeObserver.observe(containerRef.current);
     }
 
+    const observer = new IntersectionObserver(([entry]) => {
+      const wasIntersecting = isIntersecting;
+      isIntersecting = entry.isIntersecting;
+      if (isIntersecting && !wasIntersecting) {
+        render();
+      }
+    }, { threshold: 0.01 });
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
     return () => {
       cancelAnimationFrame(animId);
       resizeObserver.disconnect();
+      observer.disconnect();
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseleave", handleMouseLeave);
       window.removeEventListener("touchstart", handleTouchMove);
@@ -305,8 +319,8 @@ export const ParticleLogoSection: React.FC = () => {
     const offsetY = (ch - sampledH) / 2;
 
     const newParticles: Particle[] = [];
-    const step = isMobile ? 1 : PARTICLE_STEP;
-    const particleSize = isMobile ? 0.5 : PARTICLE_SIZE;
+    const step = isMobile ? 3 : PARTICLE_STEP;
+    const particleSize = isMobile ? 1.8 : PARTICLE_SIZE;
 
     for (let y = 0; y < sampledH; y += step) {
       for (let x = 0; x < sampledW; x += step) {

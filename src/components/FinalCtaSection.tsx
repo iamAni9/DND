@@ -130,6 +130,7 @@ export const LaunchButton: React.FC<LaunchButtonProps> = ({ onClick }) => {
     let z = 0;
     let last = performance.now();
     let animId: number;
+    let isIntersecting = false;
 
     const handleMouseEnter = () => {
       warpTarget = 1;
@@ -151,6 +152,7 @@ export const LaunchButton: React.FC<LaunchButtonProps> = ({ onClick }) => {
     btn.addEventListener("click", handleBtnClick);
 
     const frame = (now: number) => {
+      if (!isIntersecting) return;
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
       warp += (warpTarget - warp) * Math.min(1, dt * 2.6);
@@ -177,10 +179,20 @@ export const LaunchButton: React.FC<LaunchButtonProps> = ({ onClick }) => {
       animId = requestAnimationFrame(frame);
     };
 
-    animId = requestAnimationFrame(frame);
+    const observer = new IntersectionObserver(([entry]) => {
+      const wasIntersecting = isIntersecting;
+      isIntersecting = entry.isIntersecting;
+      if (isIntersecting && !wasIntersecting) {
+        last = performance.now();
+        animId = requestAnimationFrame(frame);
+      }
+    }, { threshold: 0.01 });
+
+    observer.observe(container);
 
     return () => {
       cancelAnimationFrame(animId);
+      observer.disconnect();
       document.removeEventListener("mousemove", handleMouseMove);
       if (btn) {
         btn.removeEventListener("mouseenter", handleMouseEnter);

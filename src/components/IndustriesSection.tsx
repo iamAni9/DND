@@ -86,7 +86,7 @@ export const IndustriesSection: React.FC = () => {
       setActiveIndex((prev) => {
         const next = (prev + 1) % INDUSTRIES.length;
         // Scroll horizontally to the next item
-        const cardWidth = container.querySelector(".integration-card")?.clientWidth || 290;
+        const cardWidth = 280; // Hardcoded mobile card width to avoid layout thrashing
         const gap = 24; // gap-6
         container.scrollTo({
           left: next * (cardWidth + gap),
@@ -105,7 +105,7 @@ export const IndustriesSection: React.FC = () => {
     if (!container) return;
 
     const scrollLeft = container.scrollLeft;
-    const cardWidth = container.querySelector(".integration-card")?.clientWidth || 290;
+    const cardWidth = 280; // Hardcoded mobile card width to avoid layout thrashing
     const gap = 24; // gap-6
     const calculatedIndex = Math.round(scrollLeft / (cardWidth + gap));
     

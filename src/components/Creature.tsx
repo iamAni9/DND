@@ -81,9 +81,12 @@ export const Creature: React.FC = () => {
       });
     };
 
+    let isIntersecting = false;
+
     const mainLoop = createTimer({
       frameRate: 20,
       onUpdate: () => {
+        if (!isIntersecting) return;
         animate(particuleEls, {
           x: cursor.x,
           y: cursor.y,
@@ -100,6 +103,7 @@ export const Creature: React.FC = () => {
         });
       }
     });
+    mainLoop.pause();
 
     const autoMove = createTimeline()
       .add(cursor, {
@@ -120,13 +124,18 @@ export const Creature: React.FC = () => {
         alternate: true,
         loop: true
       }, 0);
+    autoMove.pause();
 
     const manualMovementTimeout = createTimer({
       duration: 1500,
-      onComplete: () => autoMove.play()
+      onComplete: () => {
+        if (isIntersecting) autoMove.play();
+      }
     });
+    manualMovementTimeout.pause();
 
     const followPointer = (e: MouseEvent | TouchEvent) => {
+      if (!isIntersecting) return;
       const event = e instanceof TouchEvent ? e.touches[0] : e;
       const rect = creatureEl.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2 + window.scrollX;
@@ -155,12 +164,29 @@ export const Creature: React.FC = () => {
       manualMovementTimeout.restart();
     };
 
+    const observer = new IntersectionObserver(([entry]) => {
+      isIntersecting = entry.isIntersecting;
+      if (isIntersecting) {
+        mainLoop.play();
+        autoMove.play();
+      } else {
+        mainLoop.pause();
+        autoMove.pause();
+        manualMovementTimeout.pause();
+      }
+    }, { threshold: 0.05 });
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
     window.addEventListener("mousemove", followPointer);
     window.addEventListener("touchmove", followPointer, { passive: true } as any);
 
     return () => {
       window.removeEventListener("mousemove", followPointer);
       window.removeEventListener("touchmove", followPointer);
+      observer.disconnect();
       mainLoop.pause();
       autoMove.pause();
       manualMovementTimeout.pause();

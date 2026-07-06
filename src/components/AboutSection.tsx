@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Zap } from "lucide-react";
 import { Creature } from "./Creature";
 
 export const AboutSection: React.FC = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mediaQuery.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mediaQuery.addEventListener("change", handler);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, []);
+
   return (
     <section id="about" className="relative w-full max-w-[1400px] mx-auto rounded-3xl md:rounded-[48px] bg-[#0A0A0B] border border-white/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.7)] overflow-hidden py-10 px-4 md:py-16 md:px-16 flex flex-col items-center justify-center mt-6 scroll-mt-24 md:scroll-mt-32">
       {/* Decorative background grid and glowing patterns */}
@@ -34,11 +44,7 @@ export const AboutSection: React.FC = () => {
             background: "linear-gradient(#121214, #121214) padding-box, conic-gradient(from var(--border-angle), #FF3D77 0%, #7DD3FC 33%, #F72585 66%, #FF3D77 100%) border-box",
           }}
         >
-          {/* Mobile Background Creature (reduced size, low opacity, behind text) */}
-          <div className="absolute top-[35%] left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 opacity-25 scale-[0.65] md:hidden [&_*]:pointer-events-none">
-            <Creature />
-          </div>
-
+          {/* Mobile Background Creature (Completely unmounted on mobile to optimize performance) */}
           {/* Card Inner Content Layout */}
           <div className="w-full h-full p-5 md:p-12 lg:p-16 flex flex-col justify-between bg-transparent relative z-10">
             
@@ -57,7 +63,7 @@ export const AboutSection: React.FC = () => {
 
                 {/* Interactive Swarm Feature */}
                 <div className="hidden md:block w-full">
-                  <Creature />
+                  {!isMobile && <Creature />}
                 </div>
               </div>
 

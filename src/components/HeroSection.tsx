@@ -1,6 +1,10 @@
 import { motion } from "motion/react";
 
-export const HeroSection: React.FC = () => {
+interface HeroSectionProps {
+  onBookConsultation?: () => void;
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({ onBookConsultation }) => {
   return (
     <section className="relative w-full max-w-[1400px] mx-auto mt-[48px] md:mt-0 rounded-[28px] sm:rounded-[40px] lg:rounded-[48px] bg-white border border-slate-200/50 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col lg:min-h-[600px]">
       {/* Background Layer */}
@@ -45,6 +49,7 @@ export const HeroSection: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onClick={onBookConsultation}
               className="bg-[#0a152d] text-white rounded-full px-6 py-3.5 text-[14px] font-semibold shadow-sm hover:shadow-md cursor-pointer text-center justify-center transition-shadow duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0a152d]/40 focus-visible:ring-offset-2 w-full sm:w-auto"
             >
               Book a Free Consultation

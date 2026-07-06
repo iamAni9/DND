@@ -1,5 +1,11 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const LOGO_ICON =
   'https://cdn.prod.website-files.com/6720dd1ab6df0da205830ab1/6870f623cf3df417ce45df05_icon%20logo%20eternacloud.png';
@@ -20,8 +26,8 @@ const MOBILE_STEPS = [
   {
     step: "01",
     label: "Discover",
-    color: "#c86fff",
-    glowColor: "rgba(200, 111, 255, 0.15)",
+    color: "#6366f1",
+    glowColor: "rgba(99, 102, 241, 0.15)",
     description: "Deep dive into business logic & user needs.",
     details: [
       "In-depth business goal alignment",
@@ -32,8 +38,8 @@ const MOBILE_STEPS = [
   {
     step: "02",
     label: "Design",
-    color: "#3b82f6",
-    glowColor: "rgba(59, 130, 246, 0.15)",
+    color: "#6366f1",
+    glowColor: "rgba(99, 102, 241, 0.15)",
     description: "Creating premium, user-centric experiences.",
     details: [
       "High-fidelity UI/UX wireframes",
@@ -44,8 +50,8 @@ const MOBILE_STEPS = [
   {
     step: "03",
     label: "Develop",
-    color: "#f59e0b",
-    glowColor: "rgba(245, 158, 11, 0.15)",
+    color: "#6366f1",
+    glowColor: "rgba(99, 102, 241, 0.15)",
     description: "Building production-grade software products.",
     details: [
       "Clean, maintainable frontend & backend",
@@ -56,8 +62,8 @@ const MOBILE_STEPS = [
   {
     step: "04",
     label: "Intelligence",
-    color: "#10b981",
-    glowColor: "rgba(16, 185, 129, 0.15)",
+    color: "#6366f1",
+    glowColor: "rgba(99, 102, 241, 0.15)",
     description: "Injecting cognitive and automated features.",
     details: [
       "Custom AI agents & LLM workflows",
@@ -80,8 +86,8 @@ const MOBILE_STEPS = [
   {
     step: "06",
     label: "Scale",
-    color: "#ec4899",
-    glowColor: "rgba(236, 72, 153, 0.15)",
+    color: "#6366f1",
+    glowColor: "rgba(99, 102, 241, 0.15)",
     description: "Deploying and optimizing for massive growth.",
     details: [
       "Cloud native architecture & DevOps",
@@ -92,7 +98,89 @@ const MOBILE_STEPS = [
 ];
 
 export const PrecisionSection: React.FC = () => {
-  const [activeCardIndex, setActiveCardIndex] = React.useState(0);
+  const mobileContainerRef = useRef<HTMLDivElement>(null);
+  const mobileStickyRef = useRef<HTMLDivElement>(null);
+  const pathRef = useRef<SVGPathElement>(null);
+
+  useEffect(() => {
+    if (!mobileContainerRef.current || !mobileStickyRef.current || !pathRef.current) return;
+
+    const path = pathRef.current;
+    const len = path.getTotalLength();
+
+    // Set initial path state
+    gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+    
+    // Set initial card states: Card 0 expanded, others collapsed and dimmed
+    gsap.set('.mobile-milestone-0', { opacity: 1, scale: 1, maxHeight: 320 });
+    for (let i = 1; i < 6; i++) {
+      gsap.set(`.mobile-milestone-${i}`, { opacity: 0.35, scale: 0.96, maxHeight: 52 });
+    }
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: mobileContainerRef.current,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.5,
+          pin: mobileStickyRef.current,
+          pinSpacing: true,
+          invalidateOnRefresh: true,
+        }
+      });
+
+      // 1. Draw the path steadily over the entire timeline duration (0 to 5)
+      tl.to(path, { strokeDashoffset: 0, ease: 'none', duration: 5 }, 0);
+
+      const colors = Array(6).fill('#6366f1');
+      const glows = Array(6).fill('rgba(99, 102, 241, 0.15)');
+
+      // Helper function to animate active card shadows/borders
+      const updateActiveCard = (index: number, active: boolean) => {
+        const card = document.querySelector(`.mobile-milestone-${index}`) as HTMLDivElement;
+        if (!card) return;
+        if (active) {
+          card.style.borderColor = colors[index];
+          card.style.boxShadow = `0 10px 25px -5px rgba(26, 11, 84, 0.08), 0 0 20px ${glows[index]}`;
+          
+          // Show details elements smoothly
+          const content = card.querySelector('.mobile-milestone-content') as HTMLDivElement;
+          if (content) content.style.opacity = '1';
+        } else {
+          card.style.borderColor = 'rgba(0, 0, 0, 0.04)';
+          card.style.boxShadow = 'none';
+          
+          // Hide details smoothly
+          const content = card.querySelector('.mobile-milestone-content') as HTMLDivElement;
+          if (content) content.style.opacity = '0';
+        }
+      };
+
+      // Stage 0 Initial State
+      tl.to('.mobile-node-0', { r: 10, opacity: 1, fill: colors[0], duration: 0.3 }, 0)
+        .call(() => updateActiveCard(0, true), undefined, 0);
+
+      // Transitions
+      for (let i = 0; i < 5; i++) {
+        const startOffset = i + 0.7;
+        const endOffset = i + 1.0;
+        const nextIndex = i + 1;
+
+        // Collapse card i, deactivate node i
+        tl.to(`.mobile-milestone-${i}`, { opacity: 0.35, scale: 0.96, maxHeight: 52, duration: 0.3 }, startOffset)
+          .to(`.mobile-node-${i}`, { r: 6, opacity: 0.8, fill: '#64748b', duration: 0.3 }, startOffset)
+          .call(() => updateActiveCard(i, false), undefined, startOffset)
+
+          // Expand card i+1, activate node i+1
+          .to(`.mobile-milestone-${nextIndex}`, { opacity: 1, scale: 1, maxHeight: 320, duration: 0.3 }, endOffset)
+          .to(`.mobile-node-${nextIndex}`, { r: 10, opacity: 1, fill: colors[nextIndex], duration: 0.3 }, endOffset)
+          .call(() => updateActiveCard(nextIndex, true), undefined, endOffset);
+      }
+    }, mobileContainerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
@@ -337,213 +425,186 @@ export const PrecisionSection: React.FC = () => {
         </div>
 
         {/* Mobile & Tablet pillars (lg:hidden w-full) */}
-        <div className="lg:hidden relative w-full max-w-[480px] mx-auto px-4 py-8 flex flex-col items-center">
-          {/* Mobile view background override, hide-scrollbar, and glow pulse keyframes */}
+        <div ref={mobileContainerRef} className="lg:hidden relative w-full" style={{ minHeight: '480vh' }}>
+          
           <style dangerouslySetInnerHTML={{ __html: `
             @media (max-width: 1023px) {
               .precision-section {
                 background-image: none !important;
-                background: radial-gradient(at 0% 0%, rgba(200, 111, 255, 0.06) 0px, transparent 50%),
-                            radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.06) 0px, transparent 50%),
-                            radial-gradient(at 50% 100%, rgba(245, 158, 11, 0.04) 0px, transparent 50%),
+                background: radial-gradient(at 0% 0%, rgba(200, 111, 255, 0.05) 0px, transparent 50%),
+                            radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 50%),
+                            radial-gradient(at 50% 100%, rgba(245, 158, 11, 0.03) 0px, transparent 50%),
                             #ffffff !important;
               }
-              .hide-scrollbar {
-                scrollbar-width: none !important;
+              .mobile-roadmap-container {
+                display: flex;
+                width: 100%;
+                max-width: 480px;
+                align-items: stretch;
+                gap: 16px;
+                height: 80vh;
               }
-              .hide-scrollbar::-webkit-scrollbar {
-                display: none !important;
+              .mobile-svg-col {
+                width: 60px;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+              .mobile-cards-col {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 100%;
+                padding: 10px 0;
+              }
+              .mobile-milestone {
+                width: 100%;
+                background: rgba(255, 255, 255, 0.8);
+                border: 1px solid rgba(0, 0, 0, 0.04);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                border-radius: 20px;
+                padding: 12px 16px;
+                opacity: 0.35;
+                scale: 0.96;
+                max-height: 52px;
+                overflow: hidden;
+                transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+                            opacity 0.4s ease,
+                            scale 0.4s ease,
+                            border-color 0.4s ease,
+                            box-shadow 0.4s ease;
+                text-align: left;
+              }
+              .mobile-milestone-content {
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                margin-top: 10px;
               }
             }
           ` }} />
 
-          {/* Tabs selector above the card stack */}
-          <div
-            className="hide-scrollbar"
-            style={{
-              display: 'flex',
-              overflowX: 'auto',
-              gap: '8px',
-              width: '100%',
-              paddingBottom: '16px',
-              marginBottom: '12px',
-              WebkitOverflowScrolling: 'touch',
-            }}
-          >
-            {MOBILE_STEPS.map((step, idx) => {
-              const isActive = idx === activeCardIndex;
-              return (
-                <button
-                  key={idx}
-                  onClick={() => setActiveCardIndex(idx)}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: '16px',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    whiteSpace: 'nowrap',
-                    border: 'none',
-                    outline: 'none',
-                    cursor: 'pointer',
-                    backgroundColor: isActive ? step.color : 'rgba(255, 255, 255, 0.7)',
-                    color: isActive ? '#FFFFFF' : 'rgb(26, 11, 84)',
-                    boxShadow: isActive
-                      ? `0 8px 16px -4px ${step.glowColor}, 0 4px 6px -2px ${step.glowColor}`
-                      : '0 2px 4px rgba(0,0,0,0.03)',
-                    transition: 'all 0.25s ease',
-                  }}
-                >
-                  {step.step} {step.label}
-                </button>
-              );
-            })}
-          </div>
+          <div ref={mobileStickyRef} className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden px-4">
+            
+            <div className="mobile-roadmap-container">
+              
+              {/* SVG Panel on the left */}
+              <div className="mobile-svg-col">
+                <svg className="w-full h-full" viewBox="0 0 80 600" preserveAspectRatio="none">
+                  <defs>
+                    <filter id="glow-mobile" x="-30%" y="-10%" width="160%" height="120%">
+                      <feGaussianBlur stdDeviation="6" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+                    <linearGradient id="themePathGradMobile" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#6366f1" />
+                      <stop offset="100%" stopColor="#8b5cf6" />
+                    </linearGradient>
+                  </defs>
+                  
+                  {/* Background path track */}
+                  <path d="M40,30 C60,84 20,84 40,138 C60,192 20,192 40,246 C60,300 20,300 40,354 C60,408 20,408 40,462 C60,516 20,516 40,570" fill="none" stroke="rgba(0, 0, 0, 0.04)" strokeWidth="4" strokeLinecap="round" />
+                  
+                  {/* Animated path */}
+                  <path ref={pathRef} d="M40,30 C60,84 20,84 40,138 C60,192 20,192 40,246 C60,300 20,300 40,354 C60,408 20,408 40,462 C60,516 20,516 40,570" fill="none" stroke="url(#themePathGradMobile)" strokeWidth="4.5" strokeLinecap="round" filter="url(#glow-mobile)" />
+                  
+                  {/* Circles */}
+                  <circle className="mobile-node-0" cx="40" cy="30" r="6" fill="#64748b" opacity=".8" />
+                  <circle className="mobile-node-1" cx="40" cy="138" r="6" fill="#64748b" opacity=".8" />
+                  <circle className="mobile-node-2" cx="40" cy="246" r="6" fill="#64748b" opacity=".8" />
+                  <circle className="mobile-node-3" cx="40" cy="354" r="6" fill="#64748b" opacity=".8" />
+                  <circle className="mobile-node-4" cx="40" cy="462" r="6" fill="#64748b" opacity=".8" />
+                  <circle className="mobile-node-5" cx="40" cy="570" r="6" fill="#64748b" opacity=".8" />
+                </svg>
+              </div>
 
-          {/* Card stack deck */}
-          <div
-            style={{
-              position: 'relative',
-              width: '100%',
-              height: '320px',
-            }}
-          >
-            {MOBILE_STEPS.map((step, index) => {
-              const diff = index - activeCardIndex;
-              const isActive = index === activeCardIndex;
-
-              // Fan card offsets (rotation and translation fanned from bottom center)
-              const rotateVal = isActive ? 0 : (diff < 0 ? -6 * Math.abs(diff) : 6 * diff);
-              const xVal = isActive ? 0 : (diff < 0 ? -12 * Math.abs(diff) : 12 * diff);
-              const yVal = isActive ? 0 : (diff < 0 ? 6 * Math.abs(diff) : 6 * diff);
-              const scaleVal = isActive ? 1 : Math.max(0.85, 1 - 0.04 * Math.abs(diff));
-              const opacityVal = isActive ? 1 : Math.max(0.4, 0.95 - 0.15 * Math.abs(diff));
-              const zIndexVal = isActive ? 40 : (diff < 0 ? 10 + index : 30 - index);
-
-              return (
-                <motion.div
-                  key={index}
-                  onClick={() => {
-                    if (isActive) {
-                      setActiveCardIndex((prev) => (prev + 1) % 6);
-                    } else {
-                      setActiveCardIndex(index);
-                    }
-                  }}
-                  animate={{
-                    rotate: rotateVal,
-                    x: xVal,
-                    y: yVal,
-                    scale: scaleVal,
-                    opacity: opacityVal,
-                    zIndex: zIndexVal,
-                  }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 280,
-                    damping: 24,
-                  }}
-                  style={{
-                    position: 'absolute',
-                    left: '6%',
-                    right: '6%',
-                    top: 0,
-                    width: '88%',
-                    pointerEvents: 'auto',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
-                    textAlign: 'left',
-                    gap: '12px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-                    backdropFilter: 'blur(16px)',
-                    WebkitBackdropFilter: 'blur(16px)',
-                    borderRadius: '24px',
-                    padding: '20px 22px',
-                    boxShadow: isActive
-                      ? `0 15px 35px -10px rgba(26, 11, 84, 0.1), 0 20px 40px -15px ${step.glowColor}, 0 1px 2px rgba(0,0,0,0.02)`
-                      : `0 5px 15px -5px rgba(26, 11, 84, 0.05), 0 1px 1px rgba(0,0,0,0.01)`,
-                    border: isActive
-                      ? `1.5px solid ${step.color}`
-                      : '1px solid rgba(255, 255, 255, 0.6)',
-                    cursor: 'pointer',
-                    transformOrigin: 'bottom center',
-                  }}
-                >
-                  {/* Card Header */}
-                  <div className="flex items-center gap-3">
-                    <div
-                      style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '13px',
-                        fontWeight: 700,
-                        color: step.color,
-                        backgroundColor: step.glowColor,
-                        border: `1.5px solid ${step.color}`,
-                        boxShadow: `0 0 10px ${step.color}25`,
-                        flexShrink: 0,
-                      }}
-                    >
-                      {step.step}
-                    </div>
-
-                    <div className="flex flex-col items-start justify-center">
-                      <div className="flex items-center gap-1.5">
-                        <span style={{ fontSize: '17px', fontWeight: 700, color: 'rgb(26, 11, 84)', letterSpacing: '-0.015em' }}>
-                          {step.label}
-                        </span>
-                        <img src={LOGO_ICON} alt="" style={{ width: 13, height: 'auto' }} />
-                      </div>
-                      <span style={{ fontSize: '10px', fontWeight: 600, color: step.color, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                        Process Phase
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Short Description */}
-                  <p style={{ fontSize: '13.5px', color: '#475569', margin: 0, fontWeight: 500, lineHeight: 1.45 }}>
-                    {step.description}
-                  </p>
-
-                  <div style={{ height: '1.5px', backgroundColor: 'rgba(26, 11, 84, 0.05)', margin: '1px 0', width: '100%' }} />
-
-                  {/* Checklist Items */}
-                  <div className="flex flex-col gap-2 w-full">
-                    {step.details.map((detail, idx) => (
+              {/* Cards Panel on the right */}
+              <div className="mobile-cards-col">
+                {MOBILE_STEPS.map((step, idx) => (
+                  <div
+                    key={idx}
+                    className={`mobile-milestone mobile-milestone-${idx}`}
+                  >
+                    {/* Header */}
+                    <div className="flex items-center gap-3">
                       <div
-                        key={idx}
-                        className="flex items-start gap-2.5 text-[12.5px] text-slate-600 font-medium leading-relaxed"
+                        style={{
+                          width: '28px',
+                          height: '28px',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          color: step.color,
+                          backgroundColor: step.glowColor,
+                          border: `1.5px solid ${step.color}`,
+                          boxShadow: `0 0 8px ${step.color}20`,
+                          flexShrink: 0,
+                        }}
                       >
-                        <div
-                          style={{
-                            width: '18px',
-                            height: '18px',
-                            borderRadius: '50%',
-                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                            border: '1px solid rgba(16, 185, 129, 0.25)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '9px',
-                            fontWeight: 'bold',
-                            color: '#10b981',
-                            marginTop: '2px',
-                            flexShrink: 0,
-                          }}
-                        >
-                          ✓
-                        </div>
-                        <span className="pt-[1px]">{detail}</span>
+                        {step.step}
                       </div>
-                    ))}
+
+                      <div className="flex flex-col items-start justify-center">
+                        <div className="flex items-center gap-1.5">
+                          <span style={{ fontSize: '15px', fontWeight: 700, color: 'rgb(26, 11, 84)', letterSpacing: '-0.015em' }}>
+                            {step.label}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Details content shown only when expanded */}
+                    <div className="mobile-milestone-content">
+                      <p style={{ fontSize: '12.5px', color: '#475569', margin: '0 0 10px 0', fontWeight: 500, lineHeight: 1.4 }}>
+                        {step.description}
+                      </p>
+
+                      <div style={{ height: '1px', backgroundColor: 'rgba(26, 11, 84, 0.04)', margin: '6px 0', width: '100%' }} />
+
+                      {/* Checklist details */}
+                      <div className="flex flex-col gap-1.5 w-full mt-1.5">
+                        {step.details.map((detail, dIdx) => (
+                          <div
+                            key={dIdx}
+                            className="flex items-start gap-2 text-[11.5px] text-slate-600 font-medium leading-relaxed"
+                          >
+                            <div
+                              style={{
+                                width: '15px',
+                                height: '15px',
+                                borderRadius: '50%',
+                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                border: '1px solid rgba(16, 185, 129, 0.25)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '8px',
+                                fontWeight: 'bold',
+                                color: '#10b981',
+                                marginTop: '2px',
+                                flexShrink: 0,
+                              }}
+                            >
+                              ✓
+                            </div>
+                            <span className="pt-[0.5px]">{detail}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </motion.div>
-              );
-            })}
+                ))}
+              </div>
+
+            </div>
           </div>
         </div>
       </div>

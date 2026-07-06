@@ -74,8 +74,10 @@ export const InteractiveNimbu: React.FC = () => {
     const k = 0.08; // spring coefficient
     const damping = 0.82; // resistance/damping
     let time = 0;
+    let isIntersecting = false;
 
     const updatePhysics = () => {
+      if (!isIntersecting) return;
       const state = stateRef.current;
       time += 0.03;
 
@@ -129,8 +131,22 @@ export const InteractiveNimbu: React.FC = () => {
       animFrameId = requestAnimationFrame(updatePhysics);
     };
 
-    animFrameId = requestAnimationFrame(updatePhysics);
-    return () => cancelAnimationFrame(animFrameId);
+    const observer = new IntersectionObserver(([entry]) => {
+      const wasIntersecting = isIntersecting;
+      isIntersecting = entry.isIntersecting;
+      if (isIntersecting && !wasIntersecting) {
+        animFrameId = requestAnimationFrame(updatePhysics);
+      }
+    }, { threshold: 0.01 });
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      cancelAnimationFrame(animFrameId);
+      observer.disconnect();
+    };
   }, [anchorX, sparkleCenterY]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {

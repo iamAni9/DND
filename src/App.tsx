@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { HeroSection } from "./components/HeroSection";
+import { ConsultationModal } from "./components/ConsultationModal";
 import { MarqueeScroller } from "./components/MarqueeScroller";
 import { FreedomSection } from "./components/FreedomSection";
 import { AboutSection } from "./components/AboutSection";
@@ -17,13 +19,15 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 
 
 export default function App() {
+  const [isConsultationOpen, setIsConsultationOpen] = useState(false);
+
   return (
     <>
       <Navbar />
       <Analytics />
       <SpeedInsights />
       <main className="min-h-screen w-full bg-[#f9fafb] py-12 px-4 md:px-8 flex flex-col justify-center items-center gap-4 relative">
-        <HeroSection />
+        <HeroSection onBookConsultation={() => setIsConsultationOpen(true)} />
         <MarqueeScroller />
         <FreedomSection />
         <AboutSection />
@@ -36,6 +40,7 @@ export default function App() {
         <ContactSection />
         <SiteFooter />
       </main>
+      <ConsultationModal isOpen={isConsultationOpen} onClose={() => setIsConsultationOpen(false)} />
     </>
   );
 }

@@ -90,7 +90,10 @@ const ConstellationCanvas: React.FC<{ className?: string }> = ({ className }) =>
     parent.addEventListener("mouseleave", handleMouseLeave);
     window.addEventListener("resize", resize);
 
+    let isIntersecting = false;
+
     function animate() {
+      if (!isIntersecting) return;
       if (!canvas || !ctx) return;
       const width = canvas.width / (window.devicePixelRatio || 1);
       const height = canvas.height / (window.devicePixelRatio || 1);
@@ -158,10 +161,19 @@ const ConstellationCanvas: React.FC<{ className?: string }> = ({ className }) =>
       animId = requestAnimationFrame(animate);
     }
 
-    animate();
+    const observer = new IntersectionObserver(([entry]) => {
+      const wasIntersecting = isIntersecting;
+      isIntersecting = entry.isIntersecting;
+      if (isIntersecting && !wasIntersecting) {
+        animId = requestAnimationFrame(animate);
+      }
+    }, { threshold: 0.01 });
+
+    observer.observe(canvas);
 
     return () => {
       cancelAnimationFrame(animId);
+      observer.disconnect();
       parent.removeEventListener("mousemove", handleMouseMove);
       parent.removeEventListener("mouseleave", handleMouseLeave);
       window.removeEventListener("resize", resize);
