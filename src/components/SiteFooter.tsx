@@ -16,9 +16,11 @@ const TwitterIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
+const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
   </svg>
 );
 
@@ -311,21 +313,21 @@ export const SiteFooter: React.FC = () => {
 
             {/* Desktop Links (Hidden on mobile) */}
             <div className="hidden sm:flex flex-col gap-3">
-              <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
+              <a href="https://www.linkedin.com/company/devnextdooooor/" target="_blank" rel="noreferrer">
                 LinkedIn
               </a>
               <a href="https://x.com" target="_blank" rel="noreferrer">
                 Twitter / X
               </a>
-              <a href="https://github.com" target="_blank" rel="noreferrer">
-                GitHub
+              <a href="https://www.instagram.com/devnextdoor._/" target="_blank" rel="noreferrer">
+                Instagram
               </a>
             </div>
 
             {/* Mobile Logos (Visible on mobile only) */}
             <div className="flex sm:hidden flex-row gap-3 mt-1">
               <a
-                href="https://www.linkedin.com"
+                href="https://www.linkedin.com/company/devnextdooooor/"
                 target="_blank"
                 rel="noreferrer"
                 className="w-10 h-10 rounded-full bg-slate-50 border border-slate-200/60 flex items-center justify-center text-slate-700 hover:text-[#FF3D77] transition-all hover:scale-105"
@@ -341,12 +343,12 @@ export const SiteFooter: React.FC = () => {
                 <TwitterIcon className="w-5 h-5" />
               </a>
               <a
-                href="https://github.com"
+                href="https://www.instagram.com/devnextdoor._/"
                 target="_blank"
                 rel="noreferrer"
                 className="w-10 h-10 rounded-full bg-slate-50 border border-slate-200/60 flex items-center justify-center text-slate-700 hover:text-[#FF3D77] transition-all hover:scale-105"
               >
-                <GithubIcon className="w-5 h-5" />
+                <InstagramIcon className="w-5 h-5" />
               </a>
             </div>
 
